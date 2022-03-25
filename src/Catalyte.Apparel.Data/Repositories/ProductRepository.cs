@@ -34,6 +34,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                //whereCategoryEquals(category)
+                .ToListAsync();
+        }
     }
 
 }

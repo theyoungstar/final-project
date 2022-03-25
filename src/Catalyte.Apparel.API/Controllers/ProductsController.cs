@@ -50,5 +50,15 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTO);
         }
+        [HttpGet("/category")]
+        public async Task<ActionResult<ProductDTO>> GetProductsByCategoryAsync(string category)
+        {
+            _logger.LogInformation($"Request received for GetProductsByCategoryAsync");
+
+            var products = await _productProvider.GetProductsByCategoryAsync(category);
+            var productDTOs = _mapper.Map<ProductDTO>(products);
+
+            return Ok(productDTOs);
+        }
     }
 }
