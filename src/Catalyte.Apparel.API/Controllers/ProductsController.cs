@@ -56,7 +56,7 @@ namespace Catalyte.Apparel.API.Controllers
             _logger.LogInformation($"Request received for GetProductsByCategoryAsync");
 
             var products = await _productProvider.GetProductsByCategoryAsync(category);
-            var productDTOs = _mapper.Map<ProductDTO>(products);
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
         }

@@ -5,6 +5,7 @@ using Catalyte.Apparel.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Catalyte.Apparel.Data.Repositories
 {
@@ -38,7 +39,7 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
-                //whereCategoryEquals(category)
+                .Where(x => x.Category == category)
                 .ToListAsync();
         }
     }
