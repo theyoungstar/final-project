@@ -130,7 +130,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A demographic string.</returns>
         private string GetDemographic()
         {
-            return _demographics[_rand.Next(0, 3)];
+            return _demographics[_rand.Next(0, _demographics.Count)];
         }
 
         /// <summary>
@@ -142,12 +142,23 @@ namespace Catalyte.Apparel.Data.SeedData
             return "po-" + RandomString(7);
         }
 
-        private bool GetRandomActive()
+        /// <summary>
+        /// Returns a random boolean indicating active.
+        /// </summary>
+        /// <returns>Active as either true or false value boolean.</returns>
+        private bool GetActive()
         {
-            
-            return _active[_rand.Next(0, 2)];
+            return _active[_rand.Next(0, _active.Count)];
         }
 
+        private string GetCategory()
+        {
+            return _categories[_rand.Next(0, _categories.Count)];
+        }
+        private string GetType()
+        {
+            return _types[_rand.Next(0, _types.Count)];
+        }
         /// <summary>
         /// Generates a random style code.
         /// </summary>
@@ -185,8 +196,8 @@ namespace Catalyte.Apparel.Data.SeedData
             return new Product
             {
                 Id = id,
-                Category = _categories[_rand.Next(0, 9)],
-                Type = "Short",
+                Category = GetCategory(),
+                Type = GetType(),
                 Sku = GetRandomSku(),
                 Demographic = GetDemographic(),
                 GlobalProductCode = GetRandomProductId(),
@@ -194,7 +205,7 @@ namespace Catalyte.Apparel.Data.SeedData
                 ReleaseDate = DateTime.Now,
                 DateCreated = DateTime.UtcNow,
                 DateModified = DateTime.UtcNow,
-                Active = GetRandomActive(),
+                Active = GetActive(),
             };
         }
 
