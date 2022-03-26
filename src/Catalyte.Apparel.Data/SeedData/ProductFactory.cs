@@ -102,6 +102,12 @@ namespace Catalyte.Apparel.Data.SeedData
             "SM"
         };
 
+        private List<bool> _active = new()
+        {
+            false,
+            true
+        };
+
         /// <summary>
         /// Generates a randomized product SKU.
         /// </summary>
@@ -134,6 +140,12 @@ namespace Catalyte.Apparel.Data.SeedData
         private string GetRandomProductId()
         {
             return "po-" + RandomString(7);
+        }
+
+        private bool GetRandomActive()
+        {
+            
+            return _active[_rand.Next(0, 2)];
         }
 
         /// <summary>
@@ -182,10 +194,11 @@ namespace Catalyte.Apparel.Data.SeedData
                 ReleaseDate = DateTime.Now,
                 DateCreated = DateTime.UtcNow,
                 DateModified = DateTime.UtcNow,
-                Active = false
+                Active = GetRandomActive(),
             };
         }
 
+      
         /// <summary>
         /// Generates a random string of characters.
         /// </summary>
