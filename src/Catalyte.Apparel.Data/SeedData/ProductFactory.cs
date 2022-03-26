@@ -130,7 +130,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A demographic string.</returns>
         private string GetDemographic()
         {
-            return _demographics[_rand.Next(0, 2)];
+            return _demographics[_rand.Next(0, 3)];
         }
 
         /// <summary>
