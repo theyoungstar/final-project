@@ -34,6 +34,16 @@ namespace Catalyte.Apparel.Data.Model
 
         public bool Active { get; set; }
 
+        public string Brand { get; set; }
+
+        public string ImageSrc { get; set; }
+
+        public string Material { get; set; }
+
+        public string Price { get; set; }
+
+        public string Quantity { get; set; }
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
@@ -48,9 +58,8 @@ namespace Catalyte.Apparel.Data.Model
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return x.Name == y.Name && x.Description == y.Description && x.Demographic == y.Demographic && x.Category == y.Category && x.Type == y.Type && x.ReleaseDate.Equals(y.ReleaseDate) && x.PrimaryColorCode == y.PrimaryColorCode && x.SecondaryColorCode == y.SecondaryColorCode && x.StyleNumber == y.StyleNumber && x.GlobalProductCode == y.GlobalProductCode && x.Active == y.Active;
+                return x.Name == y.Name && x.Description == y.Description && x.Demographic == y.Demographic && x.Category == y.Category && x.Type == y.Type && x.ReleaseDate.Equals(y.ReleaseDate) && x.PrimaryColorCode == y.PrimaryColorCode && x.SecondaryColorCode == y.SecondaryColorCode && x.StyleNumber == y.StyleNumber && x.GlobalProductCode == y.GlobalProductCode && x.Active == y.Active && x.Brand == y.Brand && x.ImageSrc == y.ImageSrc && x.Material == y.Material && x.Price == y.Price && x.Quantity == y.Quantity;
             }
-
             public int GetHashCode(Product obj)
             {
                 var hashCode = new HashCode();
@@ -65,6 +74,12 @@ namespace Catalyte.Apparel.Data.Model
                 hashCode.Add(obj.StyleNumber);
                 hashCode.Add(obj.GlobalProductCode);
                 hashCode.Add(obj.Active);
+                hashCode.Add(obj.Brand);
+                hashCode.Add(obj.ImageSrc);
+                hashCode.Add(obj.Material);
+                hashCode.Add(obj.Price);
+                hashCode.Add(obj.Quantity);
+
                 return hashCode.ToHashCode();
             }
         }
