@@ -12,6 +12,7 @@ namespace Catalyte.Apparel.Data.Repositories
     /// <summary>
     /// This class handles methods for making requests to the product repository.
     /// </summary>
+
     public class ProductRepository : IProductRepository
     {
         private readonly IApparelCtx _ctx;
@@ -35,13 +36,20 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync()
         {
             return await _ctx.Products
                 .AsNoTracking()
-                .Where(x => x.Category == category)
+                //query to replicate SQL "SELECT distinct "Category" FROM public."Products" "
                 .ToListAsync();
         }
-    }
+        public async Task<IEnumerable<Product>> GetProductsByTypeAsync()
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                //query to replicate SQL "SELECT distinct "Type" from public."Products" "
+                .ToListAsync();
+        }
+    } 
 
 }

@@ -13,5 +13,6 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return products.Where(p => p.Id == productId).AsQueryable();
         }
+        
     }
 }
