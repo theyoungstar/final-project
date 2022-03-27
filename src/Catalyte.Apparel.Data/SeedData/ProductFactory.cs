@@ -128,45 +128,62 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random demographic from the list of demographics.
         /// </summary>
         /// <returns>A demographic string.</returns>
-        private string GetDemographic()
-        {
-            return _demographics[_rand.Next(0, _demographics.Count)];
-        }
+        private string GetDemographic() => _demographics[_rand.Next(0, _demographics.Count)];
 
         /// <summary>
         /// Generates a random product offering id.
         /// </summary>
         /// <returns>A product offering string.</returns>
-        private string GetRandomProductId()
-        {
-            return "po-" + RandomString(7);
-        }
+        private string GetRandomProductId() => "po-" + RandomString(7);
 
         /// <summary>
         /// Returns a random boolean indicating active.
         /// </summary>
         /// <returns>Active as either true or false value boolean.</returns>
-        private bool GetActive()
+        private bool GetActive() => _active[_rand.Next(0, _active.Count)];
+
+        /// <summary>
+        /// Returns a random cateogry from the list of categories.
+        /// </summary>
+        /// <returns>A category string.</returns>
+        private string GetCategory() => _categories[_rand.Next(0, _categories.Count)];
+
+        /// <summary>
+        /// Returns a random product type from the list of types.
+        /// </summary>
+        /// <returns>A type string.</returns>
+        private string GetProductType() => _types[_rand.Next(0, _types.Count)];
+
+        /// <summary>
+        /// Returns a random color code from the list of color codes.
+        /// </summary>
+        /// <param></param>
+        /// <returns>A color code string.</returns>
+        private string GetColor() => _colors[_rand.Next(0, _colors.Count)];
+
+        /// <summary>
+        /// Returns a random color code from the list of color codes.
+        /// Color returned is not the same as compareColor.
+        /// </summary>
+        /// <param name="compareColor"></param>
+        /// <returns>A color code string.</returns>
+        private string GetColor(string compareColor)
         {
-            return _active[_rand.Next(0, _active.Count)];
+            var color = GetColor();
+            while (color == compareColor)
+            {
+                color = GetColor();
+            }
+            return color;
         }
 
-        private string GetCategory()
-        {
-            return _categories[_rand.Next(0, _categories.Count)];
-        }
-        private string GetType()
-        {
-            return _types[_rand.Next(0, _types.Count)];
-        }
+        private string GetProductAdjective() => _adjectives[_rand.Next(0, _adjectives.Count)];
+
         /// <summary>
         /// Generates a random style code.
         /// </summary>
         /// <returns>A style code string.</returns>
-        private string GetStyleCode()
-        {
-            return "sc" + RandomString(5);
-        }
+        private string GetStyleCode() => "sc" + RandomString(5);
 
         /// <summary>
         /// Generates a number of random products based on input.
@@ -193,20 +210,26 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A randomly generated product.</returns>
         private Product CreateRandomProduct(int id)
         {
-            return new Product
-            {
-                Id = id,
-                Category = GetCategory(),
-                Type = GetType(),
-                Sku = GetRandomSku(),
-                Demographic = GetDemographic(),
-                GlobalProductCode = GetRandomProductId(),
-                StyleNumber = GetStyleCode(),
-                ReleaseDate = DateTime.Now,
-                DateCreated = DateTime.UtcNow,
-                DateModified = DateTime.UtcNow,
-                Active = GetActive(),
-            };
+            var product = new Product();
+
+            var adjective = GetProductAdjective();
+            product.Id = id;
+            product.Category = GetCategory();
+            product.Type = GetProductType();
+            product.Sku = GetRandomSku();
+            product.PrimaryColorCode = GetColor();
+            product.SecondaryColorCode = GetColor(product.PrimaryColorCode);
+            product.Demographic = GetDemographic();
+            product.GlobalProductCode = GetRandomProductId();
+            product.StyleNumber = GetStyleCode();
+            product.ReleaseDate = DateTime.Now;
+            product.DateCreated = DateTime.UtcNow;
+            product.DateModified = DateTime.UtcNow;
+            product.Active = GetActive();
+            product.Name = $"{adjective} {product.Category} {product.Type}";
+            product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
+            
+            return product;
         }
 
       
