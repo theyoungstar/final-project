@@ -177,13 +177,27 @@ namespace Catalyte.Apparel.Data.SeedData
             return color;
         }
 
+        /// <summary>
+        /// Returns  a random adjective from the list of adjectives.
+        /// </summary>
+        /// <returns>An adjective string.</returns>
         private string GetProductAdjective() => _adjectives[_rand.Next(0, _adjectives.Count)];
 
         /// <summary>
-        /// Generates a random style code.
+        /// Returns a random product release date ranging from 1/1/2017 to today.
         /// </summary>
-        /// <returns>A style code string.</returns>
-        private string GetStyleCode() => "sc" + RandomString(5);
+        /// <returns>A product release dateTime.</returns>
+        private DateTime GetReleaseDate()
+        {
+            DateTime start = new DateTime(2017, 1, 1);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(_rand.Next(range));
+        }
+        /// <summary>
+        /// Generates a random style number.
+        /// </summary>
+        /// <returns>A style number string.</returns>
+        private string GetStyleCode() => _rand.Next(10000,100000).ToString();
 
         /// <summary>
         /// Generates a number of random products based on input.
@@ -222,7 +236,7 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Demographic = GetDemographic();
             product.GlobalProductCode = GetRandomProductId();
             product.StyleNumber = GetStyleCode();
-            product.ReleaseDate = DateTime.Now;
+            product.ReleaseDate = GetReleaseDate();
             product.DateCreated = DateTime.UtcNow;
             product.DateModified = DateTime.UtcNow;
             product.Active = GetActive();
