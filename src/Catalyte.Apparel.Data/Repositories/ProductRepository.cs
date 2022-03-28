@@ -50,7 +50,8 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
-                //query to replicate SQL "SELECT distinct "Type" from public."Products" "
+                .Select(p => new Product { Type = p.Type })
+                .Distinct()
                 .ToListAsync();
         }
     } 
