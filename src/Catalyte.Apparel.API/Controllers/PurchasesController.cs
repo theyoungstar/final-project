@@ -31,16 +31,18 @@ namespace Catalyte.Apparel.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<PurchaseDTO>>> GetAllPurchasesAsync()
+        [HttpGet("/purchases/{email}/")]
+        public async Task<ActionResult<List<PurchaseDTO>>> GetAllPurchasesAsync(string email)
         {
             _logger.LogInformation("Request received for GetAllPurchasesAsync");
 
-            var purchases = await _purchaseProvider.GetAllPurchasesAsync();
+            var purchases = await _purchaseProvider.GetAllPurchasesAsync(email);
             var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos(purchases);
+            //var purchaseDTOs = _mapper.Map<IEnumerable<PurchaseDTO>>(purchases);
 
             return Ok(purchaseDTOs);
         }
+
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)

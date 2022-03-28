@@ -29,22 +29,29 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="page">Number of pages.</param>
         /// <param name="pageSize">How many purchases per page.</param>
         /// <returns>All purchases.</returns>
-        public async Task<IEnumerable<Purchase>> GetAllPurchasesAsync()
+        public async Task<IEnumerable<Purchase>> GetAllPurchasesAsync(string billingEmail)
         {
-            List<Purchase> purchases;
+            //List<Purchase> purchases;
+            IEnumerable<Purchase> purchases;
 
             try
             {
-                purchases = await _purchaseRepository.GetAllPurchasesAsync();
+                purchases = await _purchaseRepository.GetAllPurchasesAsync(billingEmail);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
+            if (billingEmail == null || billingEmail == default)
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} could not be found.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} could not be found.");
+            }
 
             return purchases;
         }
+
 
         /// <summary>
         /// Persists a purchase to the database.
