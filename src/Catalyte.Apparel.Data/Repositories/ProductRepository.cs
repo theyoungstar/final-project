@@ -40,8 +40,11 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
-                //query to replicate SQL "SELECT distinct "Category" FROM public."Products" "
+                .Select(p => new Product { Category = p.Category})
+                .Distinct()
                 .ToListAsync();
+                
+                   
         }
         public async Task<IEnumerable<Product>> GetProductsByTypeAsync()
         {

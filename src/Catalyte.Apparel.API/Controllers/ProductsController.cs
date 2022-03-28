@@ -40,7 +40,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("/products/{id}")]
         public async Task<ActionResult<ProductDTO>> GetProductByIdAsync(int id)
         {
             _logger.LogInformation($"Request received for GetProductByIdAsync for id: {id}");
@@ -50,7 +50,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTO);
         }
-        [HttpGet("/category")]
+        [HttpGet("/products/category")]
         public async Task<ActionResult<ProductDTO>> GetProductsByCategoryAsync()
         {
             _logger.LogInformation($"Request received for GetProductsByCategoryAsync");
@@ -60,7 +60,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTOs);
         }
-        [HttpGet("/type")]
+        [HttpGet("/products/type")]
 
         public async Task<ActionResult<ProductDTO>> GetProductsByTypeAsync()
         {
