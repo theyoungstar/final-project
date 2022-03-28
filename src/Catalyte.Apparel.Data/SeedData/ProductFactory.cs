@@ -121,6 +121,21 @@ namespace Catalyte.Apparel.Data.SeedData
             "Admiral",
             "Reusch"
         };
+
+        private List<string> _material = new()
+        {
+            "Cloth",
+            "Neoprene",
+            "Rubber",
+            "Polycarbonate",
+            "Titanium",
+            "Stainless Steel",
+            "Nylon",
+            "ABS Plastic",
+            "Leather",
+            "Aluminum"
+        };
+
         /// <summary>
         /// Generates a randomized product SKU.
         /// </summary>
@@ -200,11 +215,12 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random product release date ranging from 1/1/2017 to today.
         /// </summary>
         /// <returns>A product release dateTime.</returns>
-        private DateTime GetReleaseDate()
+        private string GetReleaseDate()
         {
             DateTime start = new DateTime(2017, 1, 1);
             int range = (DateTime.Today - start).Days;
-            return start.AddDays(_rand.Next(range));
+            string v = start.AddDays(_rand.Next(range)).ToString("MM/dd/yyyy");
+            return v;
         }
         /// <summary>
         /// Generates a random style number.
@@ -214,7 +230,10 @@ namespace Catalyte.Apparel.Data.SeedData
 
         private string GetBrand() => _brand[_rand.Next(0,_brand.Count)];
 
-        private string GetPrice() => (_rand.NextDouble() * 100).ToString();
+        private string GetPrice() => $"${Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+
+        private string GetMaterial() => _material[_rand.Next(0, _material.Count)];
+          
         /// <summary>
         /// Generates a number of random products based on input.
         /// </summary>
@@ -260,6 +279,7 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
             product.Brand = GetBrand();
             product.Price = GetPrice();
+            product.Material = GetMaterial();
             
             return product;
         }
