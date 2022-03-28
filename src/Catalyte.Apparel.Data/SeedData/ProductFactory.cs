@@ -120,7 +120,7 @@ namespace Catalyte.Apparel.Data.SeedData
             "ASCICS",
             "Admiral",
             "Reusch"
-        }
+        };
         /// <summary>
         /// Generates a randomized product SKU.
         /// </summary>
