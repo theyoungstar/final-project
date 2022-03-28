@@ -108,6 +108,19 @@ namespace Catalyte.Apparel.Data.SeedData
             true
         };
 
+        private List<string> _brand = new()
+        {
+            "Adidas",
+            "Nike",
+            "Nivia",
+            "Wilson",
+            "Puma",
+            "Champion",
+            "Brooks",
+            "ASCICS",
+            "Admiral",
+            "Reusch"
+        }
         /// <summary>
         /// Generates a randomized product SKU.
         /// </summary>
@@ -197,8 +210,11 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Generates a random style number.
         /// </summary>
         /// <returns>A style number string.</returns>
-        private string GetStyleCode() => _rand.Next(10000,100000).ToString();
+        private string GetStyleCode() =>"sc" + _rand.Next(10000,100000).ToString();
 
+        private string GetBrand() => _brand[_rand.Next(0,_brand.Count)];
+
+        private string GetPrice() => (_rand.NextDouble() * 100).ToString();
         /// <summary>
         /// Generates a number of random products based on input.
         /// </summary>
@@ -242,6 +258,8 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Active = GetActive();
             product.Name = $"{adjective} {product.Category} {product.Type}";
             product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
+            product.Brand = GetBrand();
+            product.Price = GetPrice();
             
             return product;
         }
