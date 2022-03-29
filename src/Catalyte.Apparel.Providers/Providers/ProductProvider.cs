@@ -75,13 +75,13 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync()
+        public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
-            IEnumerable<Product> products;
+            IEnumerable<string> categories;
 
             try
             {
-                products = await _productRepository.GetProductsByCategoryAsync();
+                categories = await _productRepository.GetAllUniqueCategoriesAsync();
             }
             catch (Exception ex)
             {
@@ -89,7 +89,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
 
-            return products;
+            return categories;
         }
         public async Task<IEnumerable<Product>> GetProductsByTypeAsync()
         {
