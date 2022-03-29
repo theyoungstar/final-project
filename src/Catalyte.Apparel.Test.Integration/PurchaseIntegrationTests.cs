@@ -23,26 +23,33 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task GetPurchases_WithResults_Returns200()
+        public async Task GetPurchasesByEmailAsync_GivenExisitingEmail_Returns200()
         {
-            var response = await _client.GetAsync("/products/{email}/");
+            var response = await _client.GetAsync("/purchases/email/{customer@home.com}/");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync(< PurchaseDTO >);
+            Assert.Equal("customer@home.com", content.BillingEmail);
         }
         [Fact]
-        public async Task GetPurchases_NoResults_Returns200()
+        public async Task GetPurchasesByEmailAsync_GivenNonExistingEmail_Returns200()
         {
-            var response = await _client.GetAsync("/products/{email}/");
+            var response = await _client.GetAsync("/purchases/email/{customer1@home.com}/");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync(<PurchaseDTO>);
+            Assert.Equal("customer@home.com", content.BillingEmail);
         }
 
-        //[Fact]
-        //public async Task GetPurchasesByEmailAsync_GivenNoEmailPath_Returns404()
-        //{
-        //    var response = await _client.GetAsync("/purchases");
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //This passes with ("/purchases/email/customer@home.com") but not ("//"), so I need to check on this
+        [Fact]
+        public async Task GetPurchasesByEmailAsync_GivenNoEmailPath_Returns404()
+        {
+            var response = await _client.GetAsync("/purchases");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-        //    var content = await response.Content.ReadAsAsync<PurchaseDTO>();
-        //    Assert.Equal(1, content.BillingEmail);
-        //}
+            //var content = await response.Content.ReadAsAsync(<PurchaseDTO>);
+            //Assert.Equal("customer@home.com", content.BillingEmail);
+        }
     }
 }
