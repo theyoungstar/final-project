@@ -35,7 +35,7 @@ namespace Catalyte.Apparel.Data.Filters
         }
         public static IQueryable<Product> WhereProductColorEquals(this IQueryable<Product> products, string color)
         {
-            return products.Where(p => p.Color == color).AsQueryable();
+            return products.Where(p => p.PrimaryColorCode == color).AsQueryable();
         }
         public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, string material)
         {

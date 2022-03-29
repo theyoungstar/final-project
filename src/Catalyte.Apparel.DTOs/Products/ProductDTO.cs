@@ -46,5 +46,6 @@ namespace Catalyte.Apparel.DTOs.Products
         public string Price { get; set; }
 
         public string Quantity { get; set; }
+
     }
 }
