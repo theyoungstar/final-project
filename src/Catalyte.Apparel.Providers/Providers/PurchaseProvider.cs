@@ -16,6 +16,7 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IProductRepository _productRepository;
 
         public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
         {
@@ -46,6 +47,23 @@ namespace Catalyte.Apparel.Providers.Providers
             return purchases;
         }
 
+        public async Task<Product> CheckProductForActiveAsync(int productId)
+        {
+            Product savedProduct;
+
+            try
+            {
+                savedProduct = await _productRepository.CheckProductForActiveAsync(productId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ArgumentException("Purchase could not be completed the following products are not active [list of inactive products that they tried to buy].");
+            }
+
+            return savedProduct;
+        }
+
         /// <summary>
         /// Persists a purchase to the database.
         /// </summary>
@@ -66,6 +84,26 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             return savedPurchase;
+        }
+
+        Task<IEnumerable<Purchase>> IPurchaseProvider.GetAllPurchasesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Purchase> IPurchaseProvider.CreatePurchasesAsync(Purchase model)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Product> IPurchaseProvider.CheckProductForActiveAsync(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IPurchaseProvider.CheckProductForActiveAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

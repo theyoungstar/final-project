@@ -41,6 +41,17 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(purchaseDTOs);
         }
+        [HttpGet]
+        public async Task<ActionResult<List<PurchaseDTO>>> CheckProductForActiveAsync(int productId)
+        {
+            _logger.LogInformation("Request received for CheckProductForActiveAsync");
+
+            var purchases = await _purchaseProvider.CheckProductForActiveAsync(productId);
+            var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos((IEnumerable<Data.Model.Purchase>)purchases);
+
+            return Ok(purchaseDTOs);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)

@@ -14,5 +14,8 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<IEnumerable<Purchase>> GetAllPurchasesAsync();
 
         Task<Purchase> CreatePurchasesAsync(Purchase model);
+        Task<Product> CheckProductForActiveAsync(int productId);
+        Task CheckProductForActiveAsync();
+
     }
 }

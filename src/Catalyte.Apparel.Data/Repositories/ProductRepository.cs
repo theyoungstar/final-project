@@ -27,6 +27,14 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductIdEquals(productId)
                 .SingleOrDefaultAsync();
         }
+        public async Task<Product> CheckProductForActiveAsync(int productId)
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductIdEquals(productId)
+                .SingleOrDefaultAsync();
+        }
+
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
