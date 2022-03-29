@@ -9,8 +9,7 @@ namespace Catalyte.Apparel.Data.Interfaces
     /// </summary>
     public interface IPurchaseRepository
     {
-        
-        Task<List<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail);
+        Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail);
 
         Task<Purchase> CreatePurchaseAsync(Purchase purchase);
     }

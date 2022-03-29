@@ -22,10 +22,8 @@ namespace Catalyte.Apparel.Data.Repositories
             _logger = logger;
             _ctx = ctx;
         }
-       
-        
 
-        public async Task<List<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
+        public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
             return await _ctx.Purchases
                 .Include(p => p.LineItems)

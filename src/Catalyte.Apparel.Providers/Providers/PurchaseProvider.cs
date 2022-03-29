@@ -28,8 +28,6 @@ namespace Catalyte.Apparel.Providers.Providers
         /// Retrieves all purchases from the database for the input email.
         /// </summary>
         /// <param name="billingEmail"> Billing email used to make purchase.</param>
-        /// <param name="page">Number of pages.</param>
-        /// <param name="pageSize">How many purchases per page.</param>
         /// <returns>All purchases.</returns>
 
         public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)

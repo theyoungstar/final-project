@@ -7,6 +7,7 @@ using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
+using System.Linq;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -32,25 +33,18 @@ namespace Catalyte.Apparel.API.Controllers
             _mapper = mapper;
 
         }
+
         [Route("/purchases")]
         [HttpGet("/purchases/{email}/")]
-        public async Task<ActionResult<List<PurchaseDTO>>> GetAllPurchasesByEmailAsync(string email)
+        public async Task<ActionResult<IEnumerable<PurchaseDTO>>> GetAllPurchasesByEmailAsync(string email)
         {
             _logger.LogInformation("Request received for GetAllPurchasesAsync");
 
             var purchases = await _purchaseProvider.GetAllPurchasesByEmailAsync(email);
             var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos(purchases);
-            //var purchaseDTOs = _mapper.Map<IEnumerable<PurchaseDTO>>(purchases);
-            if (email == null)
-            {
-                //_logger.LogInformation($"");
-                throw new NotFoundException($"");
-            }
-
-
+          
             return Ok(purchaseDTOs);
         }
-        
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)
