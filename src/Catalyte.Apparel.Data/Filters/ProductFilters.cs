@@ -21,9 +21,6 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return products.Where(p => p.Category == type).AsQueryable();
         }
-        public static IQueryable<Product> ShowProductCategories(this IQueryable<Product> products)
-        {
-            return (IQueryable<Product>)products.Select(p => p.Category).Distinct();
-        }
+        
     }
 }
