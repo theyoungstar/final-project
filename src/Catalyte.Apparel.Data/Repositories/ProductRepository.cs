@@ -43,13 +43,12 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
             return new HashSet<string>(products.Select(x => x.Category));
         }
-        public async Task<IEnumerable<Product>> GetProductsByTypeAsync()
+        public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
         {
-            return await _ctx.Products
+            var products = await _ctx.Products
                 .AsNoTracking()
-                .Select(p => new Product { Type = p.Type })
-                .Distinct()
                 .ToListAsync();
+            return new HashSet<string>(products.Select(x => x.Type));
         }
     } 
 

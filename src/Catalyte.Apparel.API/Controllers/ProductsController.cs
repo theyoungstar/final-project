@@ -50,7 +50,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTO);
         }
-        [HttpGet("/products/category")]
+        [HttpGet("/products/categories")]
         public async Task<ActionResult<string>> GetAllUniqueCategoriesAsync()
         {
             _logger.LogInformation($"Request received for GetAllUniqueCategoriesAsync");
@@ -59,16 +59,16 @@ namespace Catalyte.Apparel.API.Controllers
        
             return Ok(categories);
         }
-        [HttpGet("/products/type")]
+        [HttpGet("/products/types")]
 
-        public async Task<ActionResult<ProductDTO>> GetProductsByTypeAsync()
+        public async Task<ActionResult<string>> GetAllUniqueTypesAsync()
         {
             _logger.LogInformation($"Request received for GetProductsByTypeAsync");
 
-            var products = await _productProvider.GetProductsByTypeAsync();
-            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var types = await _productProvider.GetAllUniqueTypesAsync();
+            
 
-            return Ok(productDTOs);
+            return Ok(types);
 
         }
     }

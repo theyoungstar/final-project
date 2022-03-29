@@ -17,6 +17,6 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<IEnumerable<string>> GetAllUniqueCategoriesAsync();
 
-        Task<IEnumerable<Product>> GetProductsByTypeAsync();
+       Task<IEnumerable<string>> GetAllUniqueTypesAsync();
     }
 }

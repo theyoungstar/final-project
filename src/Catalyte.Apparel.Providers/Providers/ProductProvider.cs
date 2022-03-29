@@ -91,19 +91,19 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return categories;
         }
-        public async Task<IEnumerable<Product>> GetProductsByTypeAsync()
+        public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
         {
-            IEnumerable<Product> products;
+            IEnumerable<string> types;
             try
             {
-                products = await _productRepository.GetProductsByTypeAsync();
+                types = await _productRepository.GetAllUniqueTypesAsync();
             }
             catch(Exception ex)
             {
                 _logger?.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            return products;
+            return types;
         }
     }
 }
