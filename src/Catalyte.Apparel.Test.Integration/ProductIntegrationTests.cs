@@ -37,5 +37,17 @@ namespace Catalyte.Apparel.Test.Integration
             var content = await response.Content.ReadAsAsync<ProductDTO>();
             Assert.Equal(1, content.Id);
         }
+        [Fact]
+        public async Task GetAllUniqueCategories_Returns200()
+        {
+            var response = await _client.GetAsync("/products/categories");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact]
+        public async Task GetAllUniqueTypes_Returns200()
+        {
+            var response = await _client.GetAsync("/products/categories");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
