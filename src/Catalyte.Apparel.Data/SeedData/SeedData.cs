@@ -55,6 +55,17 @@ namespace Catalyte.Apparel.Data.Context
             };
 
             modelBuilder.Entity<Purchase>().HasData(purchase);
+
+            var promoCode = new PromoCode()
+            {
+                Id = 1234,
+                Title = "TEST",
+                Type = "TEST TYPE",
+                Description = "TEST Desc",
+                Rate = 1234
+            };
+
+            modelBuilder.Entity<PromoCode>().HasData(promoCode);
         }
     }
 }
