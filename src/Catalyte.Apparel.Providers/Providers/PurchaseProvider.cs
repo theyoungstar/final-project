@@ -5,6 +5,7 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -24,15 +25,15 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Retrieves all purchases from the database.
+        /// Retrieves all purchases from the database for the input email.
         /// </summary>
+        /// <param name="billingEmail"> Billing email used to make purchase.</param>
         /// <param name="page">Number of pages.</param>
         /// <param name="pageSize">How many purchases per page.</param>
         /// <returns>All purchases.</returns>
 
         public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
-            //List<Purchase> purchases;
             IEnumerable<Purchase> purchases;
 
             try
@@ -44,11 +45,11 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            //if (billingEmail == null || billingEmail == default)
-            //{
-            //    _logger.LogInformation($"Purchases with email: {billingEmail} could not be found.");
-            //    throw new NotFoundException($"Purchases with email: {billingEmail} could not be found.");
-            //}
+            if (billingEmail == null)
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
+            }
 
             return purchases;
         }
