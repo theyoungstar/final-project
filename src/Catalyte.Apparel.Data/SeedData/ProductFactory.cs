@@ -214,7 +214,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <summary>
         /// Returns a random product release date ranging from 1/1/2017 to today.
         /// </summary>
-        /// <returns>A product release dateTime.</returns>
+        /// <returns>A product release string MM/DD/YYYY format.</returns>
         private string GetReleaseDate()
         {
             DateTime start = new DateTime(2017, 1, 1);
@@ -225,15 +225,34 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <summary>
         /// Generates a random style number.
         /// </summary>
-        /// <returns>A style number string.</returns>
+        /// <returns>A style number string sc#####.</returns>
         private string GetStyleCode() =>"sc" + _rand.Next(10000,100000).ToString();
 
+        /// <summary>
+        /// Returns a random brand name from a list of brand names.
+        /// </summary>
+        /// <returns>A brand string.</returns>
         private string GetBrand() => _brand[_rand.Next(0,_brand.Count)];
 
+        /// <summary>
+        /// Returns a random generated price.
+        /// </summary>
+        /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
         private string GetPrice() => $"${Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
 
+        /// <summary>
+        /// Returns a random material from a list of materials.
+        /// </summary>
+        /// <returns>A material list string.</returns>
         private string GetMaterial() => _material[_rand.Next(0, _material.Count)];
-          
+
+        /// <summary>
+        /// Returns a random quantity.
+        /// </summary>
+        /// <returns>A quantity string</returns>
+        private string GetQuantity() => _rand.Next(1, 100).ToString();
+
+        private string GetImageSrc(string type, string demographic) => "/" + demographic + "/" + type + ".png";
         /// <summary>
         /// Generates a number of random products based on input.
         /// </summary>
@@ -280,6 +299,8 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Brand = GetBrand();
             product.Price = GetPrice();
             product.Material = GetMaterial();
+            product.Quantity = GetQuantity();
+            product.ImageSrc = GetImageSrc(product.Type, product.Demographic);
             
             return product;
         }
