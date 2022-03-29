@@ -46,7 +46,7 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetAllUniqueTypes_Returns200()
         {
-            var response = await _client.GetAsync("/products/categories");
+            var response = await _client.GetAsync("/products/types");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
