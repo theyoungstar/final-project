@@ -13,5 +13,10 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return promoCodes.Where(p => p.Id == promoCodeId).AsQueryable();
         }
+
+        public static IQueryable<PromoCode> WherePromoCodeTitleEquals(this IQueryable<PromoCode> promoCodes, string title)
+        {
+            return promoCodes.Where(u => u.Title == title).AsQueryable();
+        }
     }
 }

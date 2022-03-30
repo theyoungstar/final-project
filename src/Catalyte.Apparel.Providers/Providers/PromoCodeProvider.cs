@@ -75,5 +75,57 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return promoCodes;
         }
+        /// <summary>
+        /// Persists a promo code to the database given the provided title is not already in the database or null.
+        /// </summary>
+        /// <param title="newPromoCode">The promo code to persist.</param>
+        /// <returns>The user.</returns>
+        public async Task<PromoCode> CreatePromoCodeAsync(PromoCode newPromoCode)
+        {
+            if (newPromoCode.Title == null)
+            {
+                _logger.LogError("Promo Code must have a title field.");
+                throw new BadRequestException("Promo Code must have an title field");
+            }
+
+            // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN
+            PromoCode existingPromoCode;
+
+            try
+            {
+                existingPromoCode = await _promoCodeRepository.GetPromoCodeByTitleAsync(newPromoCode.Title);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            if (existingPromoCode != default)
+            {
+                _logger.LogError("Title is taken.");
+                throw new ConflictException("Title is taken");
+            }
+
+            // SET DEFAULT ROLE TO CUSTOMER AND TIMESTAMP
+            //newUser.Role = Constants.CUSTOMER;
+            //newUser.DateCreated = DateTime.UtcNow;
+            //newUser.DateModified = DateTime.UtcNow;
+
+            PromoCode savedPromoCode;
+
+            try
+            {
+                savedPromoCode = await _promoCodeRepository.CreatePromoCodeAsync(newPromoCode);
+                _logger.LogInformation("Promo code saved.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            return savedPromoCode;
+        }
     }
 }

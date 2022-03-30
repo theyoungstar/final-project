@@ -14,5 +14,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<PromoCode> GetPromoCodeByIdAsync(int promoCodeId);
 
         Task<IEnumerable<PromoCode>> GetPromoCodesAsync();
+
+        Task<PromoCode> CreatePromoCodeAsync(PromoCode promoCode);
     }
 }

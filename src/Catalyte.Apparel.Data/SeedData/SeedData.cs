@@ -58,11 +58,11 @@ namespace Catalyte.Apparel.Data.Context
 
             var promoCode = new PromoCode()
             {
-                Id = 1234,
-                Title = "TEST",
-                Type = "TEST TYPE",
-                Description = "TEST Desc",
-                Rate = 1234
+                Id = -1,
+                Title = "TEST00",
+                Type = "FLAT or %",
+                Description = "PLaceholder Desc",
+                Rate = 8888
             };
 
             modelBuilder.Entity<PromoCode>().HasData(promoCode);

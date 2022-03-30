@@ -34,6 +34,19 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<PromoCode> GetPromoCodeByTitleAsync(string title)
+        {
+            return await _ctx.PromoCodes.AsNoTracking().WherePromoCodeTitleEquals(title).SingleOrDefaultAsync();
+        }
+
+        public async Task<PromoCode> CreatePromoCodeAsync(PromoCode promoCode)
+        {
+            _ctx.PromoCodes.Add(promoCode);
+            await _ctx.SaveChangesAsync();
+
+            return promoCode;
+        }
     }
 
 }

@@ -1,10 +1,11 @@
 ﻿﻿using AutoMapper;
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Catalyte.Apparel.DTOs.PromoCodes;
 using Catalyte.Apparel.Providers.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -22,7 +23,8 @@ namespace Catalyte.Apparel.API.Controllers
         public PromoCodesController(
             ILogger<PromoCodesController> logger,
             IPromoCodeProvider promoCodeProvider,
-            IMapper mapper)
+            IMapper mapper
+            )
         {
             _logger = logger;
             _mapper = mapper;
@@ -49,6 +51,17 @@ namespace Catalyte.Apparel.API.Controllers
             var promoCodeDTO = _mapper.Map<PromoCodeDTO>(promoCode);
 
             return Ok(promoCodeDTO);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PromoCodeDTO>> CreatePromoCodeAsync([FromBody] PromoCode promoCodeToCreate)
+        {
+            _logger.LogInformation("Request received for CreatePromoCodeAsync");
+
+            var promoCode = await _promoCodeProvider.CreatePromoCodeAsync(promoCodeToCreate);
+            var promoCodeDTO = _mapper.Map<PromoCodeDTO>(promoCode);
+
+            return Created("/promoCodes", promoCodeDTO);
         }
     }
 }
