@@ -3,6 +3,7 @@ using Catalyte.Apparel.Data.Filters;
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,11 +28,12 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductIdEquals(productId)
                 .SingleOrDefaultAsync();
         }
-        public async Task<Product> CheckProductForActiveAsync(int productId)
+        //public async Boolean CheckProductForActiveAsync(bool Active)
+        public async Task<Product> CheckProductForActiveAsync(bool Active)
         {
             return await _ctx.Products
                 .AsNoTracking()
-                .WhereProductIdEquals(productId)
+                .WhereProductStatusEquals(true)
                 .SingleOrDefaultAsync();
         }
 
@@ -41,6 +43,11 @@ namespace Catalyte.Apparel.Data.Repositories
             return await _ctx.Products
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public Task<Product> CheckProductForActiveAsync(int productId)
+        {
+            throw new NotImplementedException();
         }
     }
 

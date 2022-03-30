@@ -1,6 +1,7 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,8 +15,8 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<IEnumerable<Purchase>> GetAllPurchasesAsync();
 
         Task<Purchase> CreatePurchasesAsync(Purchase model);
-        Task<Product> CheckProductForActiveAsync(int productId);
-        Task CheckProductForActiveAsync();
-
+       
+        Boolean CheckProductForActiveAsync(int productId);
+        
     }
 }
