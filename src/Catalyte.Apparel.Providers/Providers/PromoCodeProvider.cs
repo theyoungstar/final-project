@@ -76,16 +76,30 @@ namespace Catalyte.Apparel.Providers.Providers
             return promoCodes;
         }
         /// <summary>
-        /// Persists a promo code to the database given the provided title is not already in the database or null.
+        /// Persists a promo code to the database given the provided title is not already in the database or null
+        /// and type field is valid.
         /// </summary>
-        /// <param title="newPromoCode">The promo code to persist.</param>
-        /// <returns>The user.</returns>
+        /// <param name="newPromoCode">The promo code to persist.</param>
+        /// <returns>The promo code.</returns>
         public async Task<PromoCode> CreatePromoCodeAsync(PromoCode newPromoCode)
         {
             if (newPromoCode.Title == null)
             {
                 _logger.LogError("Promo Code must have a title field.");
                 throw new BadRequestException("Promo Code must have an title field");
+            }
+
+            if (newPromoCode.Type == null)
+            {
+                _logger.LogError("Promo Code must have a type.");
+                throw new BadRequestException("Promo Code must have a type");
+            }
+
+            //If Type is not "flat" or "%" throw error
+            if (newPromoCode.Type.ToLower() != "flat" && newPromoCode.Type != "%")
+            {
+                _logger.LogError("Promo Code must have a type of 'flat' or '%'.");
+                throw new BadRequestException("Promo Code must have a type of 'flat' or '%'.");
             }
 
             // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN
@@ -106,12 +120,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError("Title is taken.");
                 throw new ConflictException("Title is taken");
             }
-
-            // SET DEFAULT ROLE TO CUSTOMER AND TIMESTAMP
-            //newUser.Role = Constants.CUSTOMER;
-            //newUser.DateCreated = DateTime.UtcNow;
-            //newUser.DateModified = DateTime.UtcNow;
-
+                        
             PromoCode savedPromoCode;
 
             try
