@@ -1,6 +1,7 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
@@ -252,7 +253,11 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A quantity string</returns>
         private string GetQuantity() => _rand.Next(1, 100).ToString();
 
-        private string GetImageSrc(string type, string demographic) => "/" + demographic + "/" + type + ".png";
+        private string GetImageSrc()
+        {
+            return new Uri(new Uri("file://"), new DirectoryInfo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\Catalyte.Apparel.Data\SeedData\aar.jpg"))).ToString()).ToString();
+        }
+
         /// <summary>
         /// Generates a number of random products based on input.
         /// </summary>
@@ -300,7 +305,7 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Price = GetPrice();
             product.Material = GetMaterial();
             product.Quantity = GetQuantity();
-            product.ImageSrc = GetImageSrc(product.Type, product.Demographic);
+            product.ImageSrc = GetImageSrc();
             
             return product;
         }
