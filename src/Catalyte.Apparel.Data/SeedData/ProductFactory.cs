@@ -220,8 +220,7 @@ namespace Catalyte.Apparel.Data.SeedData
         {
             DateTime start = new DateTime(2017, 1, 1);
             int range = (DateTime.Today - start).Days;
-            string v = start.AddDays(_rand.Next(range)).ToString("MM/dd/yyyy");
-            return v;
+            return start.AddDays(_rand.Next(range)).ToString("MM/dd/yyyy");
         }
         /// <summary>
         /// Generates a random style number.
