@@ -18,6 +18,7 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
 
+
         public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
         {
             _logger = logger;

@@ -5,6 +5,7 @@ using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -40,7 +41,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("/products/{id}")]
         public async Task<ActionResult<ProductDTO>> GetProductByIdAsync(int id)
         {
             _logger.LogInformation($"Request received for GetProductByIdAsync for id: {id}");

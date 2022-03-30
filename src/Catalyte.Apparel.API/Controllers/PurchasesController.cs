@@ -35,7 +35,7 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         [Route("/purchases")]
-        [HttpGet("/purchases/{email}/")]
+        [HttpGet("/purchases/email/{email}/")]
         public async Task<ActionResult<IEnumerable<PurchaseDTO>>> GetAllPurchasesByEmailAsync(string email)
         {
             _logger.LogInformation("Request received for GetAllPurchasesAsync");

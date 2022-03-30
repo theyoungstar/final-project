@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\ErrorController.cs" />
+    <Compile Remove="..\Catalyte.Apparel.Test.Unit\EmptyClass.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
 	  </PackageReference>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+	  <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +36,9 @@
     <EditorConfigFiles Remove="C:\Users\mstonesifer\Training_6-1-21_Code\Training_Team\sports-apparel-api-csharp\src\Catalyte.Apparel.API\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Microsoft.AspNet.WebApi.Core" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="C:\Users\mstonesifer\Training_6-1-21_Code\Training_Team\sports-apparel-api-csharp\src\Catalyte.Apparel.API\.editorconfig" />
   </ItemGroup>
