@@ -6,7 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-
+using System.Linq;
+using System;
 
 namespace Catalyte.Apparel.Test.Integration
 {
@@ -29,8 +30,9 @@ namespace Catalyte.Apparel.Test.Integration
             var response = await _client.GetAsync("/purchases/email/customer@home.com");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var content = await response.Content.ReadAsAsync<PurchaseDTO>();
-            Assert.Equal("customer@home.com", content.BillingAddress.Email);
+            var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
+            var firstPurchase = content.FirstOrDefault();
+            Assert.Equal("customer@home.com", firstPurchase.BillingAddress.Email);
         }
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
@@ -38,8 +40,9 @@ namespace Catalyte.Apparel.Test.Integration
             var response = await _client.GetAsync("/purchases/email/customer1@home.com");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            //var content = await response.Content.ReadAsAsync<PurchaseDTO>();
-            //Assert.Equal("customer1@home.com", content.BillingAddress.Email);
+            var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
+            var firstPurchase = content;
+            Assert.Equal(Array.Empty<object>(), firstPurchase);
         }
 
         [Fact]
@@ -50,3 +53,4 @@ namespace Catalyte.Apparel.Test.Integration
         }
     }
 }
+
