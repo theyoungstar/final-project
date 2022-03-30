@@ -63,7 +63,7 @@ namespace Catalyte.Apparel.API.Controllers
 
         public async Task<ActionResult<string>> GetAllUniqueTypesAsync()
         {
-            _logger.LogInformation($"Request received for GetProductsByTypeAsync");
+            _logger.LogInformation($"Request received for GetAllUniqueTypesAsync");
 
             var types = await _productProvider.GetAllUniqueTypesAsync();
             
