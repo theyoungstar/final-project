@@ -34,6 +34,12 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
             IEnumerable<Purchase> purchases;
+            
+            if (billingEmail == null)
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
+            }
 
             try
             {
@@ -44,11 +50,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            if (billingEmail == null)
-            {
-                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
-                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
-            }
+            
 
             return purchases;
         }
