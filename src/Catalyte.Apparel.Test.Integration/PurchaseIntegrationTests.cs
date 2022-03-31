@@ -31,8 +31,9 @@ namespace Catalyte.Apparel.Test.Integration
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
-            var firstPurchase = content.FirstOrDefault();
-            Assert.Equal("customer@home.com", firstPurchase.BillingAddress.Email);
+            var actual = content.FirstOrDefault().BillingAddress.Email;
+            var expected = "customer@home.com";
+            Assert.Equal(expected, actual);
         }
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
@@ -40,9 +41,9 @@ namespace Catalyte.Apparel.Test.Integration
             var response = await _client.GetAsync("/purchases/email/customer1@home.com");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
-            var firstPurchase = content;
-            Assert.Equal(Array.Empty<object>(), firstPurchase);
+            var actual = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
+            var expected = Array.Empty<object>();
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
