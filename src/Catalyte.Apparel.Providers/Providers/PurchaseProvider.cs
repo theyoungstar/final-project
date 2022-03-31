@@ -95,7 +95,8 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             if (inactiveItemsList.Count > 0)
             {
-                throw new BadRequestException($"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}.");
+                throw new UnprocessableEntityException($"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}");
+                //$"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}");
             }
             else
             {
