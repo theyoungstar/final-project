@@ -13,8 +13,8 @@ namespace Catalyte.Apparel.Test.Integration
     public class ProductIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
-        
-        private readonly List<string> _categories = new()
+
+        private readonly List<string> _categories = new() //direct rip from ProductFactory
         {
             "Golf",
             "Soccer",
@@ -27,7 +27,7 @@ namespace Catalyte.Apparel.Test.Integration
             "Boxing",
             "Weightlifting"
         };
-        private List<string> _types = new()
+        private List<string> _types = new() //direct rip from ProductFactory
         {
             "Pant",
             "Short",
