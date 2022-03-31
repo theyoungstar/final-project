@@ -3,14 +3,14 @@
 namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
 {
     /// <summary>
-    /// A custom exception for resource not found errors.
+    /// A custom exception for bad request errors.
     /// </summary>
     [Serializable]
-    public class UnprocessableEntity : Exception, IHttpResponseException
+    public class UnprocessableEntityException : Exception, IHttpResponseException
     {
-        public UnprocessableEntity(string message)
+        public UnprocessableEntityException(string message)
         {
-            Value = new(status: 422, error: "Purchase could not be completed the following products are not active {inactiveItemsList}.", message: message);
+            Value = new(status: 422, error: "Purchase could not be completed the following product(s) are not active", message: message);
         }
         public HttpResponseExceptionValue Value { get; set; }
     }
