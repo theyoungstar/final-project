@@ -1,6 +1,7 @@
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,6 +13,42 @@ namespace Catalyte.Apparel.Test.Integration
     public class ProductIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
+        
+        private readonly List<string> _categories = new()
+        {
+            "Golf",
+            "Soccer",
+            "Basketball",
+            "Hockey",
+            "Football",
+            "Running",
+            "Baseball",
+            "Skateboarding",
+            "Boxing",
+            "Weightlifting"
+        };
+        private List<string> _types = new()
+        {
+            "Pant",
+            "Short",
+            "Shoe",
+            "Glove",
+            "Jacket",
+            "Tank Top",
+            "Sock",
+            "Sunglasses",
+            "Hat",
+            "Helmet",
+            "Belt",
+            "Visor",
+            "Shin Guard",
+            "Elbow Pad",
+            "Headband",
+            "Wristband",
+            "Hoodie",
+            "Flip Flop",
+            "Pool Noodle"
+        };
 
         public ProductIntegrationTests(CustomWebApplicationFactory factory)
         {
@@ -20,6 +57,7 @@ namespace Catalyte.Apparel.Test.Integration
                 AllowAutoRedirect = false
             });
         }
+
 
         [Fact]
         public async Task GetProducts_Returns200()
@@ -42,12 +80,22 @@ namespace Catalyte.Apparel.Test.Integration
         {
             var response = await _client.GetAsync("/products/categories");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        } 
+
+            var content = await response.Content.ReadAsAsync<List<string>>();
+            var expected = _categories.Count;
+            var actual = content.Count;
+            Assert.Equal(expected, actual);
+        }
         [Fact]
         public async Task GetAllUniqueTypes_Returns200()
         {
             var response = await _client.GetAsync("/products/types");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync<List<string>>();
+            var expected = _types.Count;
+            var actual = content.Count;
+            Assert.Equal(expected, actual);
         }
     }
 }
