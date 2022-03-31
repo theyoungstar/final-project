@@ -18,10 +18,11 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IProductRepository _productRepository;
 
-        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
+        public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
+            _productRepository = productRepository;
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         //public async Boolean CheckProductForActiveAsync(bool Active)
-        public async Task<Product> CheckProductForActiveAsync(int productId)
+        /*public async Task<Product> CheckProductForActiveAsync(int productId)
         {
             Product savedProduct;
 
@@ -64,7 +65,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return savedProduct;
         }
-
+        */
         /// <summary>
         /// Persists a purchase to the database.
         /// </summary>
@@ -78,7 +79,7 @@ namespace Catalyte.Apparel.Providers.Providers
             //If bool is false pull those items out of the list and throw exception below
             //throw new ArgumentException("Purchase could not be completed the following products are not active [list of inactive products that they tried to buy]."
 
-            //List<bool> itemsList = new List<bool>();
+
             if (newPurchase.LineItems.Count == 0)
             {
                 throw new ArgumentException("Purchase is empty and could not be completed");
@@ -94,7 +95,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             if (inactiveItemsList.Count > 0)
             {
-                throw new ArgumentException("Purchase could not be completed the following products are not active ${inactiveItemsList}.");
+                throw new BadRequestException($"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}.");
             }
             else
             {
@@ -107,35 +108,10 @@ namespace Catalyte.Apparel.Providers.Providers
                     _logger.LogError(ex.Message);
                     throw new ServiceUnavailableException("There was a problem connecting to the database.");
                 }
-
-                return savedPurchase;
             }
+            return savedPurchase;
+
         }
-
-            public bool CheckProductForActiveAsync(bool Active)
-            {
-                throw new NotImplementedException();
-            }
-            Task<IEnumerable<Purchase>> IPurchaseProvider.GetAllPurchasesAsync()
-        {
-                throw new NotImplementedException();
-            }
-
-            Task<Purchase> IPurchaseProvider.CreatePurchasesAsync(Purchase model)
-        {
-                throw new NotImplementedException();
-            }
-
-        bool IPurchaseProvider.CheckProductForActiveAsync(int productId)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*public bool CheckProductForActiveAsync(int productId)
-        {
-            throw new NotImplementedException();
-        }*/
-
 
 
     }
