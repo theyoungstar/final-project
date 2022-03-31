@@ -52,16 +52,19 @@ namespace Catalyte.Apparel.API.Controllers
             var newPurchase = _mapper.MapCreatePurchaseDtoToPurchase(model);
             var savedPurchase = await _purchaseProvider.CreatePurchasesAsync(newPurchase);
             var purchaseDTO = _mapper.MapPurchaseToPurchaseDto(savedPurchase);
-            
+
 
             if (purchaseDTO != null)
             {
-               return Created($"/purchases/", purchaseDTO);
+                return BadRequest();
             }
-            
+            else
+            {
+                return Created($"/purchases/", purchaseDTO);
+            }
+
 
             
-               return UnprocessableEntity();
         }
     }
 }
