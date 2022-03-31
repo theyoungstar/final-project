@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+//using Catalyte.Apparel.Providers.Providers;
 
 namespace Catalyte.Apparel.Data.Interfaces
 {
@@ -13,7 +14,7 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<Product> GetProductByIdAsync(int productId);
 
         Task<IEnumerable<Product>> GetProductsAsync();
-        //Boolean CheckProductForActiveAsync(int productId);
-        Task<Product> CheckProductForActiveAsync(int productId);
+        
+        
     }
 }
