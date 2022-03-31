@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
+
 
 namespace Catalyte.Apparel.Data.Repositories
 {
@@ -28,15 +30,15 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductIdEquals(productId)
                 .SingleOrDefaultAsync();
         }
-        //public async Boolean CheckProductForActiveAsync(bool Active)
-        public async Task<Product> CheckProductForActiveAsync(bool Active)
+       
+       /* public async Task<Product> CheckProductForActiveAsync(bool Active)
         {
             return await _ctx.Products
                 .AsNoTracking()
                 .WhereProductStatusEquals(true)
                 .SingleOrDefaultAsync();
         }
-
+       */
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
@@ -45,10 +47,9 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
         }
 
-        public Task<Product> CheckProductForActiveAsync(int productId)
-        {
-            throw new NotImplementedException();
-        }
+        
+
+       
     }
 
 }
