@@ -16,7 +16,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<Purchase> CreatePurchasesAsync(Purchase model);
        
-        Boolean CheckProductForActiveAsync(int productId);
+        
         
     }
 }
