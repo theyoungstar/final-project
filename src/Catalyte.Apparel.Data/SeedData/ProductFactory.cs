@@ -160,6 +160,12 @@ namespace Catalyte.Apparel.Data.SeedData
         private string GetDemographic() => _demographics[_rand.Next(0, _demographics.Count)];
 
         /// <summary>
+        /// Returns list of demographics.
+        /// </summary>
+        /// <returns>A list of demographic strings</returns>
+        public List<string> GetAllDemographics() => _demographics;
+
+        /// <summary>
         /// Generates a random product offering id.
         /// </summary>
         /// <returns>A product offering string.</returns>
@@ -176,13 +182,24 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <returns>A category string.</returns>
         private string GetCategory() => _categories[_rand.Next(0, _categories.Count)];
-
+        
+        /// <summary>
+        /// Returns a list of all categories used in testing.
+        /// </summary>
+        /// <returns>A list of category strings.</returns>
+        /// 
+        public List<string> GetAllCategories() => _categories;
         /// <summary>
         /// Returns a random product type from the list of types.
         /// </summary>
         /// <returns>A type string.</returns>
         private string GetProductType() => _types[_rand.Next(0, _types.Count)];
 
+        /// <summary>
+        /// Returns a list of all types used in testing.
+        /// </summary>
+        /// <returns>A list of type strings.</returns>
+        public List<string> GetAllProductTypes() => _types;
         /// <summary>
         /// Returns a random color code from the list of color codes.
         /// </summary>
@@ -207,10 +224,22 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
+        ///  Returns a list of color codes used in testing.
+        /// </summary>
+        /// <returns>A list of color code strings.</returns>
+        public List<string> GetAllColors() => _colors;
+
+        /// <summary>
         /// Returns  a random adjective from the list of adjectives.
         /// </summary>
         /// <returns>An adjective string.</returns>
         private string GetProductAdjective() => _adjectives[_rand.Next(0, _adjectives.Count)];
+
+        /// <summary>
+        /// Returns a list of all adjectives used in testing;
+        /// </summary>
+        /// <returns>A list of adjective strings.</returns>
+        public List<string> GetAllAdjectives() => _adjectives;
 
         /// <summary>
         /// Returns a random product release date ranging from 1/1/2017 to today.
@@ -235,10 +264,16 @@ namespace Catalyte.Apparel.Data.SeedData
         private string GetBrand() => _brand[_rand.Next(0,_brand.Count)];
 
         /// <summary>
+        /// Returns a list of all brands used in testing.
+        /// </summary>
+        /// <returns>A list of brand strings.</returns>
+        public List<string> GetAllBrands() => _brand;
+
+        /// <summary>
         /// Returns a random generated price.
         /// </summary>
         /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
-        private string GetPrice() => $"${Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+        private string GetPrice() => $"{Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
 
         /// <summary>
         /// Returns a random material from a list of materials.
@@ -247,9 +282,15 @@ namespace Catalyte.Apparel.Data.SeedData
         private string GetMaterial() => _material[_rand.Next(0, _material.Count)];
 
         /// <summary>
+        /// Returns a list of all materials used in testing;
+        /// </summary>
+        /// <returns>A list of material strings.</returns>
+        public List<string> GetAllMaterials() => _material;
+        /// <summary>
         /// Returns a random quantity.
         /// </summary>
         /// <returns>A quantity string</returns>
+        /// 
         private string GetQuantity() => _rand.Next(1, 100).ToString();
 
         private string GetImageSrc()
