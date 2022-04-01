@@ -37,7 +37,7 @@ namespace Catalyte.Apparel.Data.SeedData
             "Women",
             "Kids"
         };
-        private readonly List<string> _categories = new()
+        public readonly List<string> _categories = new()
         {
             "Golf",
             "Soccer",
@@ -68,7 +68,7 @@ namespace Catalyte.Apparel.Data.SeedData
             "Heavy Duty"
         };
 
-        private List<string> _types = new()
+        public readonly List<string> _types = new()
         {
             "Pant",
             "Short",

@@ -1,6 +1,7 @@
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Catalyte.Apparel.Data.SeedData;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -14,44 +15,17 @@ namespace Catalyte.Apparel.Test.Integration
     {
         private readonly HttpClient _client;
 
-        private readonly List<string> _categories = new() //direct rip from ProductFactory
-        {
-            "Baseball",
-            "Basketball",
-            "Boxing",
-            "Football",
-            "Golf",
-            "Hockey",
-            "Running",
-            "Skateboarding",
-            "Soccer",
-            "Weightlifting"
-        };
-        private List<string> _types = new() //direct rip from ProductFactory
-        {
-            "Belt",
-            "Elbow Pad",
-            "Flip Flop",
-            "Glove",
-            "Hat",
-            "Headband",
-            "Helmet",
-            "Hoodie",
-            "Jacket",
-            "Pant",
-            "Pool Noodle",
-            "Shin Guard",
-            "Shoe",
-            "Short",
-            "Sock",
-            "Sunglasses",
-            "Tank Top",
-            "Visor",
-            "Wristband"
-        };
+        private readonly ProductFactory _factory;
+
+        private readonly List<string> _categories;
+
+        private readonly List<string> _types;
 
         public ProductIntegrationTests(CustomWebApplicationFactory factory)
         {
+            _factory = new ProductFactory();
+            _categories = _factory._categories;
+            _types = _factory._types;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
