@@ -7,7 +7,7 @@ namespace CardValidationTests
     
     public class CardValidationTest
     {
-        /*[Test]
+        [Test]
         public static void Card_Number_Contains_Less_Than_14_Digits()
         {
             var CardValidation = new CardValidation();
@@ -117,26 +117,26 @@ namespace CardValidationTests
             List<string> errors = new List<string>();
             var actual = CardValidation.ExpirationDateWithDashOrSlash(input, errors);
             Assert.IsFalse(actual);
-        }*/
-        /* [Test]
-         public static void Expiration_Date_Has_Not_Passed()
-         {
-             var CardValidation = new CardValidation();
-             var input = "11/21";
-             List<string> errors = new List<string>();
-             var actual = CardValidation.IsValidExpirationDate(input, errors);
-             Assert.IsFalse(actual);
-         }*/
-        /*  [Test]
-          public static void Cardholder_Name_Does_Not_Accept_Numbers()
-          {
-              var CardValidation = new CardValidation();
-              var input = "Jul1us Amak3r";
-              List<string> errors = new List<string>();
-              var actual = CardValidation.CardHolderName(input, errors);
-              Assert.IsFalse(actual);
-          }*/
-   /*     [Test]
+        }
+        [Test]
+        public static void Expiration_Date_Has_Not_Passed()
+        {
+            var CardValidation = new CardValidation();
+            var input = "11/21";
+            List<string> errors = new List<string>();
+            var actual = CardValidation.IsValidExpirationDate(input, errors);
+            Assert.IsFalse(actual);
+        }
+        [Test]
+        public static void Cardholder_Name_Does_Not_Accept_Numbers()
+        {
+            var CardValidation = new CardValidation();
+            var input = "Jul1us Amak3r";
+            List<string> errors = new List<string>();
+            var actual = CardValidation.CardHolderName(input, errors);
+            Assert.IsFalse(actual);
+        }
+        [Test]
         public static void Cardholder_Name_Does_Not_Accept_Special_Characters()
         {
             var CardValidation = new CardValidation();
@@ -144,8 +144,8 @@ namespace CardValidationTests
             List<string> errors = new List<string>();
             var actual = CardValidation.CardHolderName(input, errors);
             Assert.IsFalse(actual);
-        }*/
-      
+        }
+
 
 
 
