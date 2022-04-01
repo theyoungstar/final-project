@@ -227,6 +227,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
             }
             Assert.Equal(expected, colorCodeCount.Count);
         }
+
         [Fact]
         public void TestProductSecondaryColor_AllProductsContainPrimaryColor()
         {
@@ -286,6 +287,50 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
             }
             Assert.Equal(expected, sameCount);
+        }
+        [Fact]
+        public void TestProductActive_AllProductsContainActive()
+        {
+            int expected = _productsToGenerate;
+            int activeCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Active == true || product.Active == false)
+                {
+                    activeCount++;
+                }
+            }
+            Assert.Equal(expected, activeCount);
+        }
+
+        [Fact]
+        public void TestProductActive_NotAllProductsContainTrue()
+        {
+            int expected = _productsToGenerate;
+            int trueCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Active == true)
+                {
+                    trueCount++;
+                }
+            }
+            Assert.NotEqual(expected, trueCount);
+        }
+
+        [Fact]
+        public void TestProductActive_NotAllProductsContainFalse()
+        {
+            int expected = _productsToGenerate;
+            int falseCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Active == false)
+                {
+                    falseCount++;
+                }
+            }
+            Assert.NotEqual(expected, falseCount);
         }
     }
 }
