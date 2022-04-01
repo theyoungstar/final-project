@@ -10,7 +10,7 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
     {
         public UnprocessableEntityException(string message)
         {
-            Value = new(status: 422, error: "Purchase could not be completed the following product(s) are not active", message: message);
+            Value = new(status: 422, error: "Unprocessable Entity", message: message);
         }
         public HttpResponseExceptionValue Value { get; set; }
     }
