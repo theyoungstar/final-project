@@ -25,6 +25,10 @@ namespace Catalyte.Apparel.Providers.Providers
             _purchaseRepository = purchaseRepository;
         }
 
+        
+
+
+
         /// <summary>
         /// Retrieves all purchases from the database for the input email.
         /// </summary>

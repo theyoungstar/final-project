@@ -34,6 +34,8 @@ namespace Catalyte.Apparel.API.Controllers
 
         }
 
+        
+
         [Route("/purchases")]
         [HttpGet("/purchases/email/{email}/")]
         public async Task<ActionResult<IEnumerable<PurchaseDTO>>> GetAllPurchasesByEmailAsync(string email)
@@ -57,7 +59,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             if (purchaseDTO != null)
             {
-                return NoContent();
+                return BadRequest();
             }
 
             return Created($"/purchases/", purchaseDTO);

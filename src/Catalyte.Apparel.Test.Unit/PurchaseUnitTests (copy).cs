@@ -1,6 +1,9 @@
-﻿using Catalyte.Apparel.Data.Interfaces;
+﻿using AutoMapper;
+using Catalyte.Apparel.API.Controllers;
+using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Purchases;
+using Catalyte.Apparel.Providers.Interfaces;
 using Catalyte.Apparel.Providers.Providers;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using FluentAssertions;
@@ -13,27 +16,41 @@ using Xunit;
 
 namespace Catalyte.Apparel.Test.Unit.Providers.Unit
 {
-    public class PurchaseProviderUnitTests
+    public class PurchaseControllerUnitTests
     {
         private readonly PurchaseFactory _factory = new();
 
-        private readonly Mock<IPurchaseRepository> repositoryStub;
-        private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
+        private readonly Mock<ILogger<PurchasesController>> _loggerStub;
+        private readonly Mock<IPurchaseProvider> _providerStub;
+        private readonly Mock<IMapper> _mapperStub;
 
-        private readonly PurchaseProvider provider;
+        private readonly PurchasesController controller;
 
         private readonly Data.Model.Purchase testProduct;
         private readonly List<Data.Model.Purchase> testPurchases;
 
 
-        public PurchaseProviderUnitTests()
+        public PurchaseControllerUnitTests()
         {
-            repositoryStub = new Mock<IPurchaseRepository>();
-            loggerStub = new Mock<ILogger<PurchaseProvider>>();
-            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
+            [Route("/purchases")]
+            [HttpGet("/purchases/email/{email}/")]
+            public async Task<ActionResult<IEnumerable<PurchaseDTO>>> GetAllPurchasesByEmailAsync(string email)
+            {
+                _logger.LogInformation("Request received for GetAllPurchasesAsync");
+
+                var purchases = await _purchaseProvider.GetAllPurchasesByEmailAsync(email);
+                var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos(purchases);
+
+                return Ok(purchaseDTOs);
+            }
+            
+            loggerStub = new Mock<ILogger<PurchasesController>>();
+            providerStub = new Mock<IPurchaseProvider>();
+            controller = new PurchasesController(providerStub.Object, loggerStub.Object);
+
 
             testPurchases = _factory.GenerateRandomPurchases(3);
-            //repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
+            repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
         }
 
         [Fact]

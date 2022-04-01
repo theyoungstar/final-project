@@ -27,6 +27,7 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenEmailWithPurchases_Returns200()
         {
+
             var response = await _client.GetAsync("/purchases/email/customer@home.com");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
