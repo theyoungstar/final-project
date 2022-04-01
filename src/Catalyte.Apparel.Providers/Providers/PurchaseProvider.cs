@@ -48,24 +48,6 @@ namespace Catalyte.Apparel.Providers.Providers
             return purchases;
         }
 
-        //public async Boolean CheckProductForActiveAsync(bool Active)
-        /*public async Task<Product> CheckProductForActiveAsync(int productId)
-        {
-            Product savedProduct;
-
-            try
-            {
-                savedProduct = await _productRepository.CheckProductForActiveAsync(productId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return savedProduct;
-        }
-        */
         /// <summary>
         /// Persists a purchase to the database.
         /// </summary>
@@ -75,11 +57,7 @@ namespace Catalyte.Apparel.Providers.Providers
         {
             Purchase savedPurchase = new Purchase();
             List<string> inactiveItemsList = new List<string>();
-            //I have a purchase object and I need to loop through the list of line item to call on my check function (lives in Product Repository) var newPurchase.lineItems
-            //If bool is false pull those items out of the list and throw exception below
-            //throw new ArgumentException("Purchase could not be completed the following products are not active [list of inactive products that they tried to buy]."
-
-
+            
             if (newPurchase.LineItems.Count == 0)
             {
                 throw new ArgumentException("Purchase is empty and could not be completed");
@@ -95,8 +73,8 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             if (inactiveItemsList.Count > 0)
             {
-                throw new UnprocessableEntityException($"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}");
-                //$"Purchase could not be completed the following product(s) are not active: {inactiveItemsList}");
+                var inactiveItemsString = string.Join(",", inactiveItemsList);
+                throw new UnprocessableEntityException($"Purchase could not be completed because the following product(s) are not active: {inactiveItemsString}");
             }
             else
             {
