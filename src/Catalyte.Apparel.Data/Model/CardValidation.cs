@@ -1,4 +1,3 @@
-using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -13,7 +12,6 @@ namespace Catalyte.Apparel.Data.Model
         {
             List<string> errorsList = new List<string>();
             Has14To19Digits(purchase.CardNumber, errorsList);
-            DateFormat(purchase.Expiration, errorsList);
             CVVHas3To4Digits(purchase.CVV.ToString(), errorsList);
             ExpirationDateWithDashOrSlash(purchase.Expiration, errorsList);
             IsValidExpirationDate(purchase.Expiration, errorsList);
@@ -21,25 +19,12 @@ namespace Catalyte.Apparel.Data.Model
 
             return errorsList;
         }
-
-        public static bool DateFormat(string field, List<string> errorsList)
-        {
-            Regex dateFormat = new Regex(@"^(0[1-9]|1[0-2])([\/-]{1})[0-9]{2}$");
-            //expiration date in from MM/yyyy            
-            if (!dateFormat.IsMatch(field.Trim()))
-            {
-                errorsList.Add("Expiration date must be entered in the following formats: mm/yy or mm-yy");
-                // ^ check date format is valid as "MM/yy"
-                return false;
-            }
-            return true;
-        }
         public static bool Has14To19Digits(string field, List<string> errorsList)
         {
             var cardCheck = new Regex(@"^[0-9]{14,19}$");
             if (!cardCheck.IsMatch(field.Trim())) // <1>check card number has 14 numbers
             {
-                errorsList.Add("Card number must contain between 14 digits to 19 digits.");
+                errorsList.Add("Card number must contain between 14 to 19 digits.");
                 return false;
             }
             return true;
@@ -60,7 +45,7 @@ namespace Catalyte.Apparel.Data.Model
             //expiration date in from MM/yyyy            
             if (!dateFormat.IsMatch(field.Trim()))
             {
-                errorsList.Add("Expiration date must be entered in the following formats: mm/yy or mm-yy");
+                errorsList.Add("Expiration date must be entered in one of the following formats: mm/yy or mm-yy");
                 // ^ check date format is valid as "MM/yy"
                 return false;
             }
@@ -93,7 +78,7 @@ namespace Catalyte.Apparel.Data.Model
             {
                 return true;
             }
-            errorsList.Add("Expiration date must not have passed");
+            errorsList.Add("Expiration date must be a future date"); 
             return false;
 
         }
