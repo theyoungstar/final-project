@@ -12,49 +12,74 @@ namespace Catalyte.Apparel.Test.Unit.Product
     public class ProductTest
     {
         private readonly ProductFactory _productFactory;
-        List<string> _demographics = new List<string>();
-        List<string> _categories = new List<string>();
-        List<string> _types = new List<string>();
-
+        private readonly List<Data.Model.Product> _products;
+        private readonly int _productsToGenerate;
+        List<string> _demographics = new();
+        List<string> _categories = new();
+        List<string> _types = new();
+        List<string> _colorCodes = new();
         public ProductTest()
         {
             _productFactory = new();
+            _productsToGenerate = 1000;
+            _products = _productFactory.GenerateRandomProducts(_productsToGenerate);
             _demographics = _productFactory.GetAllDemographics();
             _categories = _productFactory.GetAllCategories();
             _types = _productFactory.GetAllProductTypes();
+            _colorCodes = _productFactory.GetAllColors();
         }
-      
-        [Fact]
-        public void TestProductDemographic_checkManyProducts()
-        {
 
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+        [Fact]
+        public void TestProducts_AllProductsAreDistinct()
+        {
+            int expected = _productsToGenerate;
+            List<Data.Model.Product> distinctProducts = new();
+            foreach (var product in _products)
             {
-                string demographic = product.Demographic;
-                Assert.Contains(demographic, _demographics);
+                if (!distinctProducts.Contains(product))
+                {
+                    distinctProducts.Add(product);
+                }
             }
-
+            Assert.Equal(expected, distinctProducts.Count);
         }
 
         [Fact]
-        public void TestProductDemographic_checkForNullDemographics()
+        public void TestProductDemographic_AllProductsContainDemographic()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+            int expected = _productsToGenerate;
+            int demographicCount = 0;
+            foreach (var product in _products)
             {
-                string demographic = product.Demographic;
-                Assert.NotNull(demographic);
+                if (_demographics.Contains(product.Demographic))
+                {
+                    demographicCount++;
+                }
             }
-
+            Assert.Equal(expected, demographicCount);
         }
 
         [Fact]
-        public void TestProductDemographic_checkForCorrectNumberOfDemographics()
+        public void TestProductDemographic_NoProductContainsNullDemographic()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Demographic == null || product.Demographic.Length == 0)
+                {
+                    nullCount++;
+                }
+            }
+            Assert.Equal(expected, nullCount);
+        }
+
+        [Fact]
+        public void TestProductDemographic_AllDemographicsAreRepresented()
+        {
+            int expected = _demographics.Count;
             Dictionary<string, int> demographicCount = new Dictionary<string, int>();
-            foreach (var product in products)
+            foreach (var product in _products)
             {
                 if (!(demographicCount.TryGetValue(product.Demographic, out int count)))
                 {
@@ -62,40 +87,46 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
                 demographicCount[product.Demographic]++;
             }
-            Assert.Equal(_demographics.Count, demographicCount.Count);
+            Assert.Equal(expected, demographicCount.Count);
         }
 
         [Fact]
-        public void TestProductCategory_checkManyProducts()
+        public void TestProductCategory_AllProductsContainCategory()
         {
-
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+            int expected = _products.Count;
+            int categoryCount = 0;
+            foreach (var product in _products)
             {
-                string category = product.Category;
-                Assert.Contains(category, _categories);
+                if (_categories.Contains(product.Category))
+                {
+                    categoryCount++;
+                }
             }
-
+            Assert.Equal(expected, categoryCount);
         }
 
         [Fact]
-        public void TestProductCategory_checkForNull()
+        public void TestProductCategory_NoProductContainsNullCategory()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
             {
-                string category = product.Category;
-                Assert.NotNull(category);
-            }
+                if (product.Category == null || product.Category.Length == 0)
+                {
+                    nullCount++;
+                }
 
+            }
+            Assert.Equal(expected, nullCount);
         }
 
         [Fact]
-        public void TestProductCategory_checkForCorrectNumberOfCategories()
+        public void TestProductCategory_AllCategoriesAreRepresented()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
+            int expected = _categories.Count;
             Dictionary<string, int> categoryCount = new Dictionary<string, int>();
-            foreach (var product in products)
+            foreach (var product in _products)
             {
                 if (!(categoryCount.TryGetValue(product.Category, out int count)))
                 {
@@ -103,40 +134,45 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
                 categoryCount[product.Category]++;
             }
-            Assert.Equal(_categories.Count, categoryCount.Count);
+            Assert.Equal(expected, categoryCount.Count);
         }
 
         [Fact]
-        public void TestProductType_checkManyProducts()
+        public void TestProductType_AllProductsContainType()
         {
-
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+            int expected = _productsToGenerate;
+            int typeCount = 0;
+            foreach (var product in _products)
             {
-                string type = product.Type;
-                Assert.Contains(type, _types);
+                if (_types.Contains(product.Type))
+                {
+                    typeCount++;
+                }
             }
-
+            Assert.Equal(expected, typeCount);
         }
 
         [Fact]
-        public void TestProductType_checkForNull()
+        public void TestProductType_NoProductsContainNullType()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
-            foreach (var product in products)
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
             {
-                string type = product.Type;
-                Assert.NotNull(type);
+                if (product.Type == null || product.Type.Length == 0)
+                {
+                    nullCount++;
+                }
             }
-
+            Assert.Equal(expected, nullCount);
         }
 
         [Fact]
-        public void TestProductType_checkForCorrectNumberOfTypes()
+        public void TestProductType_AllTypesAreRepresented()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(100);
+            int expected = _types.Count;
             Dictionary<string, int> typeCount = new Dictionary<string, int>();
-            foreach (var product in products)
+            foreach (var product in _products)
             {
                 if (!(typeCount.TryGetValue(product.Type, out int count)))
                 {
@@ -144,7 +180,112 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
                 typeCount[product.Type]++;
             }
-            Assert.Equal(_types.Count, typeCount.Count);
+            Assert.Equal(expected, typeCount.Count);
+        }
+        [Fact]
+        public void TestProductPrimaryColor_AllProductsContainPrimaryColor()
+        {
+            int expected = _productsToGenerate;
+            int colorCodeCount = 0;
+            foreach (var product in _products)
+            {
+                if (_colorCodes.Contains(product.PrimaryColorCode))
+                {
+                    colorCodeCount++;
+                }
+            }
+            Assert.Equal(expected, colorCodeCount);
+        }
+
+        [Fact]
+        public void TestProductPrimaryColor_NoProductsContainNullPrimaryColor()
+        {
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.PrimaryColorCode == null || product.PrimaryColorCode.Length == 0)
+                {
+                    nullCount++;
+                }
+            }
+            Assert.Equal(expected, nullCount);
+        }
+
+        [Fact]
+        public void TestProductPrimaryColor_AllCollorsAreRepresented()
+        {
+            int expected = _colorCodes.Count;
+            Dictionary<string, int> colorCodeCount = new Dictionary<string, int>();
+            foreach (var product in _products)
+            {
+                if (!(colorCodeCount.TryGetValue(product.PrimaryColorCode, out int count)))
+                {
+                    colorCodeCount.Add(product.PrimaryColorCode, 0);
+                }
+                colorCodeCount[product.PrimaryColorCode]++;
+            }
+            Assert.Equal(expected, colorCodeCount.Count);
+        }
+        [Fact]
+        public void TestProductSecondaryColor_AllProductsContainPrimaryColor()
+        {
+            int expected = _productsToGenerate;
+            int colorCodeCount = 0;
+            foreach (var product in _products)
+            {
+                if (_colorCodes.Contains(product.SecondaryColorCode))
+                {
+                    colorCodeCount++;
+                }
+            }
+            Assert.Equal(expected, colorCodeCount);
+        }
+
+        [Fact]
+        public void TestProductSecondaryColor_NoProductsContainNullPrimaryColor()
+        {
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.SecondaryColorCode == null || product.SecondaryColorCode.Length == 0)
+                {
+                    nullCount++;
+                }
+            }
+            Assert.Equal(expected, nullCount);
+        }
+
+        [Fact]
+        public void TestProductSecondaryColor_AllCollorsAreRepresented()
+        {
+            int expected = _colorCodes.Count;
+            Dictionary<string, int> colorCodeCount = new Dictionary<string, int>();
+            foreach (var product in _products)
+            {
+                if (!(colorCodeCount.TryGetValue(product.SecondaryColorCode, out int count)))
+                {
+                    colorCodeCount.Add(product.SecondaryColorCode, 0);
+                }
+                colorCodeCount[product.SecondaryColorCode]++;
+            }
+            Assert.Equal(expected, colorCodeCount.Count);
+        }
+
+        [Fact]
+        public void TestProductColor_NoProductContainsPrimaryColorEqualToSecondaryColor()
+        {
+            int expected = 0;
+            int sameCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.PrimaryColorCode == product.SecondaryColorCode)
+                {
+                    sameCount++;
+                }
+            }
+            Assert.Equal(expected, sameCount);
         }
     }
 }
