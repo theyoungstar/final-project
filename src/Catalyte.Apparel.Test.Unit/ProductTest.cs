@@ -18,6 +18,9 @@ namespace Catalyte.Apparel.Test.Unit.Product
         List<string> _categories = new();
         List<string> _types = new();
         List<string> _colorCodes = new();
+        List<string> _brands = new();
+        List<string> _materials = new();
+
         public ProductTest()
         {
             _productFactory = new();
@@ -27,6 +30,8 @@ namespace Catalyte.Apparel.Test.Unit.Product
             _categories = _productFactory.GetAllCategories();
             _types = _productFactory.GetAllProductTypes();
             _colorCodes = _productFactory.GetAllColors();
+            _brands = _productFactory.GetAllBrands();
+            _materials = _productFactory.GetAllMaterials();
         }
 
         [Fact]
@@ -331,6 +336,98 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
             }
             Assert.NotEqual(expected, falseCount);
+        }
+
+        [Fact]
+        public void TestProductBrand_AllProductsContainBrand()
+        {
+            int expected = _productsToGenerate;
+            int brandCount = 0;
+            foreach (var product in _products)
+            {
+                if (_brands.Contains(product.Brand))
+                {
+                    brandCount++;
+                }
+            }
+            Assert.Equal(expected, brandCount);
+        }
+
+        [Fact]
+        public void TestProductBrand_NoProductContainsNullBrand()
+        {
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Brand  == null || product.Brand.Length == 0)
+                {
+                    nullCount++;
+                }
+            }
+            Assert.Equal(expected, nullCount);
+        }
+
+        [Fact]
+        public void TestProductBrand_AllBrandsAreRepresented()
+        {
+            int expected = _brands.Count;
+            Dictionary<string, int> brandCount = new Dictionary<string, int>();
+            foreach (var product in _products)
+            {
+                if (!(brandCount.TryGetValue(product.Brand, out int count)))
+                {
+                    brandCount.Add(product.Brand, 0);
+                }
+                brandCount[product.Brand]++;
+            }
+            Assert.Equal(expected, brandCount.Count);
+        }
+
+        [Fact]
+        public void TestProductMaterial_AllProductsContainMaterial()
+        {
+            int expected = _productsToGenerate;
+            int materialCount = 0;
+            foreach (var product in _products)
+            {
+                if (_materials.Contains(product.Material))
+                {
+                    materialCount++;
+                }
+            }
+            Assert.Equal(expected, materialCount);
+        }
+
+        [Fact]
+        public void TestProductMaterial_NoProductContainsNullMaterials()
+        {
+            int expected = 0;
+            int nullCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Material == null || product.Material.Length == 0)
+                {
+                    nullCount++;
+                }
+            }
+            Assert.Equal(expected, nullCount);
+        }
+
+        [Fact]
+        public void TestProductMaterial_AllMaterialsAreRepresented()
+        {
+            int expected = _materials.Count;
+            Dictionary<string, int> materialCount = new Dictionary<string, int>();
+            foreach (var product in _products)
+            {
+                if (!(materialCount.TryGetValue(product.Material, out int count)))
+                {
+                    materialCount.Add(product.Material, 0);
+                }
+                materialCount[product.Material]++;
+            }
+            Assert.Equal(expected, materialCount.Count);
         }
     }
 }
