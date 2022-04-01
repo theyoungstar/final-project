@@ -21,12 +21,12 @@ namespace Catalyte.Apparel.Test.Integration
 
         private readonly List<string> _types;
 
-        public ProductIntegrationTests(CustomWebApplicationFactory factory)
+        public ProductIntegrationTests(CustomWebApplicationFactory testFactory)
         {
             _factory = new ProductFactory();
             _categories = _factory._categories;
             _types = _factory._types;
-            _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+            _client = testFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
             });
