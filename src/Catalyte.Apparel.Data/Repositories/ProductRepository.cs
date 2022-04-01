@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace Catalyte.Apparel.Data.Repositories
 {
@@ -38,17 +39,21 @@ namespace Catalyte.Apparel.Data.Repositories
         }
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
-            var products = await _ctx.Products
-                .AsNoTracking()
-                .ToListAsync();
-            return new HashSet<string>(products.Select(x => x.Category));
+            return await GetAllUniquesOf(x => x.Category);
         }
         public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
+        {
+            return await GetAllUniquesOf(x => x.Type);
+        }
+        private async Task<IEnumerable<string>> GetAllUniquesOf(Func<Product,string> select)
         {
             var products = await _ctx.Products
                 .AsNoTracking()
                 .ToListAsync();
-            return new HashSet<string>(products.Select(x => x.Type));
+            var uniques = new HashSet<string>(products.Select(select)).ToList();
+            uniques.Sort();
+
+            return uniques;
         }
     } 
 
