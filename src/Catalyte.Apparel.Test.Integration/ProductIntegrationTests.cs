@@ -16,38 +16,38 @@ namespace Catalyte.Apparel.Test.Integration
 
         private readonly List<string> _categories = new() //direct rip from ProductFactory
         {
-            "Golf",
-            "Soccer",
-            "Basketball",
-            "Hockey",
-            "Football",
-            "Running",
             "Baseball",
-            "Skateboarding",
+            "Basketball",
             "Boxing",
+            "Football",
+            "Golf",
+            "Hockey",
+            "Running",
+            "Skateboarding",
+            "Soccer",
             "Weightlifting"
         };
         private List<string> _types = new() //direct rip from ProductFactory
         {
-            "Pant",
-            "Short",
-            "Shoe",
+            "Belt",
+            "Elbow Pad",
+            "Flip Flop",
             "Glove",
+            "Hat",
+            "Headband",
+            "Helmet",
+            "Hoodie",
             "Jacket",
-            "Tank Top",
+            "Pant",
+            "Pool Noodle",
+            "Shin Guard",
+            "Shoe",
+            "Short",
             "Sock",
             "Sunglasses",
-            "Hat",
-            "Helmet",
-            "Belt",
+            "Tank Top",
             "Visor",
-            "Shin Guard",
-            "Elbow Pad",
-            "Headband",
-            "Wristband",
-            "Hoodie",
-            "Flip Flop",
-            "Pool Noodle"
+            "Wristband"
         };
 
         public ProductIntegrationTests(CustomWebApplicationFactory factory)
