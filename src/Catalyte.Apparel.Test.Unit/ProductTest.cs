@@ -499,6 +499,39 @@ namespace Catalyte.Apparel.Test.Unit.Product
         }
 
         [Fact]
+        public void TestProductSytleNumber_AllProductsHaveStyleNumber()
+        {
+            int expected = _productsToGenerate;
+            int styleNumberCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.StyleNumber != null && product.StyleNumber.Length > 0)
+                {
+                    styleNumberCount++;
+                }
+            }
+            Assert.Equal(expected, styleNumberCount);
+        }
+
+        [Fact]
+        public void TestProductStyleNumber_AllProductsHaveCorrectlyFormattedStyleNumber()
+        {
+            int expected = _productsToGenerate;
+            int styleNumberCount = 0;
+            Regex regex = new Regex(@"sc\d{5}");
+
+            foreach (var product in _products)
+            {
+                if ((product.StyleNumber.Length == 7) && regex.IsMatch(product.StyleNumber))
+                {
+                    styleNumberCount++;
+                }
+            }
+            Assert.Equal(expected, styleNumberCount);
+        }
+
+        [Fact]
         public void TestProductGlobalProductCode_AllProductsHaveGlobalProductCode()
         {
             int expected = _productsToGenerate;
