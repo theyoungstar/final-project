@@ -247,7 +247,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A product release string MM/DD/YYYY format.</returns>
         private string GetReleaseDate()
         {
-            DateTime start = new DateTime(2017, 1, 1);
+            DateTime start = DateTime.UtcNow.AddYears(-3);
             int range = (DateTime.Today - start).Days;
             return start.AddDays(_rand.Next(range)).ToString("MM/dd/yyyy");
         }
@@ -291,7 +291,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <returns>A quantity string</returns>
         /// 
-        private string GetQuantity() => _rand.Next(1, 100).ToString();
+        private string GetQuantity() => _rand.Next(1, 101).ToString();
 
         private string GetImageSrc()
         {

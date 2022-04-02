@@ -539,7 +539,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
 
             foreach (var product in _products)
             {
-                if (product.Name != null && product.Name.Length > 0)
+                if (product.GlobalProductCode != null && product.GlobalProductCode.Length > 0)
                 {
                     globalProductCodeCount++;
                 }
@@ -562,6 +562,75 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
             }
             Assert.Equal(expected, globalProductCodeCount);
+        }
+
+        [Fact]
+        public void TestProductReleaseDate_AllProductsHaveReleaseDate()
+        {
+            int expected = _productsToGenerate;
+            int releaseDateCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.ReleaseDate != null && product.ReleaseDate.Length > 0)
+                {
+                    releaseDateCount++;
+                }
+            }
+            Assert.Equal(expected, releaseDateCount);
+        }
+
+        [Fact]
+        public void TestProductReleaseDate_AllProductsHaveCorrectlyFormattedReleaseDate()
+        {
+            int expected = _productsToGenerate;
+            int releaseDateCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (DateTime.TryParse(product?.ReleaseDate, out DateTime date))
+                {
+
+                    releaseDateCount++;
+                }
+            }
+            Assert.Equal(expected, releaseDateCount);
+        }
+
+
+        [Fact]
+        public void TestProductQuantity_AllProductsQuantity()
+        {
+            int expected = _productsToGenerate;
+            int quantityCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.Quantity != null && product.Quantity.Length > 0)
+                {
+                    quantityCount++;
+                }
+            }
+            Assert.Equal(expected, quantityCount);
+        }
+
+        [Fact]
+        public void TestProductQuantity_AllProductsHaveCorrectlyFormattedQuantity()
+        {
+            int expected = _productsToGenerate;
+            int quantityCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (int.TryParse(product?.Quantity, out int quantity))
+                {
+                    if (quantity >= 0)
+                    {
+                        quantityCount++;
+                    }
+                }
+            }
+            Assert.Equal(expected, quantityCount);
         }
     }
 }
