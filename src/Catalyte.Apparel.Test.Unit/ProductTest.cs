@@ -599,7 +599,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
 
 
         [Fact]
-        public void TestProductQuantity_AllProductsQuantity()
+        public void TestProductQuantity_AllProductsHaveAQuantity()
         {
             int expected = _productsToGenerate;
             int quantityCount = 0;
@@ -631,6 +631,72 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
             }
             Assert.Equal(expected, quantityCount);
+        }
+
+        [Fact]
+        public void TestProductPrice_AllProductsHaveAPrice()
+        {
+            int expected = _productsToGenerate;
+            int priceCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.Price != null && product.Price.Length > 0)
+                {
+                    priceCount++;
+                }
+            }
+            Assert.Equal(expected, priceCount);
+        }
+
+        [Fact]
+        public void TestProductPrice_AllProductsHaveCorrectlyFormattedPrice()
+        {
+            int expected = _productsToGenerate;
+            int priceCount = 0;
+            Regex regex = new Regex(@"\d.\d{2}");
+
+            foreach (var product in _products)
+            {
+                if (regex.IsMatch(product.Price))
+                {
+                    priceCount++;
+                }
+            }
+            Assert.Equal(expected, priceCount);
+        }
+
+        [Fact]
+        public void TestProductImageSrc_AllProductsHaveAnImageSrc()
+        {
+            int expected = _productsToGenerate;
+            int imageSrcCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.ImageSrc != null && product.ImageSrc.Length > 0)
+                {
+                    imageSrcCount++;
+                }
+            }
+            Assert.Equal(expected, imageSrcCount);
+        }
+
+        [Fact]
+        public void TestProductImageSrc_AllProductsHaveValidImageSrc()
+        {
+            int expected = _productsToGenerate;
+            int imageSrcCount = 0;
+
+            foreach (var product in _products)
+            {
+               
+                if (Uri.IsWellFormedUriString(product?.ImageSrc, UriKind.Absolute))
+                {
+                    imageSrcCount++;
+                }
+            }
+            Assert.Equal(expected, imageSrcCount);
         }
     }
 }
