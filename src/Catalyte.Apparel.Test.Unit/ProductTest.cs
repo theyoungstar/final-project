@@ -3,6 +3,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Xunit;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
@@ -20,6 +22,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
         List<string> _colorCodes = new();
         List<string> _brands = new();
         List<string> _materials = new();
+        List<string> _adjectives = new();
 
         public ProductTest()
         {
@@ -32,6 +35,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
             _colorCodes = _productFactory.GetAllColors();
             _brands = _productFactory.GetAllBrands();
             _materials = _productFactory.GetAllMaterials();
+            _adjectives = _productFactory.GetAllAdjectives();
         }
 
         [Fact]
@@ -360,7 +364,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
             int nullCount = 0;
             foreach (var product in _products)
             {
-                if (product.Brand  == null || product.Brand.Length == 0)
+                if (product.Brand == null || product.Brand.Length == 0)
                 {
                     nullCount++;
                 }
@@ -428,6 +432,103 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 materialCount[product.Material]++;
             }
             Assert.Equal(expected, materialCount.Count);
+        }
+
+        [Fact]
+        public void TestProductName_AllProductsHaveName()
+        {
+            int expected = _productsToGenerate;
+            int nameCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Name != null && product.Name.Length > 0)
+                {
+                    nameCount++;
+                }
+            }
+            Assert.Equal(expected, nameCount);
+        }
+
+        [Fact]
+        public void TestProductName_AllProductsHaveCorrectlyFormattedName()
+        {
+            int expected = _productsToGenerate;
+            int formattedNameCount = 0;
+
+            foreach (var product in _products)
+            {
+                string productName = $" {product.Category} {product.Type}";
+                string productAdjective = product.Name.Substring(0, product.Name.Length - productName.Length);
+                if (_adjectives.Contains(productAdjective))
+                {
+                    formattedNameCount++;
+                }
+            }
+            Assert.Equal(expected, formattedNameCount);
+        }
+        [Fact]
+        public void TestProductDescription_AllProductsHaveDescription()
+        {
+            int expected = _productsToGenerate;
+            int descriptionCount = 0;
+            foreach (var product in _products)
+            {
+                if (product.Description != null && product.Description.Length > 0)
+                {
+                    descriptionCount++;
+                }
+            }
+            Assert.Equal(expected, descriptionCount);
+        }
+
+        [Fact]
+        public void TestProductDescription_AllProductsHaveCorrectlyFormattedDescription()
+        {
+            int expected = _productsToGenerate;
+            int formattedDescriptionCount = 0;
+
+            foreach (var product in _products)
+            {
+                string[] descriptionElements = product.Description.Split(", ");
+                if (descriptionElements.Length == 3 && _categories.Contains(descriptionElements[0]) && _demographics.Contains(descriptionElements[1]) && _adjectives.Contains(descriptionElements[2]))
+                {
+                    formattedDescriptionCount++;
+                }
+            }
+            Assert.Equal(expected, formattedDescriptionCount);
+        }
+
+        [Fact]
+        public void TestProductGlobalProductCode_AllProductsHaveGlobalProductCode()
+        {
+            int expected = _productsToGenerate;
+            int globalProductCodeCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (product.Name != null && product.Name.Length > 0)
+                {
+                    globalProductCodeCount++;
+                }
+            }
+            Assert.Equal(expected, globalProductCodeCount);
+        }
+
+        [Fact]
+        public void TestProductGlobalProductCode_AllProductsHaveCorrectlyFormattedGlobalProductCode()
+        {
+            int expected = _productsToGenerate;
+            int globalProductCodeCount = 0;
+            Regex regex = new Regex(@"po-[A-Z]{7}");
+
+            foreach (var product in _products)
+            {
+                if ((product.GlobalProductCode.Length == 10) && regex.IsMatch(product.GlobalProductCode))
+                {
+                    globalProductCodeCount++;
+                }
+            }
+            Assert.Equal(expected, globalProductCodeCount);
         }
     }
 }
