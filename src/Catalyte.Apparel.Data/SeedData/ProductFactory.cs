@@ -123,18 +123,35 @@ namespace Catalyte.Apparel.Data.SeedData
             "Reusch"
         };
 
-        private List<string> _material = new()
+        private Dictionary<string, List<string>> _material = new()
         {
-            "Cloth",
-            "Neoprene",
-            "Rubber",
-            "Polycarbonate",
-            "Titanium",
-            "Stainless Steel",
-            "Nylon",
-            "ABS Plastic",
-            "Leather",
-            "Aluminum"
+            { "Pant", new List<string>() { "Cotton", "Wool", "Polyester", "Linen", "Knit" } },
+            { "Short", new List<string>() { "Cotton", "Polyester", "Linen", "Nylon" } },
+            { "Shoe", new List<string>() { "Leather", "Textiles", "Synthetic", "Foam" } },
+            { "Glove", new List<string>() { "Leather", "Metal Mesh", "Canvas", "Neoprene" } },
+            { "Jacket", new List<string>() { "Leather", "Wool", "Nylon", "Polyester", "Silk" } },
+            { "Tank Top", new List<string>() { "Cotton", "Jersey", "Synthetic", "Polyester" } },
+            { "Sock", new List<string>() { "Cotton", "Wool", "Cotton/Poly Blend", "Cotton/Silk Blend", "Cotton/Wool Blend" } },
+            { "Sunglasses", new List<string>() { "Glass", "Acrylic", "Polycarbonate", "CR-39", "Polyurethene" } },
+            { "Hat", new List<string>() { "Cotton", "Cotton Blends", "Wool", "Jersey Mesh", "Wool", "Acrylic/Wool Blend" } },
+            { "Helmet", new List<string>() { "Polyethylene", "Aluminum", "Fiberglass" } },
+            { "Belt", new List<string>() { "Leather", "Cotton", "Nylon", "Polyesterh" } },
+            { "Visor", new List<string>() { "Polycarbonate", "Nylon Mesh", "Acetate", "Steel Mesh" } },
+            { "Shin Guard", new List<string>() { "Fiberglass", "Polyurethane", "Foam Rubber" } },
+            { "Elbow Pad", new List<string>() { "Polyester 4", "EPE 3", "EVA 3", "Nylon 3", "PVC 2" } },
+            { "Headband", new List<string>() { "Terry Clot", "Polyester", "Nylon" } },
+            { "Wristband", new List<string>() { "Silicone", "Vinyl", "Tyvek" } },
+            { "Hoodie", new List<string>() { "Cotton", "Polyester", "Cotton Blends", "Wool" } },
+            { "Flip Flop", new List<string>() { "Rubber", "Foam", "Plastic", "Suede", "Leather" } },
+            { "Pool Noodle", new List<string>() { "Polyethylene Foam" } }
+        };
+
+        private List<string> _randomMaterials = new()
+        {
+            "Cotton",
+            "Synthetic",
+            "Wool",
+            "Leather"
         };
 
         /// <summary>
@@ -169,7 +186,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Generates a random product offering id.
         /// </summary>
         /// <returns>A product offering string.</returns>
-        private string GetRandomProductId() => "po-" + RandomString(7);
+        private string GetGlobalProductCode() => "po-" + RandomString(7);
 
         /// <summary>
         /// Returns a random boolean indicating active.
@@ -182,7 +199,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <returns>A category string.</returns>
         private string GetCategory() => _categories[_rand.Next(0, _categories.Count)];
-        
+
         /// <summary>
         /// Returns a list of all categories used in testing.
         /// </summary>
@@ -255,13 +272,13 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Generates a random style number.
         /// </summary>
         /// <returns>A style number string sc#####.</returns>
-        private string GetStyleCode() =>"sc" + _rand.Next(10000,100000).ToString();
+        private string GetStyleCode() => "sc" + _rand.Next(10000, 100000).ToString();
 
         /// <summary>
         /// Returns a random brand name from a list of brand names.
         /// </summary>
         /// <returns>A brand string.</returns>
-        private string GetBrand() => _brand[_rand.Next(0,_brand.Count)];
+        private string GetBrand() => _brand[_rand.Next(0, _brand.Count)];
 
         /// <summary>
         /// Returns a list of all brands used in testing.
@@ -278,14 +295,27 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <summary>
         /// Returns a random material from a list of materials.
         /// </summary>
-        /// <returns>A material list string.</returns>
-        private string GetMaterial() => _material[_rand.Next(0, _material.Count)];
+        /// <returns>A material string.</returns>
+        private string GetMaterial(string type)
+        {
+            string material;
+
+            if (_material.TryGetValue(type, out List<string> materialList))
+            {
+                material = materialList[_rand.Next(0, materialList.Count)];       
+            }
+            else
+            {
+                material = _randomMaterials[_rand.Next(0, _randomMaterials.Count)];
+            }
+            return material;
+        }
 
         /// <summary>
         /// Returns a list of all materials used in testing;
         /// </summary>
-        /// <returns>A list of material strings.</returns>
-        public List<string> GetAllMaterials() => _material;
+        /// <returns>A dictionary containing  key<type>, value<list of strings> pairs.</returns>
+        public Dictionary<string, List<string>> GetAllMaterials() => _material;
         /// <summary>
         /// Returns a random quantity.
         /// </summary>
@@ -324,8 +354,8 @@ namespace Catalyte.Apparel.Data.SeedData
         private Product CreateRandomProduct(int id)
         {
             var product = new Product();
-
             var adjective = GetProductAdjective();
+
             product.Id = id;
             product.Category = GetCategory();
             product.Type = GetProductType();
@@ -333,7 +363,7 @@ namespace Catalyte.Apparel.Data.SeedData
             product.PrimaryColorCode = GetColor();
             product.SecondaryColorCode = GetColor(product.PrimaryColorCode);
             product.Demographic = GetDemographic();
-            product.GlobalProductCode = GetRandomProductId();
+            product.GlobalProductCode = GetGlobalProductCode();
             product.StyleNumber = GetStyleCode();
             product.ReleaseDate = GetReleaseDate();
             product.DateCreated = DateTime.UtcNow;
@@ -343,14 +373,14 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
             product.Brand = GetBrand();
             product.Price = GetPrice();
-            product.Material = GetMaterial();
+            product.Material = GetMaterial(product.Type);
             product.Quantity = GetQuantity();
             product.ImageSrc = GetImageSrc();
-            
+
             return product;
         }
 
-      
+
         /// <summary>
         /// Generates a random string of characters.
         /// </summary>

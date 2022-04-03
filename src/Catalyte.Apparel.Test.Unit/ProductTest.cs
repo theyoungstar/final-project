@@ -21,7 +21,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
         List<string> _types = new();
         List<string> _colorCodes = new();
         List<string> _brands = new();
-        List<string> _materials = new();
+        Dictionary<string, List<string>> _materials = new();
         List<string> _adjectives = new();
 
         public ProductTest()
@@ -87,14 +87,13 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductDemographic_AllDemographicsAreRepresented()
         {
             int expected = _demographics.Count;
-            Dictionary<string, int> demographicCount = new Dictionary<string, int>();
+            List<string> demographicCount = new();
             foreach (var product in _products)
             {
-                if (!(demographicCount.TryGetValue(product.Demographic, out int count)))
+                if (!(demographicCount.Contains(product.Demographic)))
                 {
-                    demographicCount.Add(product.Demographic, 0);
+                    demographicCount.Add(product.Demographic);
                 }
-                demographicCount[product.Demographic]++;
             }
             Assert.Equal(expected, demographicCount.Count);
         }
@@ -134,14 +133,13 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductCategory_AllCategoriesAreRepresented()
         {
             int expected = _categories.Count;
-            Dictionary<string, int> categoryCount = new Dictionary<string, int>();
+            List<string> categoryCount = new();
             foreach (var product in _products)
             {
-                if (!(categoryCount.TryGetValue(product.Category, out int count)))
+                if (!(categoryCount.Contains(product.Category)))
                 {
-                    categoryCount.Add(product.Category, 0);
+                    categoryCount.Add(product.Category);
                 }
-                categoryCount[product.Category]++;
             }
             Assert.Equal(expected, categoryCount.Count);
         }
@@ -180,17 +178,17 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductType_AllTypesAreRepresented()
         {
             int expected = _types.Count;
-            Dictionary<string, int> typeCount = new Dictionary<string, int>();
+            List<string> typeCount = new();
             foreach (var product in _products)
             {
-                if (!(typeCount.TryGetValue(product.Type, out int count)))
+                if (!(typeCount.Contains(product.Type)))
                 {
-                    typeCount.Add(product.Type, 0);
+                    typeCount.Add(product.Type);
                 }
-                typeCount[product.Type]++;
             }
             Assert.Equal(expected, typeCount.Count);
         }
+
         [Fact]
         public void TestProductPrimaryColor_AllProductsContainPrimaryColor()
         {
@@ -225,20 +223,19 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductPrimaryColor_AllCollorsAreRepresented()
         {
             int expected = _colorCodes.Count;
-            Dictionary<string, int> colorCodeCount = new Dictionary<string, int>();
+            List<string> colorCodeCount = new();
             foreach (var product in _products)
             {
-                if (!(colorCodeCount.TryGetValue(product.PrimaryColorCode, out int count)))
+                if (!(colorCodeCount.Contains(product.PrimaryColorCode)))
                 {
-                    colorCodeCount.Add(product.PrimaryColorCode, 0);
+                    colorCodeCount.Add(product.PrimaryColorCode);
                 }
-                colorCodeCount[product.PrimaryColorCode]++;
             }
             Assert.Equal(expected, colorCodeCount.Count);
         }
 
         [Fact]
-        public void TestProductSecondaryColor_AllProductsContainPrimaryColor()
+        public void TestProductSecondaryColor_AllProductsContainSecondaryColor()
         {
             int expected = _productsToGenerate;
             int colorCodeCount = 0;
@@ -253,7 +250,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
         }
 
         [Fact]
-        public void TestProductSecondaryColor_NoProductsContainNullPrimaryColor()
+        public void TestProductSecondaryColor_NoProductsContainNullSecondaryColor()
         {
             int expected = 0;
             int nullCount = 0;
@@ -271,14 +268,13 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductSecondaryColor_AllCollorsAreRepresented()
         {
             int expected = _colorCodes.Count;
-            Dictionary<string, int> colorCodeCount = new Dictionary<string, int>();
+            List<string> colorCodeCount = new();
             foreach (var product in _products)
             {
-                if (!(colorCodeCount.TryGetValue(product.SecondaryColorCode, out int count)))
+                if (!(colorCodeCount.Contains(product.SecondaryColorCode)))
                 {
-                    colorCodeCount.Add(product.SecondaryColorCode, 0);
+                    colorCodeCount.Add(product.SecondaryColorCode);
                 }
-                colorCodeCount[product.SecondaryColorCode]++;
             }
             Assert.Equal(expected, colorCodeCount.Count);
         }
@@ -297,6 +293,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
             }
             Assert.Equal(expected, sameCount);
         }
+
         [Fact]
         public void TestProductActive_AllProductsContainActive()
         {
@@ -376,14 +373,13 @@ namespace Catalyte.Apparel.Test.Unit.Product
         public void TestProductBrand_AllBrandsAreRepresented()
         {
             int expected = _brands.Count;
-            Dictionary<string, int> brandCount = new Dictionary<string, int>();
+            List<string> brandCount = new();
             foreach (var product in _products)
             {
-                if (!(brandCount.TryGetValue(product.Brand, out int count)))
+                if (!(brandCount.Contains(product.Brand)))
                 {
-                    brandCount.Add(product.Brand, 0);
+                    brandCount.Add(product.Brand);
                 }
-                brandCount[product.Brand]++;
             }
             Assert.Equal(expected, brandCount.Count);
         }
@@ -395,9 +391,12 @@ namespace Catalyte.Apparel.Test.Unit.Product
             int materialCount = 0;
             foreach (var product in _products)
             {
-                if (_materials.Contains(product.Material))
+                if (_materials.TryGetValue(product.Type, out List<string> materialList))
                 {
-                    materialCount++;
+                    if (materialList.Contains(product.Material))
+                    {
+                        materialCount++;
+                    }
                 }
             }
             Assert.Equal(expected, materialCount);
@@ -416,22 +415,6 @@ namespace Catalyte.Apparel.Test.Unit.Product
                 }
             }
             Assert.Equal(expected, nullCount);
-        }
-
-        [Fact]
-        public void TestProductMaterial_AllMaterialsAreRepresented()
-        {
-            int expected = _materials.Count;
-            Dictionary<string, int> materialCount = new Dictionary<string, int>();
-            foreach (var product in _products)
-            {
-                if (!(materialCount.TryGetValue(product.Material, out int count)))
-                {
-                    materialCount.Add(product.Material, 0);
-                }
-                materialCount[product.Material]++;
-            }
-            Assert.Equal(expected, materialCount.Count);
         }
 
         [Fact]
@@ -690,7 +673,7 @@ namespace Catalyte.Apparel.Test.Unit.Product
 
             foreach (var product in _products)
             {
-               
+
                 if (Uri.IsWellFormedUriString(product?.ImageSrc, UriKind.Absolute))
                 {
                     imageSrcCount++;
