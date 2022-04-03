@@ -648,6 +648,24 @@ namespace Catalyte.Apparel.Test.Unit.Product
             }
             Assert.Equal(expected, priceCount);
         }
+        [Fact]
+        public void TestProductPrice_AllProductsHavePriceGreaterThanZero()
+        {
+            int expected = _productsToGenerate;
+            int priceCount = 0;
+
+            foreach (var product in _products)
+            {
+                if (double.TryParse(product?.Price, out double price))
+                {
+                    if (price > 0)
+                    {
+                        priceCount++;
+                    }
+                }
+            }
+            Assert.Equal(expected, priceCount);
+        }
 
         [Fact]
         public void TestProductImageSrc_AllProductsHaveAnImageSrc()

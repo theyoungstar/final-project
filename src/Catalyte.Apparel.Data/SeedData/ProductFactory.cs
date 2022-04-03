@@ -272,7 +272,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Generates a random style number.
         /// </summary>
         /// <returns>A style number string sc#####.</returns>
-        private string GetStyleCode() => "sc" + _rand.Next(10000, 100000).ToString();
+        private string GetStyleCode() => "sc" + _rand.Next(0, 100000).ToString("D5");
 
         /// <summary>
         /// Returns a random brand name from a list of brand names.
