@@ -53,10 +53,10 @@ namespace Catalyte.Apparel.API.Controllers
 
             if (purchaseDTO != null)
             {
-                return NoContent();
+                return Created($"/purchases/", purchaseDTO);
             }
 
-            return Created($"/purchases/", purchaseDTO);
+            return NoContent();
         }
     }
 }
