@@ -50,7 +50,7 @@ namespace Catalyte.Apparel.Data.Context
                 CardHolder = "Max Perkins",
                 CardNumber = "1435678998761234",
                 Expiration = "11/21",
-                CVV = 456,
+                CVV = "Letters",
                 OrderDate = new DateTime(2021, 5, 4)
             };
 

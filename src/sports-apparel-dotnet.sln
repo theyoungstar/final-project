@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalyte.Apparel.Utilities"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalyte.Apparel.Test.Integration", "Catalyte.Apparel.Test.Integration\Catalyte.Apparel.Test.Integration.csproj", "{CAB64ABE-9A02-4086-A2E0-E9A803A05E91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardValidationTests", "CardValidationTests\CardValidationTests.csproj", "{4F84EE70-F496-40A3-AD75-0995D182FD38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalyte.Apparel.Test.Unit", "CardValidationTests\Catalyte.Apparel.Test.Unit.csproj", "{4F84EE70-F496-40A3-AD75-0995D182FD38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

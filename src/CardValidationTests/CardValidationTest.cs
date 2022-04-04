@@ -1,13 +1,14 @@
 using NUnit.Framework;
 using Catalyte.Apparel.Data.Model;
 using System.Collections.Generic;
+//using Xunit;
 
 namespace CardValidationTests
 {
     
     public class CardValidationTest
     {
-        [Test]
+        /*[Test]
         public static void Card_Number_Contains_Less_Than_14_Digits()
         {
             var CardValidation = new CardValidation();
@@ -63,17 +64,17 @@ namespace CardValidationTests
             List<string> errors = new List<string>();
             var actual = CardValidation.CVVHas3To4Digits(input, errors);
             Assert.IsFalse(actual);
-        }
+        }*/
         [Test]
         public static void CVV_Number_Does_Not_Accept_Letters()
         {
             var CardValidation = new CardValidation();
-            var input = "1r3A";
+            var input = "1rA";
             List<string> errors = new List<string>();
             var actual = CardValidation.CVVHas3To4Digits(input, errors);
             Assert.IsFalse(actual);
         }
-        [Test]
+       /* [Test]
         public static void CVV_Number_Does_Not_Accept_Special_Characters()
         {
             var CardValidation = new CardValidation();
@@ -144,7 +145,7 @@ namespace CardValidationTests
             List<string> errors = new List<string>();
             var actual = CardValidation.CardHolderName(input, errors);
             Assert.IsFalse(actual);
-        }
+        }*/
 
 
 
