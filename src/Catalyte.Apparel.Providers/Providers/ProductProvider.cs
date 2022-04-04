@@ -75,5 +75,35 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+        public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
+        {
+            IEnumerable<string> categories;
+
+            try
+            {
+                categories = await _productRepository.GetAllUniqueCategoriesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            return categories;
+        }
+        public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
+        {
+            IEnumerable<string> types;
+            try
+            {
+                types = await _productRepository.GetAllUniqueTypesAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger?.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            return types;
+        }
     }
 }
