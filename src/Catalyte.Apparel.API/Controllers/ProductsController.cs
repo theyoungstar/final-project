@@ -50,5 +50,26 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTO);
         }
+        [HttpGet("/products/categories")]
+        public async Task<ActionResult<string>> GetAllUniqueCategoriesAsync()
+        {
+            _logger.LogInformation($"Request received for GetAllUniqueCategoriesAsync");
+
+            var categories = await _productProvider.GetAllUniqueCategoriesAsync();
+       
+            return Ok(categories);
+        }
+        [HttpGet("/products/types")]
+
+        public async Task<ActionResult<string>> GetAllUniqueTypesAsync()
+        {
+            _logger.LogInformation($"Request received for GetAllUniqueTypesAsync");
+
+            var types = await _productProvider.GetAllUniqueTypesAsync();
+            
+
+            return Ok(types);
+
+        }
     }
 }
