@@ -1,6 +1,7 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
@@ -102,6 +103,57 @@ namespace Catalyte.Apparel.Data.SeedData
             "SM"
         };
 
+        private List<bool> _active = new()
+        {
+            false,
+            true
+        };
+
+        private List<string> _brand = new()
+        {
+            "Adidas",
+            "Nike",
+            "Nivia",
+            "Wilson",
+            "Puma",
+            "Champion",
+            "Brooks",
+            "ASCICS",
+            "Admiral",
+            "Reusch"
+        };
+
+        private Dictionary<string, List<string>> _material = new()
+        {
+            { "Pant", new List<string>() { "Cotton", "Wool", "Polyester", "Linen", "Knit" } },
+            { "Short", new List<string>() { "Cotton", "Polyester", "Linen", "Nylon" } },
+            { "Shoe", new List<string>() { "Leather", "Textiles", "Synthetic", "Foam" } },
+            { "Glove", new List<string>() { "Leather", "Metal Mesh", "Canvas", "Neoprene" } },
+            { "Jacket", new List<string>() { "Leather", "Wool", "Nylon", "Polyester", "Silk" } },
+            { "Tank Top", new List<string>() { "Cotton", "Jersey", "Synthetic", "Polyester" } },
+            { "Sock", new List<string>() { "Cotton", "Wool", "Cotton/Poly Blend", "Cotton/Silk Blend", "Cotton/Wool Blend" } },
+            { "Sunglasses", new List<string>() { "Glass", "Acrylic", "Polycarbonate", "CR-39", "Polyurethene" } },
+            { "Hat", new List<string>() { "Cotton", "Cotton Blends", "Wool", "Jersey Mesh", "Wool", "Acrylic/Wool Blend" } },
+            { "Helmet", new List<string>() { "Polyethylene", "Aluminum", "Fiberglass" } },
+            { "Belt", new List<string>() { "Leather", "Cotton", "Nylon", "Polyesterh" } },
+            { "Visor", new List<string>() { "Polycarbonate", "Nylon Mesh", "Acetate", "Steel Mesh" } },
+            { "Shin Guard", new List<string>() { "Fiberglass", "Polyurethane", "Foam Rubber" } },
+            { "Elbow Pad", new List<string>() { "Polyester 4", "EPE 3", "EVA 3", "Nylon 3", "PVC 2" } },
+            { "Headband", new List<string>() { "Terry Clot", "Polyester", "Nylon" } },
+            { "Wristband", new List<string>() { "Silicone", "Vinyl", "Tyvek" } },
+            { "Hoodie", new List<string>() { "Cotton", "Polyester", "Cotton Blends", "Wool" } },
+            { "Flip Flop", new List<string>() { "Rubber", "Foam", "Plastic", "Suede", "Leather" } },
+            { "Pool Noodle", new List<string>() { "Polyethylene Foam" } }
+        };
+
+        private List<string> _randomMaterials = new()
+        {
+            "Cotton",
+            "Synthetic",
+            "Wool",
+            "Leather"
+        };
+
         /// <summary>
         /// Generates a randomized product SKU.
         /// </summary>
@@ -122,27 +174,158 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random demographic from the list of demographics.
         /// </summary>
         /// <returns>A demographic string.</returns>
-        private string GetDemographic()
-        {
-            return _demographics[_rand.Next(0, 2)];
-        }
+        private string GetDemographic() => _demographics[_rand.Next(0, _demographics.Count)];
+
+        /// <summary>
+        /// Returns list of demographics.
+        /// </summary>
+        /// <returns>A list of demographic strings</returns>
+        public List<string> GetAllDemographics() => _demographics;
 
         /// <summary>
         /// Generates a random product offering id.
         /// </summary>
         /// <returns>A product offering string.</returns>
-        private string GetRandomProductId()
+        private string GetGlobalProductCode() => "po-" + RandomString(7);
+
+        /// <summary>
+        /// Returns a random boolean indicating active.
+        /// </summary>
+        /// <returns>Active as either true or false value boolean.</returns>
+        private bool GetActive() => _active[_rand.Next(0, _active.Count)];
+
+        /// <summary>
+        /// Returns a random cateogry from the list of categories.
+        /// </summary>
+        /// <returns>A category string.</returns>
+        private string GetCategory() => _categories[_rand.Next(0, _categories.Count)];
+
+        /// <summary>
+        /// Returns a list of all categories used in testing.
+        /// </summary>
+        /// <returns>A list of category strings.</returns>
+        /// 
+        public List<string> GetAllCategories() => _categories;
+        /// <summary>
+        /// Returns a random product type from the list of types.
+        /// </summary>
+        /// <returns>A type string.</returns>
+        private string GetProductType() => _types[_rand.Next(0, _types.Count)];
+
+        /// <summary>
+        /// Returns a list of all types used in testing.
+        /// </summary>
+        /// <returns>A list of type strings.</returns>
+        public List<string> GetAllProductTypes() => _types;
+        /// <summary>
+        /// Returns a random color code from the list of color codes.
+        /// </summary>
+        /// <param></param>
+        /// <returns>A color code string.</returns>
+        private string GetColor() => _colors[_rand.Next(0, _colors.Count)];
+
+        /// <summary>
+        /// Returns a random color code from the list of color codes.
+        /// Color returned is not the same as compareColor.
+        /// </summary>
+        /// <param name="compareColor"></param>
+        /// <returns>A color code string.</returns>
+        private string GetColor(string compareColor)
         {
-            return "po-" + RandomString(7);
+            var color = GetColor();
+            while (color == compareColor)
+            {
+                color = GetColor();
+            }
+            return color;
         }
 
         /// <summary>
-        /// Generates a random style code.
+        ///  Returns a list of color codes used in testing.
         /// </summary>
-        /// <returns>A style code string.</returns>
-        private string GetStyleCode()
+        /// <returns>A list of color code strings.</returns>
+        public List<string> GetAllColors() => _colors;
+
+        /// <summary>
+        /// Returns  a random adjective from the list of adjectives.
+        /// </summary>
+        /// <returns>An adjective string.</returns>
+        private string GetProductAdjective() => _adjectives[_rand.Next(0, _adjectives.Count)];
+
+        /// <summary>
+        /// Returns a list of all adjectives used in testing;
+        /// </summary>
+        /// <returns>A list of adjective strings.</returns>
+        public List<string> GetAllAdjectives() => _adjectives;
+
+        /// <summary>
+        /// Returns a random product release date ranging from 1/1/2017 to today.
+        /// </summary>
+        /// <returns>A product release string MM/DD/YYYY format.</returns>
+        private string GetReleaseDate()
         {
-            return "sc" + RandomString(5);
+            DateTime start = DateTime.UtcNow.AddYears(-3);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(_rand.Next(range)).ToString("MM/dd/yyyy");
+        }
+        /// <summary>
+        /// Generates a random style number.
+        /// </summary>
+        /// <returns>A style number string sc#####.</returns>
+        private string GetStyleCode() => "sc" + _rand.Next(0, 100000).ToString("D5");
+
+        /// <summary>
+        /// Returns a random brand name from a list of brand names.
+        /// </summary>
+        /// <returns>A brand string.</returns>
+        private string GetBrand() => _brand[_rand.Next(0, _brand.Count)];
+
+        /// <summary>
+        /// Returns a list of all brands used in testing.
+        /// </summary>
+        /// <returns>A list of brand strings.</returns>
+        public List<string> GetAllBrands() => _brand;
+
+        /// <summary>
+        /// Returns a random generated price.
+        /// </summary>
+        /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
+        private string GetPrice() => $"{Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+
+        /// <summary>
+        /// Returns a random material from a list of materials.
+        /// </summary>
+        /// <returns>A material string.</returns>
+        private string GetMaterial(string type)
+        {
+            string material;
+
+            if (_material.TryGetValue(type, out List<string> materialList))
+            {
+                material = materialList[_rand.Next(0, materialList.Count)];       
+            }
+            else
+            {
+                material = _randomMaterials[_rand.Next(0, _randomMaterials.Count)];
+            }
+            return material;
+        }
+
+        /// <summary>
+        /// Returns a list of all materials used in testing;
+        /// </summary>
+        /// <returns>A dictionary containing  key<type>, value<list of strings> pairs.</returns>
+        public Dictionary<string, List<string>> GetAllMaterials() => _material;
+        /// <summary>
+        /// Returns a random quantity.
+        /// </summary>
+        /// <returns>A quantity string</returns>
+        /// 
+        private string GetQuantity() => _rand.Next(1, 101).ToString();
+
+        private string GetImageSrc()
+        {
+            return new Uri(new Uri("file://"), new DirectoryInfo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\Catalyte.Apparel.Data\SeedData\aar.jpg"))).ToString()).ToString();
         }
 
         /// <summary>
@@ -170,21 +353,33 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns>A randomly generated product.</returns>
         private Product CreateRandomProduct(int id)
         {
-            return new Product
-            {
-                Id = id,
-                Category = _categories[_rand.Next(0, 9)],
-                Type = "Short",
-                Sku = GetRandomSku(),
-                Demographic = GetDemographic(),
-                GlobalProductCode = GetRandomProductId(),
-                StyleNumber = GetStyleCode(),
-                ReleaseDate = DateTime.Now,
-                DateCreated = DateTime.UtcNow,
-                DateModified = DateTime.UtcNow,
-                Active = false
-            };
+            var product = new Product();
+            var adjective = GetProductAdjective();
+
+            product.Id = id;
+            product.Category = GetCategory();
+            product.Type = GetProductType();
+            product.Sku = GetRandomSku();
+            product.PrimaryColorCode = GetColor();
+            product.SecondaryColorCode = GetColor(product.PrimaryColorCode);
+            product.Demographic = GetDemographic();
+            product.GlobalProductCode = GetGlobalProductCode();
+            product.StyleNumber = GetStyleCode();
+            product.ReleaseDate = GetReleaseDate();
+            product.DateCreated = DateTime.UtcNow;
+            product.DateModified = DateTime.UtcNow;
+            product.Active = GetActive();
+            product.Name = $"{adjective} {product.Category} {product.Type}";
+            product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
+            product.Brand = GetBrand();
+            product.Price = GetPrice();
+            product.Material = GetMaterial(product.Type);
+            product.Quantity = GetQuantity();
+            product.ImageSrc = GetImageSrc();
+
+            return product;
         }
+
 
         /// <summary>
         /// Generates a random string of characters.
