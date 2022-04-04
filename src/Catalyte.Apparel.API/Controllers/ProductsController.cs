@@ -1,6 +1,6 @@
-﻿﻿using AutoMapper;
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +56,7 @@ namespace Catalyte.Apparel.API.Controllers
             _logger.LogInformation($"Request received for GetAllUniqueCategoriesAsync");
 
             var categories = await _productProvider.GetAllUniqueCategoriesAsync();
-       
+
             return Ok(categories);
         }
         [HttpGet("/products/types")]
@@ -66,10 +66,20 @@ namespace Catalyte.Apparel.API.Controllers
             _logger.LogInformation($"Request received for GetAllUniqueTypesAsync");
 
             var types = await _productProvider.GetAllUniqueTypesAsync();
-            
+
 
             return Ok(types);
 
+        }
+        [HttpGet("/products/filters/categories/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategoryAsync(string category)
+        {
+            _logger.LogInformation("Request received for GetProductsAsync");
+
+            var products = await _productProvider.GetProductsByCategoryAsync(category);
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            return Ok(productDTOs);
         }
     }
 }

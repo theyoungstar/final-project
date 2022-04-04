@@ -55,6 +55,12 @@ namespace Catalyte.Apparel.Data.Repositories
 
             return uniques;
         }
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
+        {
+            return await _ctx.Products.AsNoTracking()
+                .WhereProductCategoryEquals(category)
+                .ToListAsync();
+        }
     } 
 
 }
