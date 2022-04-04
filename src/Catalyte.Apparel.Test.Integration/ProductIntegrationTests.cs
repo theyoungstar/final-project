@@ -24,6 +24,7 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetProducts_Returns200()
         {
+            
             var response = await _client.GetAsync("/products");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
