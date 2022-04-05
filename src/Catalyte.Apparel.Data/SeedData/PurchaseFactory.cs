@@ -288,6 +288,6 @@ namespace Catalyte.Apparel.Data.SeedData
 
             //    return lowerCase ? builder.ToString().ToLower() : builder.ToString();
             //}
-        }
+        
     }
 }

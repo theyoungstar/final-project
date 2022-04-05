@@ -42,11 +42,11 @@ namespace Catalyte.Apparel.Test.Integration
             loggerStub = new Mock<ILogger<PurchaseProvider>>();
             provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
 
-            testPurchase = _factory.CreateRandomPurchase(1);
-            repositoryStub.Setup(repo => repo.GetAllPurchasesAsync())
-                .ReturnsAsync(testPurchase);
+            /*testPurchase = _factory.CreateRandomPurchase(1);
+            repositoryStub.Setup(repo => repo.GetAllPurchasesAsync(1))
+                .ReturnsAsync(testPurchase);*/
 
-            testPurchaseList = _factory.GenerateRandomPurchases(4);
+            testPurchaseList = _factory.GenerateRandomPurchases(1);
             repositoryStub.Setup(repositoryStub => repositoryStub.GetAllPurchasesAsync())
                 .ReturnsAsync(testPurchaseList);
         }
@@ -93,7 +93,7 @@ namespace Catalyte.Apparel.Test.Integration
         public async Task Card_Number_Contains_Less_Than_14_Digits_Returns_Bad_Request()
         {
             
-            var response = await _factory.GenerateRandomPurchases(4);
+            var response = await _factory.GenerateRandomPurchases(1);
             //response.StatusCode = HttpStatusCode.BadRequest;
          
             var content = await response.Content.ReadAsStringAsync<List<string>>();
