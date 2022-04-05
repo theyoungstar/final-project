@@ -5,6 +5,7 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -17,34 +18,47 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
 
+
         public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
         }
 
+        
+
+
+
         /// <summary>
-        /// Retrieves all purchases from the database.
+        /// Retrieves all purchases from the database for the input email.
         /// </summary>
-        /// <param name="page">Number of pages.</param>
-        /// <param name="pageSize">How many purchases per page.</param>
+        /// <param name="billingEmail"> Billing email used to make purchase.</param>
         /// <returns>All purchases.</returns>
-        public async Task<IEnumerable<Purchase>> GetAllPurchasesAsync()
+
+        public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
-            List<Purchase> purchases;
+            IEnumerable<Purchase> purchases;
+            
+            if (billingEmail == null)
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
+            }
 
             try
             {
-                purchases = await _purchaseRepository.GetAllPurchasesAsync();
+                purchases = await _purchaseRepository.GetAllPurchasesByEmailAsync(billingEmail);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
+            
 
             return purchases;
         }
+
 
         /// <summary>
         /// Persists a purchase to the database.
