@@ -12,6 +12,6 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail);
 
         Task<Purchase> CreatePurchaseAsync(Purchase purchase);
-        void GetAllPurchasesByEmailAsync(int v);
+        
     }
 }

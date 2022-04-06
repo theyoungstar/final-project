@@ -33,7 +33,7 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
             provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
 
             testPurchases = _factory.GenerateRandomPurchases(3);
-            //repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
+            repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
         }
 
         [Fact]

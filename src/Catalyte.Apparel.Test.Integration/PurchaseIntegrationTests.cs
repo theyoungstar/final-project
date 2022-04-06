@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
 using System;
+using System.Net.Http.Json;
+using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.Test.Integration
 {
@@ -15,6 +17,7 @@ namespace Catalyte.Apparel.Test.Integration
     public class PurchaseIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
+        private readonly Purchase _purchase;
 
         public PurchaseIntegrationTests(CustomWebApplicationFactory factory)
         {
@@ -28,13 +31,62 @@ namespace Catalyte.Apparel.Test.Integration
         public async Task GetPurchasesByEmailAsync_GivenEmailWithPurchases_Returns200()
         {
 
-            var response = await _client.GetAsync("/purchases/email/customer@home.com");
+            var testLineItem = new List<LineItemDTO>
+            { new LineItemDTO
+            {
+                ProductId = 3,
+                Quantity = 1
+            }
+            };
+            var testDeliveryAddress = new DeliveryAddressDTO
+            {
+                DeliveryCity = "Atlanta",
+                DeliveryFirstName = "Joe",
+                DeliveryLastName = "Deer",
+                DeliveryState = "GA",
+                DeliveryStreet = "123 Main st",
+                DeliveryStreet2 = "Apt A",
+                DeliveryZip = 12345
+            };
+            var testBillingAddress = new BillingAddressDTO
+            {
+                BillingCity = "Atlanta",
+                BillingState = "GA",
+                BillingStreet = "123 Main St",
+                BillingStreet2 = "Apt A",
+                BillingZip = 12345,
+                Email = "abc@123.org",
+                Phone = "123-234-2342"
+            };
+            var testCreditCard = new CreditCardDTO
+            {
+                CardNumber = "4532520100683461",
+                CVV = 789,
+                Expiration = "11/22",
+                CardHolder = "Max Perkins"
+            };
+            var purchaseDTO = new CreatePurchaseDTO
+            {
+                OrderDate = System.DateTime.Now,
+                DeliveryAddress = testDeliveryAddress,
+                BillingAddress = testBillingAddress,
+                CreditCard = testCreditCard,
+                LineItems = testLineItem
+            };
+
+
+            var postPurchase = JsonContent.Create(purchaseDTO);
+            var post = await _client.PostAsync("/purchases", postPurchase);
+            Assert.Equal(HttpStatusCode.Created, post.StatusCode);
+
+            var response = await _client.GetAsync("/purchases/email/abc@123.org");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
             var actual = content.FirstOrDefault().BillingAddress.Email;
-            var expected = "customer@home.com";
+            var expected = "abc@123.org";
             Assert.Equal(expected, actual);
+
         }
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
@@ -55,4 +107,5 @@ namespace Catalyte.Apparel.Test.Integration
         }
     }
 }
+
 
