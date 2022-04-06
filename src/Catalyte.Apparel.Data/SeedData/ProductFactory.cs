@@ -325,7 +325,7 @@ namespace Catalyte.Apparel.Data.SeedData
 
         private string GetImageSrc()
         {
-            return new Uri(new Uri("file://"), new DirectoryInfo(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\Catalyte.Apparel.Data\SeedData\aar.jpg"))).ToString()).ToString();
+            return  new Uri("https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg").ToString();      
         }
 
         /// <summary>
