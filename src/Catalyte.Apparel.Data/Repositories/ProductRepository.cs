@@ -104,6 +104,18 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductBrandEquals(brand)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material)
+        {
+            return await _ctx.Products.AsNoTracking()
+                .WhereProductBrandEquals(brand)
+                .WhereProductCategoryEquals(category)
+                .WhereProductTypeEquals(type)
+                .WhereProductDemographicEquals(demographic)
+                .WhereProductPrimaryColorCodeEquals(primaryColorCode)
+                .WhereProductSecondaryColorCodeEquals(secondaryColorCode)
+                .WhereProductMaterialEquals(material)
+                .ToListAsync();
+        }
     } 
 
 }
