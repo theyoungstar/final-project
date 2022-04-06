@@ -6,46 +6,11 @@ using System.Text;
 namespace Catalyte.Apparel.Data.SeedData
 {
     /// <summary>
-    /// This class provides tools for generating random products.
+    /// This class provides tools for generating random purchases.
     /// </summary>
     public class PurchaseFactory
     {
         Random _rand = new();
-
-        private List<string> _id = new()
-        {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30"
-         
-        };
 
         private readonly List<string> _billingcity = new()
         {
@@ -109,18 +74,17 @@ namespace Catalyte.Apparel.Data.SeedData
             
         };
 
-
         /// <summary>
-        /// Generates a randomized product SKU.
+        /// Generates a randomized state from the state list.
         /// </summary>
-        /// <returns>A SKU string.</returns>
+        /// <returns>A state string.</returns>
         private string GetState()
         {
             return _state[_rand.Next(0, 2)];
         }
 
         /// <summary>
-        /// Returns a random demographic from the list of demographics.
+        /// Generates a randomized phone from the phone list.
         /// </summary>
         /// <returns>A demographic string.</returns>
         private string GetPhone()
@@ -129,16 +93,7 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Generates a random product offering id.
-        /// </summary>
-        /// <returns>A product offering string.</returns>
-        private string GetId()
-        {
-            return _id[_rand.Next(0, 2)];
-        }
-
-        /// <summary>
-        /// Generates a random style code.
+        /// Generates a randomized email from the email list.
         /// </summary>
         /// <returns>A style code string.</returns>
         private string GetEmail()
@@ -147,7 +102,7 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Generates a random style code.
+        /// Generates a randomized city from the city list.
         /// </summary>
         /// <returns>A style code string.</returns>
         private string GetCity()
@@ -156,7 +111,7 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Generates a number of random products based on input.
+        /// Generates a number of random purchases based on input.
         /// </summary>
         /// <param name="numberOfProducts">The number of random products to generate.</param>
         /// <returns>A list of random products.</returns>
@@ -174,7 +129,7 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Uses random generators to build a products.
+        /// Uses random generators to build a purchase.
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
@@ -183,54 +138,11 @@ namespace Catalyte.Apparel.Data.SeedData
             return new Purchase
             {
                 Id = id,
-                //Category = _categories[_rand.Next(0, 9)],
                 BillingCity = GetCity(),
                 BillingPhone = GetPhone(),
                 BillingState = GetState(),
                 BillingEmail = GetEmail(),
-                
-               
-                //Active = false do this as has purchase instead?
             };
         }
-
-        /// <summary>
-        /// Generates a random string of characters.
-        /// </summary>
-        /// <param name="size">Number of characters in the string.</param>
-        /// <param name="lowerCase">Boolean if the character string should be lowercase only; defaults to false.</param>
-        /// <returns>A random string of characters.</returns>
-        //private string RandomString(int size, bool lowerCase = false)
-        //{
-
-        //    // ** Learning moment **
-        //    // Code From
-        //    // https://www.c-sharpcorner.com/article/generating-random-number-and-string-in-C-Sharp/
-
-        //    // ** Learning moment **
-        //    // Always use a string builder when concatenating more than a couple of strings.
-        //    // Why? https://www.geeksforgeeks.org/c-sharp-string-vs-stringbuilder/
-        //    var builder = new StringBuilder(size);
-
-        //    // Unicode/ASCII Letters are divided into two blocks
-        //    // (Letters 65–90 / 97–122):
-        //    // The first group containing the uppercase letters and
-        //    // the second group containing the lowercase.  
-
-        //    // char is a single Unicode character  
-        //    char offset = lowerCase ? 'a' : 'A';
-        //    const int lettersOffset = 26; // A...Z or a..z: length=26  
-
-        //    for (var i = 0; i < size; i++)
-        //    {
-        //        // ** Learning moment **
-        //        // Because 'char' is a reserved word you can put '@' at the beginning to allow
-        //        // its use as a variable name.  You could do the same thing with 'class'
-        //        var @char = (char)_rand.Next(offset, offset + lettersOffset);
-        //        builder.Append(@char);
-        //    }
-
-        //    return lowerCase ? builder.ToString().ToLower() : builder.ToString();
-        //}
     }
 }

@@ -74,7 +74,6 @@ namespace Catalyte.Apparel.Test.Integration
                 LineItems = testLineItem
             };
 
-
             var postPurchase = JsonContent.Create(purchaseDTO);
             var post = await _client.PostAsync("/purchases", postPurchase);
             Assert.Equal(HttpStatusCode.Created, post.StatusCode);
@@ -86,8 +85,8 @@ namespace Catalyte.Apparel.Test.Integration
             var actual = content.FirstOrDefault().BillingAddress.Email;
             var expected = "abc@123.org";
             Assert.Equal(expected, actual);
-
         }
+
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
         {

@@ -15,14 +15,13 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
 {
     public class PurchaseProviderUnitTests
     {
-        private readonly PurchaseFactory _factory = new();
+        private readonly PurchaseFactory _purchaseFactory = new();
 
         private readonly Mock<IPurchaseRepository> repositoryStub;
         private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
 
         private readonly PurchaseProvider provider;
-
-        private readonly Data.Model.Purchase testProduct;
+       
         private readonly List<Data.Model.Purchase> testPurchases;
 
 
@@ -32,7 +31,7 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
             loggerStub = new Mock<ILogger<PurchaseProvider>>();
             provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
 
-            testPurchases = _factory.GenerateRandomPurchases(3);
+            testPurchases = _purchaseFactory.GenerateRandomPurchases(3);
             repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
         }
 
@@ -60,6 +59,5 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
             // Assert
             Assert.Equal(actual, expected);
         }
-
     }
 }

@@ -6,8 +6,6 @@ using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Catalyte.Apparel.Utilities.HttpResponseExceptions;
-using System.Linq;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -33,8 +31,6 @@ namespace Catalyte.Apparel.API.Controllers
             _mapper = mapper;
 
         }
-
-        
 
         [Route("/purchases")]
         [HttpGet("/purchases/email/{email}/")]
