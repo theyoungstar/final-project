@@ -1,14 +1,40 @@
 //using NUnit.Framework;
 using Catalyte.Apparel.Data.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using Moq;
+using Catalyte.Apparel.Data.Repositories;
+using Catalyte.Apparel.Data.Interfaces;
+using Catalyte.Apparel.Providers.Providers;
+using Catalyte.Apparel.Data.SeedData;
+using Microsoft.Extensions.Logging;
 
-namespace CardValidationTests
+
+namespace Catalyte.Apparel.Test.Unit.CardValidationTest
 {
     
     public class CardValidationTest
-    {
+    {/*
+        private readonly PurchaseFactory _factory = new();
+
+        private readonly Mock<IPurchaseRepository> repositoryStub;
+        private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
+        private readonly PurchaseProvider provider;
+
+        private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IPurchaseRepository _purchaseRepository1;
+
+        private readonly Data.Model.Purchase testPurchase;
+
+        public void PurchaseProviderTest()
+        {
+            repositoryStub = new Mock<IPurchaseRepository>();
+            loggerStub = new Mock<ILogger<PurchaseProvider>>();
+            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
+        }*/
+
+            
 
         [Fact]
         public static void Card_Number_Contains_Less_Than_14_Digits()
@@ -91,7 +117,7 @@ namespace CardValidationTests
             var CardValidation = new CardValidation();
             var input = "1122";
             List<string> errors = new List<string>();
-            var actual = CardValidation.ExpirationDateWithDashOrSlash(input, errors);
+            var actual = CardValidation.IsValidExpirationDate(input, errors);
             Assert.False(actual);
         }
         [Fact]
@@ -100,7 +126,7 @@ namespace CardValidationTests
             var CardValidation = new CardValidation();
             var input = "1a/b2";
             List<string> errors = new List<string>();
-            var actual = CardValidation.ExpirationDateWithDashOrSlash(input, errors);
+            var actual = CardValidation.IsValidExpirationDate(input, errors);
             Assert.False(actual);
         }
         [Fact]
@@ -109,7 +135,7 @@ namespace CardValidationTests
             var CardValidation = new CardValidation();
             var input = "@a/b2";
             List<string> errors = new List<string>();
-            var actual = CardValidation.ExpirationDateWithDashOrSlash(input, errors);
+            var actual = CardValidation.IsValidExpirationDate(input, errors);
             Assert.False(actual);
         }
         [Fact]
@@ -118,7 +144,7 @@ namespace CardValidationTests
             var CardValidation = new CardValidation();
             var input = " 11 22 ";
             List<string> errors = new List<string>();
-            var actual = CardValidation.ExpirationDateWithDashOrSlash(input, errors);
+            var actual = CardValidation.IsValidExpirationDate(input, errors);
             Assert.False(actual);
         }
         [Fact]

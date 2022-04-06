@@ -22,7 +22,7 @@ using Catalyte.Apparel.Providers.Providers;
 namespace Catalyte.Apparel.Test.Integration
 {
     [Collection("Sequential")]
-    //public class PurchaseIntegrationTests : IClassFixture<CustomWebApplicationFactory>
+    public class PurchaseIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     public class PurchaseIntegrationTests
     {
         private readonly HttpClient _client;
