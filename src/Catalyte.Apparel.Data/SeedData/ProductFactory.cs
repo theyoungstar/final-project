@@ -192,7 +192,18 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random boolean indicating active.
         /// </summary>
         /// <returns>Active as either true or false value boolean.</returns>
-        private bool GetActive() => _active[_rand.Next(0, _active.Count)];
+        private bool GetActive(string inventory)
+        {
+            bool active = false;
+            if (int.TryParse(inventory, out int quantity))
+            {
+                if (quantity > 0)
+                {
+                    active = _active[_rand.Next(0, _active.Count)];
+                }
+            }
+            return active;
+        }
 
         /// <summary>
         /// Returns a random cateogry from the list of categories.
@@ -302,7 +313,7 @@ namespace Catalyte.Apparel.Data.SeedData
 
             if (_material.TryGetValue(type, out List<string> materialList))
             {
-                material = materialList[_rand.Next(0, materialList.Count)];       
+                material = materialList[_rand.Next(0, materialList.Count)];
             }
             else
             {
@@ -321,11 +332,11 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <returns>A quantity string</returns>
         /// 
-        private string GetQuantity() => _rand.Next(1, 101).ToString();
+        private string GetQuantity() => _rand.Next(0, 101).ToString();
 
         private string GetImageSrc()
         {
-            return  new Uri("https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg").ToString();      
+            return new Uri("https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg").ToString();
         }
 
         /// <summary>
@@ -368,13 +379,14 @@ namespace Catalyte.Apparel.Data.SeedData
             product.ReleaseDate = GetReleaseDate();
             product.DateCreated = DateTime.UtcNow;
             product.DateModified = DateTime.UtcNow;
-            product.Active = GetActive();
+            product.Quantity = GetQuantity();
+            product.Active = GetActive(product.Quantity);
             product.Name = $"{adjective} {product.Category} {product.Type}";
             product.Description = $"{product.Category}, {product.Demographic}, {adjective}";
             product.Brand = GetBrand();
             product.Price = GetPrice();
             product.Material = GetMaterial(product.Type);
-            product.Quantity = GetQuantity();
+
             product.ImageSrc = GetImageSrc();
 
             return product;
