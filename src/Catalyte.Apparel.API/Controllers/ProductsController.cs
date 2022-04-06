@@ -84,7 +84,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/types/{type}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByTypeAsync(string type)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsByTypeAsync");
 
             var products = await _productProvider.GetProductsByTypeAsync(type);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
@@ -94,7 +94,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/demographics/{demographic}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByDemographicAsync(string demographic)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsByDemographicAsync");
 
             var products = await _productProvider.GetProductsByDemographicAsync(demographic);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
@@ -104,7 +104,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/primarycolor/{primaryColorCode}")]  // Products database has PrimaryColorCode information but is not assigned to product objects
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsByPrimaryColorCodeAsync");
 
             var products = await _productProvider.GetProductsByPrimaryColorCodeAsync(primaryColorCode);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
@@ -114,7 +114,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/secondarycolor/{secondaryColorCode}")]   // Products database has SecondaryColorCode information but is not assigned to product objects
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsBySecondaryColorCodeAsync");
 
             var products = await _productProvider.GetProductsBySecondaryColorCodeAsync(secondaryColorCode);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
@@ -124,7 +124,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/material/{material}")]  
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByMaterialAsync(string material)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsByMaterialAsync");
 
             var products = await _productProvider.GetProductsByMaterialAsync(material);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
@@ -134,7 +134,7 @@ namespace Catalyte.Apparel.API.Controllers
         [HttpGet("/products/filters/brand/{brand}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(string brand)
         {
-            _logger.LogInformation("Request received for GetProductsAsync");
+            _logger.LogInformation("Request received for GetProductsByBrandAsync");
 
             var products = await _productProvider.GetProductsByBrandAsync(brand);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
