@@ -28,9 +28,6 @@ namespace Catalyte.Apparel.Test.Integration
         private readonly HttpClient _client;
         private readonly PurchaseFactory _factory = new();
 
-        private readonly Mock<IPurchaseRepository> repositoryStub;
-        private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
-
         private readonly PurchaseProvider provider;
 
         private readonly Purchase testPurchase;
@@ -38,17 +35,7 @@ namespace Catalyte.Apparel.Test.Integration
 
         public PurchaseIntegrationTests()
         {
-            repositoryStub = new Mock<IPurchaseRepository>();
-            loggerStub = new Mock<ILogger<PurchaseProvider>>();
-            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
-
-            /*testPurchase = _factory.CreateRandomPurchase(1);
-            repositoryStub.Setup(repo => repo.GetAllPurchasesAsync(1))
-                .ReturnsAsync(testPurchase);*/
-
-            testPurchaseList = _factory.GenerateRandomPurchases(1);
-            repositoryStub.Setup(repositoryStub => repositoryStub.GetAllPurchasesAsync())
-                .ReturnsAsync(testPurchaseList);
+            
         }
 
         public PurchaseIntegrationTests(CustomWebApplicationFactory factory)
@@ -106,19 +93,7 @@ namespace Catalyte.Apparel.Test.Integration
             //Assert.IsFalse(actual);
             //Assert.False(actual);
         }
-        [Fact]
-        public async Task Card_Number_Does_Not_Accept_Letters()
-        {
-            //var response = await _client.GetAsync("/purchases");
-            //response.StatusCode = HttpStatusCode.BadRequest;
-
-            var CardValidation = new CardValidation();
-            List<string> errors = new List<string>();
-            var stringResponse = HttpStatusCode.BadRequest.ToString();
-            var actual = CardValidation.Has14To19Digits(stringResponse, errors);
-            //Assert.IsFalse(actual);
-            Assert.False(actual);
-        }
+       
 
     }
 }
