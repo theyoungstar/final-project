@@ -17,32 +17,32 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
     {
         private readonly PurchaseFactory _purchaseFactory = new();
 
-        private readonly Mock<IPurchaseRepository> mockRepository;
-        private readonly Mock<ILogger<PurchaseProvider>> mockLogger;
+        private readonly Mock<IPurchaseRepository> _mockRepository;
+        private readonly Mock<ILogger<PurchaseProvider>> _mockLogger;
 
-        private readonly PurchaseProvider provider;
+        private readonly PurchaseProvider _provider;
        
-        private readonly List<Data.Model.Purchase> testPurchases;
+        private readonly List<Data.Model.Purchase> _testPurchases;
 
 
         public PurchaseProviderUnitTests()
         {
-            mockRepository = new Mock<IPurchaseRepository>();
-            mockLogger = new Mock<ILogger<PurchaseProvider>>();
-            provider = new PurchaseProvider(mockRepository.Object, mockLogger.Object);
+            _mockRepository = new Mock<IPurchaseRepository>();
+            _mockLogger = new Mock<ILogger<PurchaseProvider>>();
+            _provider = new PurchaseProvider(_mockRepository.Object, _mockLogger.Object);
 
-            testPurchases = _purchaseFactory.GenerateRandomPurchases(3);
-            mockRepository.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
+            _testPurchases = _purchaseFactory.GenerateRandomPurchases(3);
+            _mockRepository.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(_testPurchases);
         }
 
         [Fact]
         public async Task GetAllPurchasesByEmailAsync_WithPurchase_ReturnsPurchases()
         {
             // Arrange
-            var expected = testPurchases.ToArray();
+            var expected = _testPurchases.ToArray();
 
             // Act
-            var actual = await provider.GetAllPurchasesByEmailAsync("customer@home.com");
+            var actual = await _provider.GetAllPurchasesByEmailAsync("customer@home.com");
 
             //Assert
             Assert.Equal(actual, expected);
@@ -54,7 +54,7 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
             var expected = Array.Empty<object>();
 
             // Act
-            var actual = await provider.GetAllPurchasesByEmailAsync("customer1@home.com");
+            var actual = await _provider.GetAllPurchasesByEmailAsync("customer1@home.com");
 
             // Assert
             Assert.Equal(actual, expected);
