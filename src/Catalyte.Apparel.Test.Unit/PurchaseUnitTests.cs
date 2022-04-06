@@ -17,8 +17,8 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
     {
         private readonly PurchaseFactory _purchaseFactory = new();
 
-        private readonly Mock<IPurchaseRepository> repositoryStub;
-        private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
+        private readonly Mock<IPurchaseRepository> mockRepository;
+        private readonly Mock<ILogger<PurchaseProvider>> mockLogger;
 
         private readonly PurchaseProvider provider;
        
@@ -27,12 +27,12 @@ namespace Catalyte.Apparel.Test.Unit.Providers.Unit
 
         public PurchaseProviderUnitTests()
         {
-            repositoryStub = new Mock<IPurchaseRepository>();
-            loggerStub = new Mock<ILogger<PurchaseProvider>>();
-            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object);
+            mockRepository = new Mock<IPurchaseRepository>();
+            mockLogger = new Mock<ILogger<PurchaseProvider>>();
+            provider = new PurchaseProvider(mockRepository.Object, mockLogger.Object);
 
             testPurchases = _purchaseFactory.GenerateRandomPurchases(3);
-            repositoryStub.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
+            mockRepository.Setup(repo => repo.GetAllPurchasesByEmailAsync("customer@home.com")).ReturnsAsync(testPurchases);
         }
 
         [Fact]
