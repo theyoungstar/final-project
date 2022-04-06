@@ -17,12 +17,13 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
-        //initialize CardValidation here
-       
-        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
+        private readonly CardValidation _cardValidation;
+
+        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
+            _cardValidation = cardValidation;
         }
 
         /// <summary>
