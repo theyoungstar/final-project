@@ -8,7 +8,7 @@ namespace Catalyte.Apparel.Data.Model
 
     public class CardValidation
     {
-        public static List<string> CreditCardValidation(Purchase purchase)
+        public virtual List<string> CreditCardValidation(Purchase purchase)
         {
             List<string> errorsList = new List<string>();
             Has14To19Digits(purchase.CardNumber, errorsList);
@@ -18,7 +18,7 @@ namespace Catalyte.Apparel.Data.Model
 
             return errorsList;
         }
-        public static bool Has14To19Digits(string field, List<string> errorsList)
+        public bool Has14To19Digits(string field, List<string> errorsList)
         {
             var cardCheck = new Regex(@"^[0-9]{14,19}$");
             if (!cardCheck.IsMatch(field.Trim())) // checks card number has between 14-19 numbers
@@ -28,7 +28,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             return true;
         }
-        public static bool CVVHas3To4Digits(string field, List<string> errorsList)
+        public bool CVVHas3To4Digits(string field, List<string> errorsList)
         {
             var cvvCheck = new Regex(@"^[0-9]{3,4}$");
             if (!cvvCheck.IsMatch(field) || field.Length < 1)
@@ -39,7 +39,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             return true;
         }
-        public static bool IsValidExpirationDate(string field, List<string> errorsList)
+        public bool IsValidExpirationDate(string field, List<string> errorsList)
         {
             Regex dateFormat = new Regex(@"^(0[1-9]|1[0-2])([\/-]{1})[0-9]{2}$");
             //^ checks if date is in either of the following formats: mm/yy mm-yy
@@ -81,7 +81,7 @@ namespace Catalyte.Apparel.Data.Model
             return true;
 
         }
-        public static bool CardHolderName(string field, List<string> errorsList)
+        public bool CardHolderName(string field, List<string> errorsList)
         {
             Regex cardHolder = new Regex(@"^[a-zA-Z\s]*$");
             //checks if field has only letters and spaces
