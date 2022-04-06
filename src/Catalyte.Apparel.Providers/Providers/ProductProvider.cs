@@ -201,5 +201,21 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand)
+        {
+            IEnumerable<Product> products;
+
+            try
+            {
+                products = await _productRepository.GetProductsByBrandAsync(brand);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            return products;
+        }
     }
 }

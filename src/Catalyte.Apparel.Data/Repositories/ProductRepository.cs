@@ -97,6 +97,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductMaterialEquals(material)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand)
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductBrandEquals(brand)
+                .ToListAsync();
+        }
     } 
 
 }

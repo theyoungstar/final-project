@@ -131,5 +131,15 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTOs);
         }
+        [HttpGet("/products/filters/brand/{material}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(string brand)
+        {
+            _logger.LogInformation("Request received for GetProductsAsync");
+
+            var products = await _productProvider.GetProductsByBrandAsync(brand);
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            return Ok(productDTOs);
+        }
     }
 }

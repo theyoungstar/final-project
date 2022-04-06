@@ -30,5 +30,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode);
 
         Task<IEnumerable<Product>> GetProductsByMaterialAsync(string material);
+
+        Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand);
     }
 }

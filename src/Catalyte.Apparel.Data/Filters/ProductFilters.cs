@@ -41,5 +41,9 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return products.Where(p => p.Material == material).AsQueryable();
         }
+        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, string brand)
+        {
+            return products.Where(p => p.Brand == brand).AsQueryable();
+        }
     }
 }
