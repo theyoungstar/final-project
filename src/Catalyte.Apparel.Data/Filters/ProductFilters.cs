@@ -19,8 +19,27 @@ namespace Catalyte.Apparel.Data.Filters
         }
         public static IQueryable<Product> WhereProductTypeEquals(this IQueryable<Product> products, string type)
         {
-            return products.Where(p => p.Category == type).AsQueryable();
+            return products.Where(p => p.Type == type).AsQueryable();
         }
-        
+        public static IQueryable<Product> WhereProductDemographicEquals(this IQueryable<Product> products, string demographic)
+        {
+            return products.Where(p => p.Demographic == demographic).AsQueryable();
+        }
+        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, string price)
+        {
+            return products.Where(p => p.Price == price).AsQueryable();
+        }
+        public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        {
+            return products.Where(p => p.PrimaryColorCode == colorCode).AsQueryable();
+        }
+        public static IQueryable<Product> WhereProductSecondaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        {
+            return products.Where(p => p.SecondaryColorCode == colorCode).AsQueryable();
+        }
+        public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, string material)
+        {
+            return products.Where(p => p.Material == material).AsQueryable();
+        }
     }
 }

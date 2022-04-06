@@ -18,5 +18,15 @@ namespace Catalyte.Apparel.Data.Interfaces
        Task<IEnumerable<string>> GetAllUniqueTypesAsync();
 
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
+
+        Task<IEnumerable<Product>> GetProductsByTypeAsync(string type);
+
+        Task<IEnumerable<Product>> GetProductsByDemographicAsync(string demographic);
+
+        Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode);
+
+        Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode);
+
+        Task<IEnumerable<Product>> GetProductsByMaterialAsync(string material);
     }
 }
