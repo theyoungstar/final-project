@@ -193,20 +193,6 @@ namespace Catalyte.Apparel.Data.SeedData
             return _billingcity[_rand.Next(0, 2)];
         }
 
-        private string GetCardNumber()
-        {
-            return _cardNumber[_rand.Next(0, 2)];
-        }
-
-        private string GetCVV()
-        {
-            return _cvv[_rand.Next(0, 2)];
-        }
-
-        private string GetExpiration()
-        {
-                return _expiration[_rand.Next(0, 2)];
-        }
 
             /// <summary>
             /// Generates a number of random products based on input.
@@ -241,9 +227,8 @@ namespace Catalyte.Apparel.Data.SeedData
                 BillingPhone = GetPhone(),
                 BillingState = GetState(),
                 BillingEmail = GetEmail(),
-                CardNumber = GetCardNumber(),
-                Expiration = GetExpiration(),
-                CVV = GetCVV(),
+               
+            
 
 
                 //Active = false do this as has purchase instead?
