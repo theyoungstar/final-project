@@ -56,9 +56,9 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The persisted purchase with IDs.</returns>
         public async Task<Purchase> CreatePurchasesAsync(Purchase newPurchase)
         {
-         
+
             Purchase savedPurchase;
-            List<string> errorsList = CardValidation.CreditCardValidation(newPurchase);
+            List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
             if (errorsList.Count > 0)
             {
                 throw new BadRequestException(errorsList[0]);

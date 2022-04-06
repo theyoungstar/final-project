@@ -53,7 +53,7 @@ namespace Catalyte.Apparel.Data.Model
         [MaxLength(10)]
         public int DeliveryZip { get; set; }
 
-        [MaxLength(16)]
+        [MaxLength(19)]
         public string CardNumber { get; set; }
 
         [MaxLength(4)]
