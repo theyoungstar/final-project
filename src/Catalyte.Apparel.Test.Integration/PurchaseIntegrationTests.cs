@@ -80,7 +80,7 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task CreatePurchaseAsync_GivenAllItemsAreActiveInPurchase_Returns200()
+        public async Task CreatePurchaseAsync_GivenAllItemsAreActiveInPurchase_Returns201()
         {
             var testLineItem = new List<LineItemDTO>
             { new LineItemDTO
