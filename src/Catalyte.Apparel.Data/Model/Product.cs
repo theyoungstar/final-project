@@ -22,7 +22,7 @@ namespace Catalyte.Apparel.Data.Model
 
         public string Type { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         public string PrimaryColorCode { get; set; }
 
@@ -33,6 +33,16 @@ namespace Catalyte.Apparel.Data.Model
         public string GlobalProductCode { get; set; }
 
         public bool Active { get; set; }
+
+        public string Brand { get; set; }
+
+        public string ImageSrc { get; set; }
+
+        public string Material { get; set; }
+
+        public string Price { get; set; }
+
+        public string Quantity { get; set; }
 
         public override string ToString()
         {
@@ -60,7 +70,6 @@ namespace Catalyte.Apparel.Data.Model
                     x.GlobalProductCode == y.GlobalProductCode && 
                     x.Active == y.Active;
             }
-
             public int GetHashCode(Product obj)
             {
                 var hashCode = new HashCode();
@@ -75,6 +84,12 @@ namespace Catalyte.Apparel.Data.Model
                 hashCode.Add(obj.StyleNumber);
                 hashCode.Add(obj.GlobalProductCode);
                 hashCode.Add(obj.Active);
+                hashCode.Add(obj.Brand);
+                hashCode.Add(obj.ImageSrc);
+                hashCode.Add(obj.Material);
+                hashCode.Add(obj.Price);
+                hashCode.Add(obj.Quantity);
+
                 return hashCode.ToHashCode();
             }
         }
