@@ -1,7 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Providers.Interfaces;
-using Catalyte.Apparel.Providers;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,7 +17,6 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly CardValidation _cardValidation;
-
         public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
@@ -56,7 +54,6 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The persisted purchase with IDs.</returns>
         public async Task<Purchase> CreatePurchasesAsync(Purchase newPurchase)
         {
-
             Purchase savedPurchase;
             List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
             if (errorsList.Count > 0)
