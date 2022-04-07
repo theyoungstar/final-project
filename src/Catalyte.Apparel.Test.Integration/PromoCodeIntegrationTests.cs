@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using Xunit;
 using Catalyte.Apparel.Data.Model;
 using System.Net.Http.Json;
+using Catalyte.Apparel.Data.Repositories;
+using System.IO;
 
 namespace Catalyte.Apparel.Test.Integration
 {
@@ -18,6 +20,8 @@ namespace Catalyte.Apparel.Test.Integration
         private readonly HttpClient _client;
 
         private readonly PromoCode _code;
+
+        private readonly PromoCodeRepository _promoCodeRepository;
 
         public PromoCodeIntegrationTests(CustomWebApplicationFactory factory)
         {
@@ -29,8 +33,49 @@ namespace Catalyte.Apparel.Test.Integration
             });
         }
 
+
+        [Fact]
+        public async Task GetPromoCodes_ReturnsEmptyArrayWhenNoDataIsPresent_Returns201()
+        {
+            
+            var response = await _client.GetAsync("/promocodes");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var actual = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
+            var expected = Array.Empty<object>();
+            Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public async Task PostPromoCodes_Returns201()
+        {
+
+            PostCodeHelper();
+
+            GetCodeHelper();
+            //var task1 = PostCodeHelper();
+
+           //var task2 = GetCodeHelper();
+
+           //await Task.WhenAll(task1, task2);
+
+           //var uri = Path.Combine("/promocodes");
+
+           //var response = await _client.DeleteAsync(uri);
+           //response.EnsureSuccessStatusCode();
+
+           //var response = await _client.GetAsync("/promocodes");            
+
+           //var actual = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
+            
+           //await _promoCodeRepository.DeletePromoCodesAsync(actual);
+           //var expected = Array.Empty<object>();
+           //Assert.Equal(expected, actual);
+           
+
+        }
+
+        public async Task PostCodeHelper()
         {
             var promoCode = new PromoCode()
             {
@@ -41,25 +86,20 @@ namespace Catalyte.Apparel.Test.Integration
                 Rate = 8888,
             };
 
-
             var json = JsonContent.Create(promoCode);
             var result = await _client.PostAsync("/promocodes", json);
             Assert.Equal(HttpStatusCode.Created, result.StatusCode);
-           
-            var response = await _client.GetAsync("/promocodes");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        
-        [Fact]
-        public async Task GetPromoCodes_ReturnsEmptyArrayWhenNoDataIsPresent_Returns201()
+
+        public async Task GetCodeHelper()
         {
             var response = await _client.GetAsync("/promocodes");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var actual = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
-            var expected = Array.Empty<object>();
-            Assert.Equal(expected, actual);
-        }
-
+            var actual = await response.Content.ReadAsAsync<PromoCode>();
+            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            if (actual != null)
+            {
+                _promoCodeRepository.DeletePromoCodesAsync(actual);
+            }
+        }                
     }
 }
