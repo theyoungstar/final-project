@@ -14,6 +14,7 @@ namespace Catalyte.Apparel.Data.Context
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             var productFactory = new ProductFactory();
+            var purchaseFactory = new PurchaseFactory();
 
             modelBuilder.Entity<Product>().HasData(productFactory.GenerateRandomProducts(1000));
 
@@ -55,6 +56,17 @@ namespace Catalyte.Apparel.Data.Context
             };
 
             modelBuilder.Entity<Purchase>().HasData(purchase);
+
+            var promoCode = new PromoCode()
+            {
+                Id = 1,
+                Title = "CODE00",
+                Type = "flat or %",
+                Description = "Description of Promo",
+                Rate = 8888,
+            };
+
+            //modelBuilder.Entity<PromoCode>().HasData(promoCode);
         }
     }
 }

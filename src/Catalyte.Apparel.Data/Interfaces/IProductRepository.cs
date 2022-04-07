@@ -12,5 +12,9 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<Product> GetProductByIdAsync(int productId);
 
         Task<IEnumerable<Product>> GetProductsAsync();
+
+        Task<IEnumerable<string>> GetAllUniqueCategoriesAsync();
+
+       Task<IEnumerable<string>> GetAllUniqueTypesAsync();
     }
 }
