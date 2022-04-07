@@ -17,14 +17,21 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.5.1" />
+    <PackageReference Include="Moq" Version="4.17.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Catalyte.Apparel.Test.Unit\" />
+    <None Remove="FluentAssertions" />
+    <None Remove="Moq" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Catalyte.Apparel.API\Catalyte.Apparel.API.csproj" />
     <ProjectReference Include="..\Catalyte.Apparel.Data\Catalyte.Apparel.Data.csproj" />
     <ProjectReference Include="..\Catalyte.Apparel.DTOs\Catalyte.Apparel.DTOs.csproj" />
     <ProjectReference Include="..\Catalyte.Apparel.Providers\Catalyte.Apparel.Providers.csproj" />
+    <ProjectReference Include="..\Catalyte.Apparel.Test.Integration\Catalyte.Apparel.Test.Integration.csproj" />
     <ProjectReference Include="..\Catalyte.Apparel.Utilities\Catalyte.Apparel.Utilities.csproj" />
   </ItemGroup>
-
 </Project>

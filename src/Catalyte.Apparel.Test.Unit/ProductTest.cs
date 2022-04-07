@@ -308,6 +308,19 @@ namespace Catalyte.Apparel.Test.Unit.Product
             }
             Assert.Equal(expected, activeCount);
         }
+        [Fact]
+        public void TestProductActive_IfProductHasQuantity0ItIsInactive()
+        {
+            bool actual = true;
+            foreach (var product in _products)
+            {
+                if (product.Active == true && product.Quantity == "0")
+                {
+                   actual = false;
+                }
+            }
+            Assert.True(actual);
+        }
 
         [Fact]
         public void TestProductActive_NotAllProductsContainTrue()
