@@ -60,5 +60,6 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => p.Brand == brand).AsQueryable();
         }
+        
     }
 }
