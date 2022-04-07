@@ -17,12 +17,12 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
-
-
-        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
+        private readonly CardValidation _cardValidation;
+        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
+            _cardValidation = cardValidation;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
             IEnumerable<Purchase> purchases;
-            
+
             if (billingEmail == null || billingEmail == "")
             {
                 _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
@@ -54,6 +54,7 @@ namespace Catalyte.Apparel.Providers.Providers
             return purchases;
         }
 
+
         /// <summary>
         /// Persists a purchase to the database.
         /// </summary>
@@ -62,6 +63,11 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<Purchase> CreatePurchasesAsync(Purchase newPurchase)
         {
             Purchase savedPurchase;
+            List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
+            if (errorsList.Count > 0)
+            {
+                throw new BadRequestException(errorsList[0]);
+            }
 
             try
             {

@@ -1,4 +1,6 @@
 using Catalyte.Apparel.DTOs.Purchases;
+using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Collections.Generic;
@@ -8,30 +10,36 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
 using System;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Net.Http.Json;
+using Catalyte.Apparel.Data.Interfaces;
+using Moq;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.API.Controllers;
 using Microsoft.Extensions.Logging;
+using Catalyte.Apparel.Providers.Providers;
 
 namespace Catalyte.Apparel.Test.Integration
 {
     [Collection("Sequential")]
     public class PurchaseIntegrationTests : IClassFixture<CustomWebApplicationFactory>
-    {
-        private readonly HttpClient _client;
-        private readonly Purchase _purchase;
+    { 
+            private readonly HttpClient _client;
+            private readonly Purchase _purchase;
 
-        public PurchaseIntegrationTests(CustomWebApplicationFactory factory)
-        {
-            _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+            public PurchaseIntegrationTests(CustomWebApplicationFactory factory)
             {
-                AllowAutoRedirect = false
-            });
-        }
+                _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
+            }
 
-        [Fact]
-        public async Task GetPurchasesByEmailAsync_GivenEmailWithPurchases_Returns200()
-        {
+            [Fact]
+            public async Task CreatePurchasesAsync_WithNoValidationErrors_Returns204()
+            {
 
             var testLineItem = new List<LineItemDTO>
             { new LineItemDTO
@@ -66,7 +74,7 @@ namespace Catalyte.Apparel.Test.Integration
             var testCreditCard = new CreditCardDTO
             {
                 CardNumber = "4532520100683461",
-                CVV = 789,
+                CVV = "789",
                 Expiration = "11/22",
                 CardHolder = "Max Perkins"
             };
@@ -80,30 +88,29 @@ namespace Catalyte.Apparel.Test.Integration
                 LineItems = testLineItem
             };
 
-            var postPurchase = JsonContent.Create(purchaseDTO);
-            var post = await _client.PostAsync("/purchases", postPurchase);
-            Assert.Equal(HttpStatusCode.Created, post.StatusCode);
+                var postPurchase = JsonContent.Create(purchaseDTO);
+                var post = await _client.PostAsync("purchases", postPurchase);
+                Assert.Equal(HttpStatusCode.Created, post.StatusCode);
 
-            var response = await _client.GetAsync("/purchases/email/abc@123.org");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                var response = await _client.GetAsync("/purchases");
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
             var actual = content.FirstOrDefault().BillingAddress.Email;
             var expected = "abc@123.org";
             Assert.Equal(expected, actual);
-        }
+            }
+         /*   [Fact]
+            public async Task CreatePurchasesAsync_WithCardValidationErrors_Returns400()
+            {
+                var response = await _client.GetAsync("/purchases/email/customer1@home.com");
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        [Fact]
-        public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
-        {
-            var response = await _client.GetAsync("/purchases/email/customer1@home.com");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var actual = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
-            var expected = Array.Empty<object>();
-            Assert.Equal(expected, actual);
-        }
-
+                var actual = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
+                var expected = Array.Empty<object>();
+                Assert.Equal(expected, actual);
+            }*/
+        
         [Fact]
         public async Task GetPurchasesByEmailAsync_GivenNoEmailPath_Returns404()
         {

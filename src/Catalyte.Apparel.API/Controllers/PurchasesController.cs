@@ -1,4 +1,5 @@
 ﻿﻿using AutoMapper;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.API.DTOMappings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -52,6 +54,8 @@ namespace Catalyte.Apparel.API.Controllers
             var newPurchase = _mapper.MapCreatePurchaseDtoToPurchase(model);
             var savedPurchase = await _purchaseProvider.CreatePurchasesAsync(newPurchase);
             var purchaseDTO = _mapper.MapPurchaseToPurchaseDto(savedPurchase);
+
+
 
             if (purchaseDTO != null)
             {

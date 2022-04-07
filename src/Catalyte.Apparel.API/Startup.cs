@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.API
 {
@@ -36,7 +37,7 @@ namespace Catalyte.Apparel.API
             services.AddDataServices(Configuration);
             services.AddProviders();
             services.AddAutoMapper(typeof(MapperProfile));
-
+            services.AddScoped<CardValidation, CardValidation>();
             //services.AddAuthentication()
             //    .AddGoogle(options =>
             //    {
