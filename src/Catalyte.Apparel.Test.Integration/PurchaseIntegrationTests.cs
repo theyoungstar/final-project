@@ -10,6 +10,8 @@ using System.Linq;
 using System;
 using System.Net.Http.Json;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.API.Controllers;
+using Microsoft.Extensions.Logging;
 
 namespace Catalyte.Apparel.Test.Integration
 {
@@ -38,6 +40,7 @@ namespace Catalyte.Apparel.Test.Integration
                 Quantity = 1
             }
             };
+
             var testDeliveryAddress = new DeliveryAddressDTO
             {
                 DeliveryCity = "Atlanta",
@@ -48,6 +51,7 @@ namespace Catalyte.Apparel.Test.Integration
                 DeliveryStreet2 = "Apt A",
                 DeliveryZip = 12345
             };
+
             var testBillingAddress = new BillingAddressDTO
             {
                 BillingCity = "Atlanta",
@@ -58,6 +62,7 @@ namespace Catalyte.Apparel.Test.Integration
                 Email = "abc@123.org",
                 Phone = "123-234-2342"
             };
+
             var testCreditCard = new CreditCardDTO
             {
                 CardNumber = "4532520100683461",
@@ -65,6 +70,7 @@ namespace Catalyte.Apparel.Test.Integration
                 Expiration = "11/22",
                 CardHolder = "Max Perkins"
             };
+
             var purchaseDTO = new CreatePurchaseDTO
             {
                 OrderDate = System.DateTime.Now,

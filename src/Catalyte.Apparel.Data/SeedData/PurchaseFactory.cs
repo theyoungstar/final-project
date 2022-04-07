@@ -133,7 +133,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
-        private Purchase CreateRandomPurchase(int id)
+        public Purchase CreateRandomPurchase(int id)
         {
             return new Purchase
             {

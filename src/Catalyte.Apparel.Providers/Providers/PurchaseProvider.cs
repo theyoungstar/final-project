@@ -26,7 +26,7 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Retrieves all purchases from the database for the input email.
+        /// Retrieves purchases from the repository that were filtered.
         /// </summary>
         /// <param name="billingEmail"> Billing email used to make purchase.</param>
         /// <returns>All purchases.</returns>
@@ -35,7 +35,7 @@ namespace Catalyte.Apparel.Providers.Providers
         {
             IEnumerable<Purchase> purchases;
             
-            if (billingEmail == null)
+            if (billingEmail == null || billingEmail == "")
             {
                 _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
                 throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
@@ -50,7 +50,6 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            
 
             return purchases;
         }
