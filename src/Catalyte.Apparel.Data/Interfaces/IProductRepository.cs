@@ -1,6 +1,8 @@
 ﻿using Catalyte.Apparel.Data.Model;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+//using Catalyte.Apparel.Providers.Providers;
 
 namespace Catalyte.Apparel.Data.Interfaces
 {
@@ -16,5 +18,21 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<IEnumerable<string>> GetAllUniqueCategoriesAsync();
 
        Task<IEnumerable<string>> GetAllUniqueTypesAsync();
+
+        Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
+
+        Task<IEnumerable<Product>> GetProductsByTypeAsync(string type);
+
+        Task<IEnumerable<Product>> GetProductsByDemographicAsync(string demographic);
+
+        Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode);
+
+        Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode);
+
+        Task<IEnumerable<Product>> GetProductsByMaterialAsync(string material);
+
+        Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand);
+
+        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price);
     }
 }
