@@ -6,14 +6,12 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
     /// A custom exception for bad request errors.
     /// </summary>
     [Serializable]
-    public class BadRequestException : Exception, IHttpResponseException
+    public class UnprocessableEntityException : Exception, IHttpResponseException
     {
-        public BadRequestException(string message)
+        public UnprocessableEntityException(string message)
         {
-            Value = new(status: 400, error: "Bad Request", message: message);
+            Value = new(status: 422, error: "Unprocessable Entity", message: message);
         }
         public HttpResponseExceptionValue Value { get; set; }
     }
-   
-   
 }

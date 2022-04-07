@@ -1,6 +1,8 @@
 ﻿using Catalyte.Apparel.Data.Model;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+//using Catalyte.Apparel.Providers.Providers;
 
 namespace Catalyte.Apparel.Data.Interfaces
 {

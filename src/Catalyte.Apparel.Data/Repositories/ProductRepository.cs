@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
+
 
 namespace Catalyte.Apparel.Data.Repositories
 {
@@ -30,7 +32,7 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductIdEquals(productId)
                 .SingleOrDefaultAsync();
         }
-
+       
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             return await _ctx.Products
@@ -119,4 +121,9 @@ namespace Catalyte.Apparel.Data.Repositories
         }
     } 
 
-}
+        
+
+       
+    }
+
+

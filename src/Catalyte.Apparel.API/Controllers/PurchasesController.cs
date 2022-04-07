@@ -6,6 +6,7 @@ using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -43,6 +44,7 @@ namespace Catalyte.Apparel.API.Controllers
           
             return Ok(purchaseDTOs);
         }
+        
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)
@@ -52,6 +54,7 @@ namespace Catalyte.Apparel.API.Controllers
             var newPurchase = _mapper.MapCreatePurchaseDtoToPurchase(model);
             var savedPurchase = await _purchaseProvider.CreatePurchasesAsync(newPurchase);
             var purchaseDTO = _mapper.MapPurchaseToPurchaseDto(savedPurchase);
+
 
             if (purchaseDTO != null)
             {
