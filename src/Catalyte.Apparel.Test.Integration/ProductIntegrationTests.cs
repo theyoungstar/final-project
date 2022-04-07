@@ -32,7 +32,6 @@ namespace Catalyte.Apparel.Test.Integration
             });
         }
 
-
         [Fact]
         public async Task GetProducts_Returns200()
         {
