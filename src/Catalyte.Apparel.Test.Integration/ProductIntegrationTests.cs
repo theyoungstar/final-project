@@ -75,14 +75,14 @@ namespace Catalyte.Apparel.Test.Integration
         
         public async Task GetProductsByAllFiltersAsync_Returns200AndCorrectPropertyValues()
         {
-            var response = await _client.GetAsync("/products/filters/?brand=Nike");
+            var response = await _client.GetAsync("/products/filters/?brand=Nike&category=Baseball");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var content = await response.Content.ReadAsAsync<List<ProductDTO>>();
             var expected = "Nike";
             var result = content.Find(delegate (ProductDTO product)
             {
-                return product.Brand == "Nike";
+                return product.Brand == "Nike" && product.Category == "Baseball";
             });
             var actual = result.Brand;
             Assert.Equal(expected,actual);
