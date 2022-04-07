@@ -1,4 +1,5 @@
 ﻿﻿using AutoMapper;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.API.DTOMappings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 
 namespace Catalyte.Apparel.API.Controllers
 {

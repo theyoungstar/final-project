@@ -6,11 +6,46 @@ using System.Text;
 namespace Catalyte.Apparel.Data.SeedData
 {
     /// <summary>
-    /// This class provides tools for generating random purchases.
+    /// This class provides tools for generating random products.
     /// </summary>
     public class PurchaseFactory
     {
         Random _rand = new();
+
+        private List<string> _id = new()
+        {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30"
+
+        };
 
         private readonly List<string> _billingcity = new()
         {
@@ -71,13 +106,52 @@ namespace Catalyte.Apparel.Data.SeedData
             "Washington",
             "Alabama",
             "Vermont"
-            
+
         };
+        private List<string> _cardNumber = new()
+        {
+            "12345678901234",
+            "234567890123456",
+            "4567890123456789",
+            "5678901234567890123",
+            "0987654321098765",
+            "0192837465019283"
+        };
+        private List<string> _cvv = new()
+        {
+            "123",
+            "321",
+            "1234",
+            "4321",
+            "246",
+            "1356",
+
+        };
+        private List<string> _expiration = new()
+        {
+            "11/22",
+            "04-21",
+            "04-23",
+            "05/26",
+            "09-20",
+            "01/22",
+        };
+        /*  private List<string> _cardholder = new()
+          {
+
+          };*/
+
+
+
+
+
+
+
 
         /// <summary>
-        /// Generates a randomized state from the state list.
+        /// Generates a randomized product SKU.
         /// </summary>
-        /// <returns>A state string.</returns>
+        /// <returns>A SKU string.</returns>
         private string GetState()
         {
             return _state[_rand.Next(0, 2)];
@@ -93,7 +167,16 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Generates a randomized email from the email list.
+        /// Generates a random product offering id.
+        /// </summary>
+        /// <returns>A product offering string.</returns>
+        private string GetId()
+        {
+            return _id[_rand.Next(0, 2)];
+        }
+
+        /// <summary>
+        /// Generates a random style code.
         /// </summary>
         /// <returns>A style code string.</returns>
         private string GetEmail()
@@ -102,7 +185,7 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
         /// <summary>
-        /// Generates a randomized city from the city list.
+        /// Generates a random style code.
         /// </summary>
         /// <returns>A style code string.</returns>
         private string GetCity()
@@ -110,39 +193,86 @@ namespace Catalyte.Apparel.Data.SeedData
             return _billingcity[_rand.Next(0, 2)];
         }
 
-        /// <summary>
-        /// Generates a number of random purchases based on input.
-        /// </summary>
-        /// <param name="numberOfProducts">The number of random products to generate.</param>
-        /// <returns>A list of random products.</returns>
-        public List<Purchase> GenerateRandomPurchases(int numberOfPurchases)
-        {
 
-            var purchaseList = new List<Purchase>();
-
-            for (var i = 0; i < numberOfPurchases; i++)
+            /// <summary>
+            /// Generates a number of random products based on input.
+            /// </summary>
+            /// <param name="numberOfProducts">The number of random products to generate.</param>
+            /// <returns>A list of random products.</returns>
+            public List<Purchase> GenerateRandomPurchases(int numberOfPurchases)
             {
-                purchaseList.Add(CreateRandomPurchase(i + 1));
+
+                var purchaseList = new List<Purchase>();
+
+                for (var i = 0; i < numberOfPurchases; i++)
+                {
+                    purchaseList.Add(CreateRandomPurchase(i + 1));
+                }
+
+                return purchaseList;
             }
 
-            return purchaseList;
-        }
-
-        /// <summary>
-        /// Uses random generators to build a purchase.
-        /// </summary>
-        /// <param name="id">ID to assign to the product.</param>
-        /// <returns>A randomly generated product.</returns>
-        public Purchase CreateRandomPurchase(int id)
-        {
+            /// <summary>
+            /// Uses random generators to build a products.
+            /// </summary>
+            /// <param name="id">ID to assign to the product.</param>
+            /// <returns>A randomly generated product.</returns>
+            public Purchase CreateRandomPurchase(int id)
+            {
             return new Purchase
             {
                 Id = id,
+                //Category = _categories[_rand.Next(0, 9)],
                 BillingCity = GetCity(),
                 BillingPhone = GetPhone(),
                 BillingState = GetState(),
                 BillingEmail = GetEmail(),
+               
+            
+
+
+                //Active = false do this as has purchase instead?
             };
-        }
+            }
+
+            /// <summary>
+            /// Generates a random string of characters.
+            /// </summary>
+            /// <param name="size">Number of characters in the string.</param>
+            /// <param name="lowerCase">Boolean if the character string should be lowercase only; defaults to false.</param>
+            /// <returns>A random string of characters.</returns>
+            //private string RandomString(int size, bool lowerCase = false)
+            //{
+
+            //    // ** Learning moment **
+            //    // Code From
+            //    // https://www.c-sharpcorner.com/article/generating-random-number-and-string-in-C-Sharp/
+
+            //    // ** Learning moment **
+            //    // Always use a string builder when concatenating more than a couple of strings.
+            //    // Why? https://www.geeksforgeeks.org/c-sharp-string-vs-stringbuilder/
+            //    var builder = new StringBuilder(size);
+
+            //    // Unicode/ASCII Letters are divided into two blocks
+            //    // (Letters 65–90 / 97–122):
+            //    // The first group containing the uppercase letters and
+            //    // the second group containing the lowercase.  
+
+            //    // char is a single Unicode character  
+            //    char offset = lowerCase ? 'a' : 'A';
+            //    const int lettersOffset = 26; // A...Z or a..z: length=26  
+
+            //    for (var i = 0; i < size; i++)
+            //    {
+            //        // ** Learning moment **
+            //        // Because 'char' is a reserved word you can put '@' at the beginning to allow
+            //        // its use as a variable name.  You could do the same thing with 'class'
+            //        var @char = (char)_rand.Next(offset, offset + lettersOffset);
+            //        builder.Append(@char);
+            //    }
+
+            //    return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+            //}
+        
     }
 }
