@@ -22,7 +22,7 @@ namespace Catalyte.Apparel.Data.Model
 
         public string Type { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         public string PrimaryColorCode { get; set; }
 

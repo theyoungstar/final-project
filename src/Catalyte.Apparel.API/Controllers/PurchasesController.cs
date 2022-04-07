@@ -56,15 +56,10 @@ namespace Catalyte.Apparel.API.Controllers
 
             if (purchaseDTO != null)
             {
-                return BadRequest();
-            }
-            else
-            {
                 return Created($"/purchases/", purchaseDTO);
             }
 
-
-            
+            return NoContent();
         }
     }
 }

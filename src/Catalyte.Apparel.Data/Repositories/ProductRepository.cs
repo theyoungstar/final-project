@@ -3,9 +3,10 @@ using Catalyte.Apparel.Data.Filters;
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 
 
@@ -14,6 +15,7 @@ namespace Catalyte.Apparel.Data.Repositories
     /// <summary>
     /// This class handles methods for making requests to the product repository.
     /// </summary>
+
     public class ProductRepository : IProductRepository
     {
         private readonly IApparelCtx _ctx;
@@ -37,6 +39,25 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
+        {
+            return await GetAllUniquesOf(x => x.Category);
+        }
+        public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
+        {
+            return await GetAllUniquesOf(x => x.Type);
+        }
+        private async Task<IEnumerable<string>> GetAllUniquesOf(Func<Product,string> select)
+        {
+            var products = await _ctx.Products
+                .AsNoTracking()
+                .ToListAsync();
+            var uniques = new HashSet<string>(products.Select(select)).ToList();
+            uniques.Sort();
+
+            return uniques;
+        }
+    } 
 
         
 

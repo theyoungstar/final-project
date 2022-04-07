@@ -3,6 +3,7 @@ using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.DTOs.Purchases;
+using Catalyte.Apparel.DTOs.PromoCodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace Catalyte.Apparel.API
             CreateMap<LineItem, LineItemDTO>().ReverseMap();
             
             CreateMap<User, UserDTO>().ReverseMap();
+
+            CreateMap<PromoCode, PromoCodeDTO>().ReverseMap();
         }
 
     }

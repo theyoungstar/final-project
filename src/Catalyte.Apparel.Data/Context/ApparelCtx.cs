@@ -22,6 +22,8 @@ namespace Catalyte.Apparel.Data.Context
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<PromoCode> PromoCodes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
