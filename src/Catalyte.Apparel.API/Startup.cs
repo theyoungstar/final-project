@@ -1,5 +1,6 @@
 ﻿using Catalyte.Apparel.API.Filters;
 ﻿using System.Net.Mime;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data;
 using Catalyte.Apparel.Data.Context;
 using Catalyte.Apparel.Providers;
@@ -32,7 +33,7 @@ namespace Catalyte.Apparel.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<CardValidation, CardValidation>();
             services.AddDataServices(Configuration);
             services.AddProviders();
             services.AddAutoMapper(typeof(MapperProfile));
