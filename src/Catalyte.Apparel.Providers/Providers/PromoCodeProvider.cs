@@ -96,10 +96,10 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             //If Type is not "flat" or "%" throw error
-            if (newPromoCode.Type.ToLower() != "flat" && newPromoCode.Type != "%")
+            if (newPromoCode.Type.ToLower() != "flat" && newPromoCode.Type != "percent")
             {
-                _logger.LogError("Promo Code must have a type of \"flat\" or \"%\".");
-                throw new BadRequestException("Promo Code must have a type of \"flat\" or \"%\".");
+                _logger.LogError("Promo Code must have a type of \"flat\" or \"percent\".");
+                throw new BadRequestException("Promo Code must have a type of \"flat\" or \"percent\".");
             }
 
             // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN

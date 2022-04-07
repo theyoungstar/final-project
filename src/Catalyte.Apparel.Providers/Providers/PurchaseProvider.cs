@@ -5,6 +5,7 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -18,6 +19,8 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IProductRepository _productRepository;
 
+
+        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
         public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger)
         {
             _logger = logger;
@@ -26,18 +29,24 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Retrieves all purchases from the database.
+        /// Retrieves purchases from the repository that were filtered.
         /// </summary>
-        /// <param name="page">Number of pages.</param>
-        /// <param name="pageSize">How many purchases per page.</param>
+        /// <param name="billingEmail"> Billing email used to make purchase.</param>
         /// <returns>All purchases.</returns>
-        public async Task<IEnumerable<Purchase>> GetAllPurchasesAsync()
+
+        public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
-            List<Purchase> purchases;
+            IEnumerable<Purchase> purchases;
+            
+            if (billingEmail == null || billingEmail == "")
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
+            }
 
             try
             {
-                purchases = await _purchaseRepository.GetAllPurchasesAsync();
+                purchases = await _purchaseRepository.GetAllPurchasesByEmailAsync(billingEmail);
             }
             catch (Exception ex)
             {
