@@ -35,6 +35,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
         }
 
+        //Delete PromoCode Repo Function
+        public async void DeletePromoCodesAsync(PromoCode promoCode)
+        {
+            _ctx.PromoCodes.Remove(promoCode);
+            await _ctx.SaveChangesAsync();
+                        
+        }
         public async Task<PromoCode> GetPromoCodeByTitleAsync(string title)
         {
             return await _ctx.PromoCodes.AsNoTracking().WherePromoCodeTitleEquals(title).SingleOrDefaultAsync();
