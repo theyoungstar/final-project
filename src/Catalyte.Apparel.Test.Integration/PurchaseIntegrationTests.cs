@@ -1,4 +1,4 @@
-/*using Catalyte.Apparel.DTOs.Purchases;
+using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.Test.Integration.Utilities;
@@ -36,7 +36,7 @@ namespace Catalyte.Apparel.Test.Integration
             }
 
             [Fact]
-            public async Task GetPurchasesByEmailAsync_GivenEmailWithPurchases_Returns200()
+            public async Task CreatePurchasesAsync_WithNoValidationErrors_Returns204()
             {
 
             var testLineItem = new List<LineItemDTO>
@@ -81,16 +81,17 @@ namespace Catalyte.Apparel.Test.Integration
                 CreditCard = testCreditCard,
                 LineItems = testLineItem
             };
-            var response = await _client.GetAsync("/purchases/email/customer@home.com");
+
+                var postPurchase = JsonContent.Create(purchaseDTO);
+                var post = await _client.PostAsync("purchases", postPurchase);
+                Assert.Equal(HttpStatusCode.Created, post.StatusCode);
+
+                var response = await _client.GetAsync("/purchases");
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-                var content = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
-                var actual = content.FirstOrDefault().BillingAddress.Email;
-                var expected = "customer@home.com";
-                Assert.Equal(expected, actual);
             }
-            [Fact]
-            public async Task GetPurchasesByEmailAsync_GivenEmailWithNoPurchases_Returns200()
+         /*   [Fact]
+            public async Task CreatePurchasesAsync_WithCardValidationErrors_Returns400()
             {
                 var response = await _client.GetAsync("/purchases/email/customer1@home.com");
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -98,32 +99,7 @@ namespace Catalyte.Apparel.Test.Integration
                 var actual = await response.Content.ReadAsAsync<IEnumerable<PurchaseDTO>>();
                 var expected = Array.Empty<object>();
                 Assert.Equal(expected, actual);
-            }
-
-            [Fact]
-            public async Task GetPurchasesByEmailAsync_GivenNoEmailPath_Returns404()
-            {
-                var response = await _client.GetAsync("/purchases");
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
-
-            [Fact]
-            public async Task Card_Number_Contains_Less_Than_14_Digits_Returns_Bad_Request()
-            {
-
-                var response = await _factory.GenerateRandomPurchases(1);
-                //response.StatusCode = HttpStatusCode.BadRequest;
-
-                var content = await response.Content.ReadAsStringAsync<List<string>>();
-
-                var CardValidation = new CardValidation();
-                //List<string> errors = new List<string>();
-                //var stringResponse = HttpStatusCode.BadRequest.ToString();
-                //var actual = CardValidation.Has14To19Digits(response, errors);
-                //Assert.(actual);
-                //Assert.IsFalse(actual);
-                //Assert.False(actual);
-            }
-         }
+            }*/
+        
     }
-}*/
+}
