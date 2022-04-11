@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
 {
@@ -13,6 +14,12 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
             Value = new(status: 400, error: "Bad Request", message: message);
         }
         public HttpResponseExceptionValue Value { get; set; }
+
+        public BadRequestException(List<string> errorsList)
+        {
+            Value = new(status: 400, error: "Bad Request", messages: errorsList);
+        }
+
     }
    
    

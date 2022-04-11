@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Catalyte.Apparel.Providers.Providers
 {
     /// <summary>
@@ -69,7 +70,7 @@ namespace Catalyte.Apparel.Providers.Providers
             List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
             if (errorsList.Count > 0)
             {
-                throw new BadRequestException(errorsList[0]);
+                throw new BadRequestException(errorsList);
             }
 
             List<string> inactiveItemsList = new List<string>();
