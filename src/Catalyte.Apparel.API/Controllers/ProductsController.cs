@@ -133,11 +133,11 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters/brand/{brand}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(string brand)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(string[] brands)
         {
             _logger.LogInformation("Request received for GetProductsByBrandAsync");
 
-            var products = await _productProvider.GetProductsByBrandAsync(brand);
+            var products = await _productProvider.GetProductsByBrandAsync(brands);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
@@ -146,8 +146,8 @@ namespace Catalyte.Apparel.API.Controllers
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
-
-            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price);
+            if(brand != null)  brand.Split(",");
+            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price) ;
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);

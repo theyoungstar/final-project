@@ -201,7 +201,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand)
+        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string[] brand)
         {
             IEnumerable<Product> products;
 
@@ -217,13 +217,13 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string[] brands, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
         {
             IEnumerable<Product> products;
 
             try
             {
-                products = await _productRepository.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price);
+                products = await _productRepository.GetProductsByAllFiltersAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, price);
             }
             catch (Exception ex)
             {

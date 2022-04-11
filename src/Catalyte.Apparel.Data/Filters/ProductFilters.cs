@@ -54,11 +54,11 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => p.Material == material).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, string brand)
+        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, string[] brand)
         {
-            if(brand == null) { return products; }
+            if(brand.Length == 0) { return products; }
 
-            return products.Where(p => p.Brand == brand).AsQueryable();
+            return products.Where(p => brand.Contains(p.Brand)).AsQueryable();
         }
         
     }
