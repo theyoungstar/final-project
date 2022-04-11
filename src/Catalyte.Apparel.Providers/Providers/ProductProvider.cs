@@ -75,6 +75,11 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+        /// <summary>
+        /// Asynchronously retrieves all unique product categories currently in the database.
+        /// </summary>
+        /// <returns>A list of all unique product categories.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             IEnumerable<string> categories;
@@ -91,6 +96,11 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return categories;
         }
+        /// <summary>
+        /// Asynchronously retrieves all unique product types currently in the database. 
+        /// </summary>
+        /// <returns>A list of all unique product types.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
         {
             IEnumerable<string> types;
