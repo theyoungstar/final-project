@@ -102,7 +102,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTOs);
         }
-        [HttpGet("/products/filters/primarycolor/{primaryColorCode}")]  // Products database has PrimaryColorCode information but is not assigned to product objects
+        [HttpGet("/products/filters/primarycolor/{primaryColorCode}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode)
         {
             _logger.LogInformation("Request received for GetProductsByPrimaryColorCodeAsync");
@@ -112,7 +112,7 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTOs);
         }
-        [HttpGet("/products/filters/secondarycolor/{secondaryColorCode}")]   // Products database has SecondaryColorCode information but is not assigned to product objects
+        [HttpGet("/products/filters/secondarycolor/{secondaryColorCode}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode)
         {
             _logger.LogInformation("Request received for GetProductsBySecondaryColorCodeAsync");

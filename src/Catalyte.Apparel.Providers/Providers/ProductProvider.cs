@@ -217,6 +217,19 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+        /// <summary>
+        /// Asynchrously retrieves products based on filter parameters passed in the HTTP request.
+        /// </summary>
+        /// <param name="brands">The brands of the products you want to see.</param>
+        /// <param name="category">The categories of products you want to see.</param>
+        /// <param name="type">The type of products you want to see.</param>
+        /// <param name="demographic">The demographics of products you want to see.</param>
+        /// <param name="primaryColorCode">The color code of products you want to see.</param>
+        /// <param name="secondaryColorCode">The color code of products you want to see.</param>
+        /// <param name="material">The material of products you want to see.</param>
+        /// <param name="price">The price range of products you want to see.</param>
+        /// <returns>Filtered list of products.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string[] brands, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
         {
             IEnumerable<Product> products;
