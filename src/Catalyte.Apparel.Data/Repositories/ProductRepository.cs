@@ -106,7 +106,15 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductBrandEquals(brand)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
+        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductEqualsActive()
+                .ToListAsync();
+        }
+    }
+    public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
         {
             return await _ctx.Products.AsNoTracking()
                 .WhereProductBrandEquals(brand)
@@ -119,7 +127,7 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductPriceEquals(price)
                 .ToListAsync();
         }
-    } 
+        
 
         
 

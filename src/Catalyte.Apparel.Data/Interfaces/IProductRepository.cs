@@ -34,5 +34,7 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand);
 
         Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price);
+
+        Task<IEnumerable<Product>> GetActiveProductsAsync();
     }
 }

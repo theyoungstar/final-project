@@ -60,9 +60,9 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => p.Brand == brand).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductTypeEqualsActive(this IQueryable<Product> products, string status)
+        public static IQueryable<Product> WhereProductEqualsActive(this IQueryable<Product> products)
         {
-            if (Type == Active) { return products; }
+            //if (active == false) { return products; }
 
             return products.Where(p => p.Active == true).AsQueryable();
         }
