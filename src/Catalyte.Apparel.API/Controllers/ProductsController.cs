@@ -152,6 +152,10 @@ namespace Catalyte.Apparel.API.Controllers
 
             return Ok(productDTOs);
         }
+        /// <summary>
+        /// Endpoint for active products
+        /// </summary>
+        /// <returns>productDTOs</returns>
         [HttpGet("/products/active")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync()
         {

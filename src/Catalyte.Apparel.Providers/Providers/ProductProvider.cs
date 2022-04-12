@@ -233,7 +233,11 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-
+        /// <summary>
+        /// This task retrieves all of the products marked active
+        /// </summary>
+        /// <returns>active products</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<Product>> GetActiveProductsAsync()
         {
                 IEnumerable<Product> products;

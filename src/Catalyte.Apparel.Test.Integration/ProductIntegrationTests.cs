@@ -87,5 +87,23 @@ namespace Catalyte.Apparel.Test.Integration
             var actual = result.Brand;
             Assert.Equal(expected,actual);
         }
+        /// <summary>
+        /// Integration test for active products filter
+        /// </summary>
+        [Fact]
+        public async Task GetProductsByAllFiltersAsync_Returns200AndActive()
+        {
+            var response = await _client.GetAsync("/products/active");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync<List<ProductDTO>>();
+            var expected = true;
+            var result = content.Find(delegate (ProductDTO product)
+            {
+                return product.Active == true;
+            });
+            var actual = result.Active;
+            Assert.Equal(expected, actual);
+        }
     }
 }
