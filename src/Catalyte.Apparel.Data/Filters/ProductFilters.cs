@@ -62,8 +62,6 @@ namespace Catalyte.Apparel.Data.Filters
         }
         public static IQueryable<Product> WhereProductEqualsActive(this IQueryable<Product> products)
         {
-            //if (active == false) { return products; }
-
             return products.Where(p => p.Active == true).AsQueryable();
         }
     }
