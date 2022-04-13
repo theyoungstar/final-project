@@ -243,7 +243,7 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
-            if(min > max)
+            if(min > max && max != 0)
             {
                 throw new ServiceUnavailableException("Minimum price value must be less than the maximum.");
             }
