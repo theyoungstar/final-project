@@ -93,7 +93,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters/demographics/{demographic}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByDemographicAsync(string demographic)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByDemographicAsync(List<string> demographic)
         {
             _logger.LogInformation("Request received for GetProductsByDemographicAsync");
 
@@ -143,7 +143,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery]List<string> brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, [FromQuery]List<string> material, string price)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery]List<string> brand, string category, string type,[FromQuery]List<string> demographic, string primaryColorCode, string secondaryColorCode, [FromQuery]List<string> material, string price)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
             

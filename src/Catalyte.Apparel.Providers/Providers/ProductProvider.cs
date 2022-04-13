@@ -147,7 +147,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsByDemographicAsync(string demographic)
+        public async Task<IEnumerable<Product>> GetProductsByDemographicAsync(List<string> demographic)
         {
             IEnumerable<Product> products;
 
@@ -240,7 +240,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="price">The price range of products you want to see.</param>
         /// <returns>Filtered list of products.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, List<string> material, string price)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, List<string> demographic, string primaryColorCode, string secondaryColorCode, List<string> material, string price)
         {
             IEnumerable<Product> products;
             if(brands == null)
