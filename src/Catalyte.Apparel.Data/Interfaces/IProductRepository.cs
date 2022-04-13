@@ -19,9 +19,9 @@ namespace Catalyte.Apparel.Data.Interfaces
 
        Task<IEnumerable<string>> GetAllUniqueTypesAsync();
 
-        Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
+        Task<IEnumerable<Product>> GetProductsByCategoryAsync(List<string> category);
 
-        Task<IEnumerable<Product>> GetProductsByTypeAsync(string type);
+        Task<IEnumerable<Product>> GetProductsByTypeAsync(List<string> type);
 
         Task<IEnumerable<Product>> GetProductsByDemographicAsync(List<string> demographic);
 
@@ -33,6 +33,6 @@ namespace Catalyte.Apparel.Data.Interfaces
 
         Task<IEnumerable<Product>> GetProductsByBrandAsync(List<string> brand);
 
-        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, string category, string type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
+        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
     }
 }
