@@ -48,15 +48,15 @@ namespace Catalyte.Apparel.Data.Filters
             if(colorCode == null) { return products; }    
             return products.Where(p => p.SecondaryColorCode == colorCode).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, string material)
+        public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, List<string> material)
         {
-            if(material == null) { return products; }
+            if(material.Count == 0) { return products; }
 
-            return products.Where(p => p.Material == material).AsQueryable();
+            return products.Where(p => material.Contains(p.Material)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, string[] brand)
+        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, List<string> brand)
         {
-            if(brand.Length == 0) { return products; }
+            if(brand.Count == 0) { return products; }
 
             return products.Where(p => brand.Contains(p.Brand)).AsQueryable();
         }

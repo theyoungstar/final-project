@@ -92,21 +92,21 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductPrimaryColorCodeEquals(secondaryColorCode)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsByMaterialAsync(string material)
+        public async Task<IEnumerable<Product>> GetProductsByMaterialAsync(List<string> material)
         {
             return await _ctx.Products
                 .AsNoTracking()
                 .WhereProductMaterialEquals(material)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string[] brand)
+        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(List<string> brand)
         {
             return await _ctx.Products
                 .AsNoTracking()
                 .WhereProductBrandEquals(brand)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string[] brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, List<string> material, string price)
         {
             return await _ctx.Products.AsNoTracking()
                 .WhereProductBrandEquals(brand)

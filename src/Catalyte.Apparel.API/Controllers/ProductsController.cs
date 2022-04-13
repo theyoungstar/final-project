@@ -123,7 +123,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters/material/{material}")]  
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByMaterialAsync(string material)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByMaterialAsync(List<string> material)
         {
             _logger.LogInformation("Request received for GetProductsByMaterialAsync");
 
@@ -133,7 +133,7 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters/brand/{brand}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(string[] brands)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByBrandAsync(List<string> brands)
         {
             _logger.LogInformation("Request received for GetProductsByBrandAsync");
 
@@ -143,11 +143,11 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery]List<string> brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, [FromQuery]List<string> material, string price)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
             
-            var products = await _productProvider.GetProductsByAllFiltersAsync(brand.Split(","), category, type, demographic, primaryColorCode, secondaryColorCode, material, price) ;
+            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price) ;
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
