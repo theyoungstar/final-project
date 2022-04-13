@@ -5,7 +5,6 @@ using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -143,11 +142,11 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(productDTOs);
         }
         [HttpGet("/products/filters")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery]List<string> brand, string category, string type,[FromQuery]List<string> demographic, string primaryColorCode, string secondaryColorCode, [FromQuery]List<string> material, string price)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery]List<string> brand, string category, string type,[FromQuery]List<string> demographic, string primaryColorCode, string secondaryColorCode, [FromQuery]List<string> material, double min, double max)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
             
-            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price) ;
+            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max) ;
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);

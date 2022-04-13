@@ -31,11 +31,12 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => demographic.Contains(p.Demographic)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, string price)
+        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, double min, double max)
         {
-            if(price == null) { return products; }
+            if(min == 0 && max == 0) { return products; }
+            if(min > 0 && max == 0) { return products.Where(p => p.Price >= min).AsQueryable(); }
 
-            return products.Where(p => p.Price == price).AsQueryable();
+            return products.Where(p => p.Price <= max && p.Price >= min).AsQueryable();
         }
         public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
         {

@@ -240,17 +240,17 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="price">The price range of products you want to see.</param>
         /// <returns>Filtered list of products.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, List<string> demographic, string primaryColorCode, string secondaryColorCode, List<string> material, string price)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, List<string> demographic, string primaryColorCode, string secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
-            if(brands == null)
+            if(min > max)
             {
-                brands = new List<string> { };
+                throw new ServiceUnavailableException("Minimum price value must be less than the maximum.");
             }
 
             try
             {
-                products = await _productRepository.GetProductsByAllFiltersAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, price);
+                products = await _productRepository.GetProductsByAllFiltersAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
             }
             catch (Exception ex)
             {
