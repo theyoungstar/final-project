@@ -38,16 +38,16 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => p.Price <= max && p.Price >= min).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, List<string> colorCode)
         {
-            if(colorCode == null) { return products; }
+            if(colorCode.Count == 0) { return products; }
 
-            return products.Where(p => p.PrimaryColorCode == colorCode).AsQueryable();
+            return products.Where(p => colorCode.Contains(p.PrimaryColorCode)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductSecondaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        public static IQueryable<Product> WhereProductSecondaryColorCodeEquals(this IQueryable<Product> products, List<string> colorCode)
         {
-            if(colorCode == null) { return products; }    
-            return products.Where(p => p.SecondaryColorCode == colorCode).AsQueryable();
+            if(colorCode.Count == 0) { return products; }    
+            return products.Where(p => colorCode.Contains(p.SecondaryColorCode)).AsQueryable();
         }
         public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, List<string> material)
         {

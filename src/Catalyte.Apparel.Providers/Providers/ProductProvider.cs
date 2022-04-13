@@ -163,7 +163,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode)
+        public async Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(List<string> primaryColorCode)
         {
             IEnumerable<Product> products;
 
@@ -179,7 +179,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
-        public async Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode)
+        public async Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(List<string> secondaryColorCode)
         {
             IEnumerable<Product> products;
 
@@ -240,7 +240,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="price">The price range of products you want to see.</param>
         /// <returns>Filtered list of products.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, List<string> demographic, string primaryColorCode, string secondaryColorCode, List<string> material, double min, double max)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, string category, string type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
             if(min > max)
