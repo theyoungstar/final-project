@@ -204,6 +204,14 @@ namespace Catalyte.Apparel.Data.SeedData
             }
             return active;
         }
+        /// <summary>
+        /// Returns a random boolean indicating active.
+        /// </summary>
+        /// <returns>Active as either true or false value boolean.</returns>
+        public bool GetOnlyActive()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Returns a random cateogry from the list of categories.
@@ -351,18 +359,29 @@ namespace Catalyte.Apparel.Data.SeedData
 
             for (var i = 0; i < numberOfProducts; i++)
             {
-                productList.Add(CreateRandomProduct(i + 1));
+                productList.Add(GenerateRandomProduct(i + 1));
             }
 
             return productList;
         }
+        public List<Product> GenerateActiveProducts(int numberOfProducts)
+        {
 
+            var productList = new List<Product>();
+
+            for (var i = 0; i < numberOfProducts; i++)
+            {
+                productList.Add(GenerateActiveProduct(i + 1));
+            }
+
+            return productList;
+        }
         /// <summary>
         /// Uses random generators to build a products.
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
-        private Product CreateRandomProduct(int id)
+        private Product GenerateRandomProduct(int id)
         {
             var product = new Product();
             var adjective = GetProductAdjective();
@@ -391,6 +410,14 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return product;
         }
+
+        public Product GenerateActiveProduct(int id)
+        {
+            var product = GenerateRandomProduct(id);
+            product.Active = true;
+            return product;
+        }
+        
 
 
         /// <summary>

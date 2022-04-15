@@ -104,7 +104,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
             return types;
-        }
+        } 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
         {
             IEnumerable<Product> products;
@@ -237,7 +237,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// This task retrieves all of the products marked active
         /// </summary>
         /// <returns>active products</returns>
-        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task<IEnumerable<Product>> GetActiveProductsAsync()
         {
                 IEnumerable<Product> products;
@@ -249,7 +249,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message);
-                    throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                    throw new BadRequestException("The product you requested is inactive.");
                 }
 
                 return products;

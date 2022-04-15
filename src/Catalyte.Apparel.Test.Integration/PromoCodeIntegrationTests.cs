@@ -47,12 +47,12 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task PostPromoCodes_Returns201()
+        public void  PostPromoCodes_Returns201()
         {
 
-            PostCodeHelper();
+            //PostCodeHelper();
 
-            GetCodeHelper();
+           // GetCodeHelper();
             //var task1 = PostCodeHelper();
 
            //var task2 = GetCodeHelper();
@@ -74,7 +74,7 @@ namespace Catalyte.Apparel.Test.Integration
            
 
         }
-
+        [Fact]
         public async Task PostCodeHelper()
         {
             var promoCode = new PromoCode()
@@ -90,7 +90,7 @@ namespace Catalyte.Apparel.Test.Integration
             var result = await _client.PostAsync("/promocodes", json);
             Assert.Equal(HttpStatusCode.Created, result.StatusCode);
         }
-
+        [Fact]
         public async Task GetCodeHelper()
         {
             var response = await _client.GetAsync("/promocodes");

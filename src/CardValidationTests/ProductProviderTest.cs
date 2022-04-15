@@ -4,11 +4,11 @@ using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Providers;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
-//using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,66 +17,58 @@ namespace Catalyte.Apparel.Test.Unit
 {
     public class ProductProviderTest
     {
-        private readonly ProductFactory _productFactory = new();
-
+        private readonly ProductFactory _factory = new();
         private readonly Mock<IProductRepository> repositoryStub;
         private readonly Mock<ILogger<ProductProvider>> loggerStub;
-
-        private readonly ProductProvider _provider;
-        //private readonly Product _testProduct;
-        //private readonly List<Product> _testProducts;
+        private readonly ProductProvider provider;
+        private readonly Product testProduct;
+        private readonly List<Data.Model.Product> testProducts;
 
 
         public ProductProviderTest()
         {
-            List<Data.Model.Product> products = _productFactory.GenerateRandomProducts(1);
+            // Set up initial testing tools that most/all tests will use
             repositoryStub = new Mock<IProductRepository>();
             loggerStub = new Mock<ILogger<ProductProvider>>();
-            _provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
+            provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
+            testProduct = _factory.GenerateActiveProduct(1);
+            testProducts = _factory.GenerateActiveProducts(10);
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts); 
+            repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
         }
-        /*  _testProducts = _productFactory.GetActive();
-          repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(_testProducts);
-
-          var result = products.Find(delegate (Product product)
-          {
-              return product.Active == true;
-          });
-          repositoryStub.Setup(repo => repo.GetActiveProductsAsync());*/
-
+   
+        [Fact]
+        public async Task GetActiveProducts_Returns_ActiveProduct()
+        {
+            // Arrange
+            var expectedResult = testProducts.FindAll(x => x.Active == true);
+            // Act
+            var result = await provider.GetActiveProductsAsync();
+            
+          // Assert
+          Assert.Equal(expectedResult.Count, result.ToList().Count);
+        }
 
 
         [Fact]
-        public async Task GetActiveProducts()
+        public void GetInactiveProduct_Returns_False()
         {
-            List<Product> products = null;
-            Product product = new()
-            {
-                Id = 660,
-                Name = "Lightweight Boxing Hat",
-                Sku = "NGH-KYH-RD",
-                Description = "Boxing, Men, Lightweight",
-                Demographic = "Men",
-                Category = "Boxing",
-                Type = "Hat",
-                ReleaseDate = "12/05/2020",
-                PrimaryColorCode = "#c25975",
-                SecondaryColorCode = "#637a91",
-                StyleNumber = "sc83418",
-                GlobalProductCode = "po-DREFRJM",
-                Active = true,
-                Brand = "Reusch",
-                ImageSrc = "https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg",
-                Material = "Cotton",
-                Price = "78.39",
-                Quantity = "46"
-            };
+            //Arrange
+            List<Product> products = new List<Product>();
+            Product product = new();
             products.Add(product);
+          
+            //Act
             repositoryStub.Setup(stub => stub.GetActiveProductsAsync()).ReturnsAsync(products);
-            var expected = products;
-            //IEnumerable<Product> enumerable = products;
-            var actual = await _provider.GetActiveProductsAsync();
-            Assert.Equal(expected, actual);
-            //Assert.Equal(actual, expected);
+            var result = products.Find(delegate (Product product)
+            {
+                return product.Active == false;
+            });
+            //var returnException = Assert.ThrowsAsync<BadRequestException>(() => _provider.GetActiveProductsAsync());
+            //var actual = await _provider.GetActiveProductsAsync();
+
+            //Assert
+           Assert.False(product.Active);
         }
     }
 }
