@@ -362,7 +362,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
-        private Product CreateRandomProduct(int id)
+        public Product CreateRandomProduct(int id)
         {
             var product = new Product();
             var adjective = GetProductAdjective();

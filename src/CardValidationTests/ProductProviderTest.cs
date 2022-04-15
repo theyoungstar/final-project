@@ -1,45 +1,46 @@
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Data.SeedData;
+using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Providers;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
+
 namespace Catalyte.Apparel.Test.Unit
 {
-    public class PurchaseProviderTest
+    public class ProductProviderTest
     {
-        private readonly PurchaseProvider provider;
-        private readonly Mock<IPurchaseRepository> repositoryStub;
-        private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
-        private readonly Mock<CardValidation> cardValidationStub;
+        private readonly ProductFactory _factory = new();
+        private readonly Mock<IProductRepository> repositoryStub;
+        private readonly Mock<ILogger<ProductProvider>> loggerStub;
+        private readonly ProductProvider provider;
+        private readonly Product testProduct;
+        private readonly List<Data.Model.Product> testProducts;
+        private readonly List<string> productCategories;
+        private readonly List<string> productTypes;
 
 
-        public PurchaseProviderTest()
+        public ProductProviderTest()
         {
-            repositoryStub = new Mock<IPurchaseRepository>();
-            loggerStub = new Mock<ILogger<PurchaseProvider>>();
-            cardValidationStub = new Mock<CardValidation>();
-            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object, cardValidationStub.Object);
+            // Set up initial testing tools that most/all tests will use
+            repositoryStub = new Mock<IProductRepository>();
+            loggerStub = new Mock<ILogger<ProductProvider>>();
+            provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
+            testProduct = _factory.CreateRandomProduct(5);
+            testProducts = _factory.GenerateRandomProducts(40);
+            repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
+            repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
+           // repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0)); <- do this in each test, pass tested params in each
         }
 
-        [Fact]
-        public async Task CreatePurchaseReturnsPurchase()
-        {
-            //Arrange
-            Purchase purchase = new();
-            List<string> errorsList = new List<string>();
-            cardValidationStub.Setup(stub => stub.CreditCardValidation(It.IsAny<Purchase>())).Returns(errorsList);
-            repositoryStub.Setup(stub => stub.CreatePurchaseAsync(It.IsAny<Purchase>())).ReturnsAsync(purchase);
-
-            //Act
-            var actual = await provider.CreatePurchasesAsync(purchase);
-
-            //Assert
-            Assert.Equal(actual, purchase);
-        }
+        
     }
 }
