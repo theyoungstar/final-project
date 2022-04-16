@@ -52,11 +52,11 @@ namespace Catalyte.Apparel.Test.Unit
             
         }
         [Fact]
-        public void GetProductById_ReturnsCorrectProductId()
+        public void GetProductById_ReturnsCorrectProduct()
         {
-            var targetId = testProducts.Where(p => p.Id == 5).FirstOrDefault().Id;
-            var queriedId = repositoryStub.Object.GetProductByIdAsync(5).Result.Id;
-            Assert.Equal(targetId, queriedId);
+            var target = testProduct;
+            var queried = repositoryStub.Object.GetProductByIdAsync(5).Result;
+            Assert.Equal(target, queried);
         }
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
@@ -72,6 +72,20 @@ namespace Catalyte.Apparel.Test.Unit
             var expected = productTypes;
             var actual = repositoryStub.Object.GetAllUniqueTypesAsync().Result.ToList();
             Assert.Equal(expected,actual);  
+        }
+        [Fact]
+        public void GetProductsByAllFiltersAsync_ReturnsCorrectBrand()
+        {
+            var param = new List<string> { "Nike" };
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(param, null, null, null, null, null, null, 0, 0)).ReturnsAsync(testProducts);
+            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(param, null,null,null,null,null,null, 0,0).Result.ToList();
+            var isoResult = result.Find(delegate (Product product)
+            {
+                return product.Brand == "Nike";
+            });
+            var actual = isoResult.Brand;
+            var expected = "Nike";
+            Assert.Equal(expected, actual);
         }
     }
 }
