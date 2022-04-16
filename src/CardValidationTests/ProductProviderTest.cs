@@ -49,6 +49,14 @@ namespace Catalyte.Apparel.Test.Unit
             Assert.Equal(totalCount, actualCount);
             
         }
+        [Fact]
+        public void GetProductById_ReturnsCorrectProductId()
+        {
+            repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
+            var targetProduct = testProducts.Where(p => p.Id == 5).FirstOrDefault();
+            var queriedProduct = repositoryStub.Object.GetProductByIdAsync(5).Result;
+            Assert.Equal(targetProduct.Id, queriedProduct.Id);
+        }
         
     }
 }
