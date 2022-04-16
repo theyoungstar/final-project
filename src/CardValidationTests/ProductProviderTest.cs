@@ -35,6 +35,8 @@ namespace Catalyte.Apparel.Test.Unit
             provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
             testProduct = _factory.CreateRandomProduct(5);
             testProducts = _factory.GenerateRandomProducts(40);
+            productCategories = _factory.GetAllCategories();
+            productTypes = _factory.GetAllProductTypes();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
@@ -52,11 +54,24 @@ namespace Catalyte.Apparel.Test.Unit
         [Fact]
         public void GetProductById_ReturnsCorrectProductId()
         {
-            repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
-            var targetProduct = testProducts.Where(p => p.Id == 5).FirstOrDefault();
-            var queriedProduct = repositoryStub.Object.GetProductByIdAsync(5).Result;
-            Assert.Equal(targetProduct.Id, queriedProduct.Id);
+            var targetId = testProducts.Where(p => p.Id == 5).FirstOrDefault().Id;
+            var queriedId = repositoryStub.Object.GetProductByIdAsync(5).Result.Id;
+            Assert.Equal(targetId, queriedId);
         }
-        
+        [Fact]
+        public void GetAllUniqueCategories_ReturnsAllCategories()
+        {
+            var expected = productCategories;
+            var actual = repositoryStub.Object.GetAllUniqueCategoriesAsync().Result.ToList();
+            Assert.Equal(expected, actual);
+
+        }
+        [Fact]
+        public void GetAllUniqueTypes_ReturnsAllTypes()
+        {
+            var expected = productTypes;
+            var actual = repositoryStub.Object.GetAllUniqueTypesAsync().Result.ToList();
+            Assert.Equal(expected,actual);  
+        }
     }
 }
