@@ -36,11 +36,19 @@ namespace Catalyte.Apparel.Test.Unit
             testProduct = _factory.CreateRandomProduct(5);
             testProducts = _factory.GenerateRandomProducts(40);
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
            // repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0)); <- do this in each test, pass tested params in each
         }
-
+        [Fact]
+        public void GetProductsAsync_ReturnsAllProducts()
+        {
+            var totalCount = testProducts;
+            var actualCount = repositoryStub.Object.GetProductsAsync().Result;
+            Assert.Equal(totalCount, actualCount);
+            
+        }
         
     }
 }
