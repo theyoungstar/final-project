@@ -57,11 +57,25 @@ namespace Catalyte.Apparel.Test.Unit
             
         }
         [Fact]
+        public void GetProductsAsync_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
+        {
+            repositoryStub.Setup(repo => repo.GetProductsAsync()).ThrowsAsync(exception);
+
+            Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductsAsync());
+        }
+        [Fact]
         public void GetProductById_ReturnsCorrectProduct()
         {
             var target = testProduct;
             var queried = repositoryStub.Object.GetProductByIdAsync(5).Result;
             Assert.Equal(target, queried);
+        }
+        [Fact]
+        public void GetProductById_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
+        {
+            repositoryStub.Setup(repo => repo.GetProductByIdAsync(3)).ThrowsAsync(exception);
+
+            Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductByIdAsync(3));
         }
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
@@ -72,13 +86,26 @@ namespace Catalyte.Apparel.Test.Unit
 
         }
         [Fact]
+        public void GetAllUniqueCategories_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
+        {
+            repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ThrowsAsync(exception);
+
+            Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetAllUniqueCategoriesAsync());
+        }
+        [Fact]
         public void GetAllUniqueTypes_ReturnsAllTypes()
         {
             var expected = productTypes;
             var actual = repositoryStub.Object.GetAllUniqueTypesAsync().Result.ToList();
             Assert.Equal(expected,actual);  
         }
-        
+        [Fact]
+        public void GetAllUniqueTypes_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
+        {
+            repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ThrowsAsync(exception);
+
+            Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetAllUniqueTypesAsync());
+        }
         [Fact]
         public void GetProductsByAllFilters_ReturnsProductsWithMultipleCorrectAttributes()
         {

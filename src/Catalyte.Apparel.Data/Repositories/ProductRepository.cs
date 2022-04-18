@@ -57,56 +57,7 @@ namespace Catalyte.Apparel.Data.Repositories
 
             return uniques;
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(List<string> category)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductCategoryEquals(category)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByTypeAsync(List<string> type)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductTypeEquals(type)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByDemographicAsync(List<string> demographic)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductDemographicEquals(demographic)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(List<string> primaryColorCode)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductPrimaryColorCodeEquals(primaryColorCode)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(List<string> secondaryColorCode)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductPrimaryColorCodeEquals(secondaryColorCode)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByMaterialAsync(List<string> material)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductMaterialEquals(material)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(List<string> brand)
-        {
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductBrandEquals(brand)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
+       public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             return await _ctx.Products.AsNoTracking()
                 .WhereProductBrandEquals(brand)

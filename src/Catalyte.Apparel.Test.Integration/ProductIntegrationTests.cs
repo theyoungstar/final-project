@@ -89,10 +89,10 @@ namespace Catalyte.Apparel.Test.Integration
         }
         [Fact]
 
-        public async Task GetProductsByAllFiltersAsync_Returns504IfMinIsGreaterThanMax()
+        public async Task GetProductsByAllFiltersAsync_Returns400IfMinIsGreaterThanMax()
         {
             var response = await _client.GetAsync("/products/filters/?min=50&max=40");
-            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

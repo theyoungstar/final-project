@@ -115,118 +115,6 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             return types;
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(List<string> category)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByCategoryAsync(category);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByTypeAsync(List<string> type)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByTypeAsync(type);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByDemographicAsync(List<string> demographic)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByDemographicAsync(demographic);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(List<string> primaryColorCode)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByPrimaryColorCodeAsync(primaryColorCode);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(List<string> secondaryColorCode)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsBySecondaryColorCodeAsync(secondaryColorCode);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByMaterialAsync(List<string> material)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByMaterialAsync(material);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(List<string> brand)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByBrandAsync(brand);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
         /// <summary>
         /// Asynchrously retrieves products based on filter parameters passed in the HTTP request.
         /// </summary>
@@ -239,13 +127,13 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="material">The material of products you want to see.</param>
         /// <param name="price">The price range of products you want to see.</param>
         /// <returns>Filtered list of products.</returns>
-        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="BadRequestException"></exception>
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
             if(min > max && max != 0)
             {
-                throw new ServiceUnavailableException("Minimum price value must be less than the maximum.");
+                throw new BadRequestException("Minimum price value must be less than the maximum.");
             }
 
             try
