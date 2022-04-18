@@ -31,6 +31,7 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> mensProducts;
         private readonly List<Product> primaryColorProducts;
         private readonly List<Product> secondaryColorProducts;
+        private readonly List<Product> leatherProducts;
 
         public ProductProviderTest()
         {
@@ -46,6 +47,7 @@ namespace Catalyte.Apparel.Test.Unit
             mensProducts = testProducts.Where(p => p.Demographic == "Men").ToList();
             primaryColorProducts = testProducts.Where(p => p.PrimaryColorCode == "#000000").ToList();
             secondaryColorProducts = testProducts.Where(p => p.SecondaryColorCode == "#000000").ToList();
+            leatherProducts = testProducts.Where(p => p.Material == "Leather").ToList();
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
@@ -85,70 +87,69 @@ namespace Catalyte.Apparel.Test.Unit
             Assert.Equal(expected,actual);  
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectBrand()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectBrand()
         {
             var param = new List<string> { "Nike" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(param, null, null, null, null, null, null, 0, 0)).ReturnsAsync(nikeProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(param, null,null,null,null,null,null, 0,0).Result.ToList();
-            var isoResult = result.First();
-            var actual = isoResult.Brand;
-            var expected = "Nike";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.Brand == "Nike");
+            Assert.True(filteredResults);
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectCategory()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectCategory()
         {
             var param = new List<string> { "Golf" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0)).ReturnsAsync(golfProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.First();
-            var actual = isoResult.Category;
-            var expected = "Golf";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.Category == "Golf");
+            Assert.True(filteredResults);
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectType()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectType()
         {
             var param = new List<string> { "Hat" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0)).ReturnsAsync(hatProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.First();
-            var actual = isoResult.Type;
-            var expected = "Hat";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.Type == "Hat");
+ 
+            Assert.True(filteredResults);
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectDemographic()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectDemographic()
         {
             var param = new List<string> { "Men" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0)).ReturnsAsync(mensProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.Last();
-            var actual = isoResult.Demographic;
-            var expected = "Men";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.Demographic == "Men");
+           
+            Assert.True(filteredResults);
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectPrimaryColorCode()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectPrimaryColorCode()
         {
             var param = new List<string> { "#000000" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0)).ReturnsAsync(primaryColorProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0).Result.ToList();
-            var isoResult = result.First();
-            var actual = isoResult.PrimaryColorCode;
-            var expected = "#000000";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.PrimaryColorCode == "#000000");
+            Assert.True(filteredResults);
         }
         [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectSecondaryColorCode()
+        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectSecondaryColorCode()
         {
             var param = new List<string> { "#000000" };
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0)).ReturnsAsync(secondaryColorProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0).Result.ToList();
-            var isoResult = result.First();
-            var actual = isoResult.SecondaryColorCode;
-            var expected = "#000000";
-            Assert.Equal(expected, actual);
+            var filteredResults = result.All(p => p.SecondaryColorCode == "#000000");
+            Assert.True(filteredResults);
+        }
+        [Fact]
+        public void GetProductsByAllFilters_ReturnsProductsWithCorrectMaterial()
+        {
+            var param = new List<string> { "Leather" };
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0)).ReturnsAsync(leatherProducts);
+            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0).Result.ToList();
+            var filteredResults = result.All(p => p.Material == "Leather");
+            Assert.True(filteredResults);
         }
     }
 }
