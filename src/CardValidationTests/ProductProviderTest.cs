@@ -33,6 +33,7 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> secondaryColorProducts;
         private readonly List<Product> leatherProducts;
         private readonly List<Product> mensLeatherGolfProducts;
+        private readonly List<Product> pricedProducts;
 
         public ProductProviderTest()
         {
@@ -50,6 +51,7 @@ namespace Catalyte.Apparel.Test.Unit
             secondaryColorProducts = testProducts.Where(p => p.SecondaryColorCode == "#000000").ToList();
             leatherProducts = testProducts.Where(p => p.Material == "Leather").ToList();
             mensLeatherGolfProducts = testProducts.Where(p => p.Material == "Leather" && p.Category == "Golf" && p.Demographic == "Men").ToList();
+            pricedProducts = testProducts.Where(p => p.Price <= 10 && p.Price >= 5).ToList();
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
@@ -163,6 +165,16 @@ namespace Catalyte.Apparel.Test.Unit
                 .ReturnsAsync(mensLeatherGolfProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, category, null, demographic, null, null, material, 0, 0).Result.ToList();
             var filteredResults = result.All(p => p.Material == "Leather" && p.Category == "Golf" && p.Demographic == "Men");
+            Assert.True(filteredResults);
+        }
+        [Fact]
+        public void GetProductsByAllFilters_ReturnsProperlyPricedProducts()
+        {
+            var min = 5;
+            var max = 10;
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null,null,null,null,null,null,null,min,max)).ReturnsAsync(pricedProducts);
+            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, min, max).Result.ToList();
+            var filteredResults = result.All(p => p.Price <= 10 && p.Price >= 5);
             Assert.True(filteredResults);
         }
     }
