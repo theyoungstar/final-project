@@ -22,10 +22,15 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly Mock<ILogger<ProductProvider>> loggerStub;
         private readonly ProductProvider provider;
         private readonly Product testProduct;
-        private readonly List<Data.Model.Product> testProducts;
+        private readonly List<Product> testProducts;
         private readonly List<string> productCategories;
         private readonly List<string> productTypes;
-
+        private readonly List<Product> nikeProducts;
+        private readonly List<Product> golfProducts;
+        private readonly List<Product> hatProducts;
+        private readonly List<Product> mensProducts;
+        private readonly List<Product> primaryColorProducts;
+        private readonly List<Product> secondaryColorProducts;
 
         public ProductProviderTest()
         {
@@ -34,14 +39,20 @@ namespace Catalyte.Apparel.Test.Unit
             loggerStub = new Mock<ILogger<ProductProvider>>();
             provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
             testProduct = _factory.CreateRandomProduct(5);
-            testProducts = _factory.GenerateRandomProducts(40);
+            testProducts = _factory.GenerateRandomProducts(100);
+            nikeProducts = testProducts.Where(p => p.Brand == "Nike").ToList();
+            golfProducts = testProducts.Where(p => p.Category == "Golf").ToList();
+            hatProducts = testProducts.Where(p => p.Type == "Hat").ToList();
+            mensProducts = testProducts.Where(p => p.Demographic == "Men").ToList();
+            primaryColorProducts = testProducts.Where(p => p.PrimaryColorCode == "#000000").ToList();
+            secondaryColorProducts = testProducts.Where(p => p.SecondaryColorCode == "#000000").ToList();
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
-           // repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0)); <- do this in each test, pass tested params in each
+          
         }
         [Fact]
         public void GetProductsAsync_ReturnsAllProducts()
@@ -77,12 +88,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectBrand()
         {
             var param = new List<string> { "Nike" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(param, null, null, null, null, null, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(param, null, null, null, null, null, null, 0, 0)).ReturnsAsync(nikeProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(param, null,null,null,null,null,null, 0,0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.Brand == "Nike";
-            });
+            var isoResult = result.First();
             var actual = isoResult.Brand;
             var expected = "Nike";
             Assert.Equal(expected, actual);
@@ -91,12 +99,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectCategory()
         {
             var param = new List<string> { "Golf" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0)).ReturnsAsync(golfProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.Category == "Golf";
-            });
+            var isoResult = result.First();
             var actual = isoResult.Category;
             var expected = "Golf";
             Assert.Equal(expected, actual);
@@ -105,12 +110,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectType()
         {
             var param = new List<string> { "Hat" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0)).ReturnsAsync(hatProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.Type == "Hat";
-            });
+            var isoResult = result.First();
             var actual = isoResult.Type;
             var expected = "Hat";
             Assert.Equal(expected, actual);
@@ -119,12 +121,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectDemographic()
         {
             var param = new List<string> { "Men" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0)).ReturnsAsync(mensProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.Demographic == "Men";
-            });
+            var isoResult = result.Last();
             var actual = isoResult.Demographic;
             var expected = "Men";
             Assert.Equal(expected, actual);
@@ -133,12 +132,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectPrimaryColorCode()
         {
             var param = new List<string> { "#000000" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0)).ReturnsAsync(primaryColorProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.PrimaryColorCode == "#000000";
-            });
+            var isoResult = result.First();
             var actual = isoResult.PrimaryColorCode;
             var expected = "#000000";
             Assert.Equal(expected, actual);
@@ -147,12 +143,9 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFiltersAsync_ReturnsProductWithCorrectSecondaryColorCode()
         {
             var param = new List<string> { "#000000" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0)).ReturnsAsync(testProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0)).ReturnsAsync(secondaryColorProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0).Result.ToList();
-            var isoResult = result.Find(delegate (Product product)
-            {
-                return product.SecondaryColorCode == "#000000";
-            });
+            var isoResult = result.First();
             var actual = isoResult.SecondaryColorCode;
             var expected = "#000000";
             Assert.Equal(expected, actual);
