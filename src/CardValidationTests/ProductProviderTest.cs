@@ -32,6 +32,7 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> primaryColorProducts;
         private readonly List<Product> secondaryColorProducts;
         private readonly List<Product> leatherProducts;
+        private readonly List<Product> mensLeatherGolfProducts;
 
         public ProductProviderTest()
         {
@@ -48,6 +49,7 @@ namespace Catalyte.Apparel.Test.Unit
             primaryColorProducts = testProducts.Where(p => p.PrimaryColorCode == "#000000").ToList();
             secondaryColorProducts = testProducts.Where(p => p.SecondaryColorCode == "#000000").ToList();
             leatherProducts = testProducts.Where(p => p.Material == "Leather").ToList();
+            mensLeatherGolfProducts = testProducts.Where(p => p.Material == "Leather" && p.Category == "Golf" && p.Demographic == "Men").ToList();
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
@@ -149,6 +151,18 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0)).ReturnsAsync(leatherProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0).Result.ToList();
             var filteredResults = result.All(p => p.Material == "Leather");
+            Assert.True(filteredResults);
+        }
+        [Fact]
+        public void GetProductsByAllFilters_ReturnsProductsWithMultipleCorrectAttributes()
+        {
+            var category = new List<string> { "Golf" };
+            var material = new List<string> { "Leather" };
+            var demographic = new List<string> { "Men" };
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, category, null, demographic, null, null, material, 0, 0))
+                .ReturnsAsync(mensLeatherGolfProducts);
+            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, category, null, demographic, null, null, material, 0, 0).Result.ToList();
+            var filteredResults = result.All(p => p.Material == "Leather" && p.Category == "Golf" && p.Demographic == "Men");
             Assert.True(filteredResults);
         }
     }
