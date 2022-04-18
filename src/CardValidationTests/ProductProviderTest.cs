@@ -28,6 +28,8 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> mensLeatherGolfProducts;
         private readonly List<Product> pricedProducts;
         private readonly ServiceUnavailableException exception;
+        private readonly NotFoundException notFoundException;
+        private readonly Product invalidProduct;
 
         public ProductProviderTest()
         {
@@ -42,6 +44,8 @@ namespace Catalyte.Apparel.Test.Unit
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             exception = new ServiceUnavailableException("There was a problem connecting to the database.");
+            notFoundException = new NotFoundException($"Product with id: 6 could not be found.");
+            invalidProduct = new Product();
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
@@ -76,6 +80,15 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(3)).ThrowsAsync(exception);
 
             Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductByIdAsync(3));
+        }
+        [Fact]
+        public void GetProductById_ThrowsNotFoundExceptionIfRequestedProductDoesNotExist()
+        {
+            var productId = 6;
+         
+            repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ThrowsAsync(notFoundException);
+            
+            Assert.ThrowsAsync<NotFoundException>(() => provider.GetProductByIdAsync(6));
         }
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
