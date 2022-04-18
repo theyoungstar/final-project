@@ -25,15 +25,9 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> testProducts;
         private readonly List<string> productCategories;
         private readonly List<string> productTypes;
-        private readonly List<Product> nikeProducts;
-        private readonly List<Product> golfProducts;
-        private readonly List<Product> hatProducts;
-        private readonly List<Product> mensProducts;
-        private readonly List<Product> primaryColorProducts;
-        private readonly List<Product> secondaryColorProducts;
-        private readonly List<Product> leatherProducts;
         private readonly List<Product> mensLeatherGolfProducts;
         private readonly List<Product> pricedProducts;
+        private readonly ServiceUnavailableException exception;
 
         public ProductProviderTest()
         {
@@ -43,17 +37,11 @@ namespace Catalyte.Apparel.Test.Unit
             provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
             testProduct = _factory.CreateRandomProduct(5);
             testProducts = _factory.GenerateRandomProducts(100);
-            nikeProducts = testProducts.Where(p => p.Brand == "Nike").ToList();
-            golfProducts = testProducts.Where(p => p.Category == "Golf").ToList();
-            hatProducts = testProducts.Where(p => p.Type == "Hat").ToList();
-            mensProducts = testProducts.Where(p => p.Demographic == "Men").ToList();
-            primaryColorProducts = testProducts.Where(p => p.PrimaryColorCode == "#000000").ToList();
-            secondaryColorProducts = testProducts.Where(p => p.SecondaryColorCode == "#000000").ToList();
-            leatherProducts = testProducts.Where(p => p.Material == "Leather").ToList();
-            mensLeatherGolfProducts = testProducts.Where(p => p.Material == "Leather" && p.Category == "Golf" && p.Demographic == "Men").ToList();
             pricedProducts = testProducts.Where(p => p.Price <= 10 && p.Price >= 5).ToList();
+            mensLeatherGolfProducts = testProducts.Where(p => p.Material == "Leather" && p.Type == "Golf" && p.Demographic == "Men").ToList();
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
+            exception = new ServiceUnavailableException("There was a problem connecting to the database.");
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
@@ -90,71 +78,7 @@ namespace Catalyte.Apparel.Test.Unit
             var actual = repositoryStub.Object.GetAllUniqueTypesAsync().Result.ToList();
             Assert.Equal(expected,actual);  
         }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectBrand()
-        {
-            var param = new List<string> { "Nike" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(param, null, null, null, null, null, null, 0, 0)).ReturnsAsync(nikeProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(param, null,null,null,null,null,null, 0,0).Result.ToList();
-            var filteredResults = result.All(p => p.Brand == "Nike");
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectCategory()
-        {
-            var param = new List<string> { "Golf" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0)).ReturnsAsync(golfProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, param, null, null, null, null, null, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.Category == "Golf");
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectType()
-        {
-            var param = new List<string> { "Hat" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0)).ReturnsAsync(hatProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, param, null, null, null, null, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.Type == "Hat");
- 
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectDemographic()
-        {
-            var param = new List<string> { "Men" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0)).ReturnsAsync(mensProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, param, null, null, null, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.Demographic == "Men");
-           
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectPrimaryColorCode()
-        {
-            var param = new List<string> { "#000000" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0)).ReturnsAsync(primaryColorProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, param, null, null, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.PrimaryColorCode == "#000000");
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFiltersAsync_ReturnsProductsWithCorrectSecondaryColorCode()
-        {
-            var param = new List<string> { "#000000" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0)).ReturnsAsync(secondaryColorProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, param, null, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.SecondaryColorCode == "#000000");
-            Assert.True(filteredResults);
-        }
-        [Fact]
-        public void GetProductsByAllFilters_ReturnsProductsWithCorrectMaterial()
-        {
-            var param = new List<string> { "Leather" };
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0)).ReturnsAsync(leatherProducts);
-            var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, param, 0, 0).Result.ToList();
-            var filteredResults = result.All(p => p.Material == "Leather");
-            Assert.True(filteredResults);
-        }
+        
         [Fact]
         public void GetProductsByAllFilters_ReturnsProductsWithMultipleCorrectAttributes()
         {
@@ -176,6 +100,13 @@ namespace Catalyte.Apparel.Test.Unit
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, min, max).Result.ToList();
             var filteredResults = result.All(p => p.Price <= 10 && p.Price >= 5);
             Assert.True(filteredResults);
+        }
+        [Fact]
+        public void GetProductsByAllFilters_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
+        {
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0)).ThrowsAsync(exception);
+            
+            Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0));
         }
     }
 }
