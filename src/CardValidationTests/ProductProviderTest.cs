@@ -28,7 +28,6 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> mensLeatherGolfProducts;
         private readonly List<Product> pricedProducts;
         private readonly ServiceUnavailableException exception;
-        private readonly NotFoundException notFoundException;
         private readonly Product invalidProduct;
 
         public ProductProviderTest()
@@ -44,13 +43,12 @@ namespace Catalyte.Apparel.Test.Unit
             productCategories = _factory.GetAllCategories();
             productTypes = _factory.GetAllProductTypes();
             exception = new ServiceUnavailableException("There was a problem connecting to the database.");
-            notFoundException = new NotFoundException($"Product with id: 6 could not be found.");
             invalidProduct = null;
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
-          
+
         }
         [Fact]
         public void GetProductsAsync_ReturnsAllProducts()
@@ -58,7 +56,7 @@ namespace Catalyte.Apparel.Test.Unit
             var totalCount = testProducts;
             var actualCount = repositoryStub.Object.GetProductsAsync().Result;
             Assert.Equal(totalCount, actualCount);
-            
+
         }
         [Fact]
         public void GetProductsAsync_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
@@ -85,12 +83,10 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductById_ThrowsNotFoundExceptionIfRequestedProductDoesNotExist()
         {
             var productId = 6;
-         
-            repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ThrowsAsync(notFoundException);
+
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ReturnsAsync(invalidProduct);
-            
+
             Assert.Null(repositoryStub.Object.GetProductByIdAsync(productId).Result);
-            
         }
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
@@ -98,7 +94,6 @@ namespace Catalyte.Apparel.Test.Unit
             var expected = productCategories;
             var actual = repositoryStub.Object.GetAllUniqueCategoriesAsync().Result.ToList();
             Assert.Equal(expected, actual);
-
         }
         [Fact]
         public void GetAllUniqueCategories_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
@@ -112,13 +107,13 @@ namespace Catalyte.Apparel.Test.Unit
         {
             var expected = productTypes;
             var actual = repositoryStub.Object.GetAllUniqueTypesAsync().Result.ToList();
-            Assert.Equal(expected,actual);  
+            Assert.Equal(expected, actual);
         }
         [Fact]
         public void GetAllUniqueTypes_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
         {
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ThrowsAsync(exception);
-     
+
             Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetAllUniqueTypesAsync());
         }
         [Fact]
@@ -138,7 +133,7 @@ namespace Catalyte.Apparel.Test.Unit
         {
             var min = 5;
             var max = 10;
-            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null,null,null,null,null,null,null,min,max)).ReturnsAsync(pricedProducts);
+            repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, min, max)).ReturnsAsync(pricedProducts);
             var result = repositoryStub.Object.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, min, max).Result.ToList();
             var filteredResults = result.All(p => p.Price <= 10 && p.Price >= 5);
             Assert.True(filteredResults);
@@ -147,7 +142,7 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetProductsByAllFilters_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
         {
             repositoryStub.Setup(repo => repo.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0)).ThrowsAsync(exception);
-            
+
             Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0));
         }
     }

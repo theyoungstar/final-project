@@ -32,6 +32,8 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <param name="productId">The id of the product to retrieve.</param>
         /// <returns>The product.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             Product product;
@@ -59,6 +61,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// Asynchronously retrieves all products from the database.
         /// </summary>
         /// <returns>All products in the database.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             IEnumerable<Product> products;
@@ -108,7 +111,7 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 types = await _productRepository.GetAllUniqueTypesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
@@ -128,10 +131,11 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <param name="price">The price range of products you want to see.</param>
         /// <returns>Filtered list of products.</returns>
         /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
-            if(min > max && max != 0)
+            if (min > max && max != 0)
             {
                 throw new BadRequestException("Minimum price value must be less than the maximum.");
             }
