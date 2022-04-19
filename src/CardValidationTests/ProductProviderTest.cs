@@ -2,6 +2,7 @@ using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.Providers.Providers;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+
 
 
 namespace Catalyte.Apparel.Test.Unit
@@ -21,6 +23,7 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly ProductProvider provider;
         private readonly Product testProduct;
         private readonly List<Product> testProducts;
+        private readonly NotFoundException exception;
 
 
 
@@ -34,6 +37,7 @@ namespace Catalyte.Apparel.Test.Unit
             testProducts = _factory.GenerateActiveProducts(10);
             repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
+            exception = new NotFoundException("The product you requested is inactive.");
         }
 
         [Fact]
@@ -53,13 +57,13 @@ namespace Catalyte.Apparel.Test.Unit
         [Fact]
         public void GetActiveProducts_WhenExceptionIsThrown_IsCompletedSuccessfully()
         {
-            //Arrange
-            List<Product> products = new();
+           
+       
             //Act
-            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ThrowsAsync(new Exception("The product you requested is inactive."));
-            var returnException = Assert.ThrowsAsync<Exception>(() => repositoryStub.Object.GetActiveProductsAsync());
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ThrowsAsync(exception);
+            
             //Assert
-            Assert.True(returnException.IsCompletedSuccessfully);
+            Assert.ThrowsAsync<NotFoundException>(() => provider.GetActiveProductsAsync());
 
         }
 
