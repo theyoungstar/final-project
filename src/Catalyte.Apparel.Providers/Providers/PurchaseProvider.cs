@@ -5,7 +5,6 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -73,7 +72,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             List<string> inactiveItemsList = new List<string>();
-            
+
             if (newPurchase.LineItems.Count == 0)
             {
                 throw new ArgumentException("Purchase is empty and could not be completed");
@@ -111,7 +110,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
     }
 }
-    
 
-        
+
+
 

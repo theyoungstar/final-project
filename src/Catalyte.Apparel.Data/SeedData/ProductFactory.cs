@@ -1,7 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
@@ -364,6 +363,11 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return productList;
         }
+        /// <summary>
+        /// Generates a number of active products based on input.
+        /// </summary>
+        /// <param name="numberOfProducts"></param>
+        /// <returns></returns>
         public List<Product> GenerateActiveProducts(int numberOfProducts)
         {
 
@@ -410,14 +414,28 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return product;
         }
-
+        /// <summary>
+        /// Generates an active product based on product Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Product GenerateActiveProduct(int id)
         {
             var product = GenerateRandomProduct(id);
             product.Active = true;
             return product;
         }
-        
+        /// <summary>
+        /// Generates an inactive product based on product Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Product GenerateInactiveProduct(int id)
+        {
+            var product = GenerateRandomProduct(id);
+            product.Active = false;
+            return product;
+        }
 
 
         /// <summary>

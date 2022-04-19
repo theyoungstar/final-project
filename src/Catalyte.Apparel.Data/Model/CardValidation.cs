@@ -32,7 +32,7 @@ namespace Catalyte.Apparel.Data.Model
         {
             var cvvCheck = new Regex(@"^[0-9]{3,4}$");
             if (!cvvCheck.IsMatch(field) || field.Length < 1)
-              //checks if CVV field is empty or has between 3-4 digits  
+            //checks if CVV field is empty or has between 3-4 digits  
             {
                 errorsList.Add("CVV must have 3 or 4 digits.");
                 return false;
@@ -48,7 +48,7 @@ namespace Catalyte.Apparel.Data.Model
                 errorsList.Add("Expiration date must have a month between 1-12, contain no letters or special characters, and be entered in one of the following formats: mm/yy or mm-yy");
                 return false;
             }
-            
+
             dateFormat.IsMatch(field.Trim());
             //expiration date in from mm/yy
             string[] dateParts = new string[0];
@@ -61,7 +61,7 @@ namespace Catalyte.Apparel.Data.Model
             {
                 dateParts = field.Split('-');
             }
-           
+
             var month = int.Parse(dateParts[0]);
             var shortYear = int.Parse(dateParts[1]);
             //converts date parts to int
@@ -77,7 +77,7 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add("Expiration date must be a future date");
                 return false;
-            } 
+            }
             return true;
 
         }

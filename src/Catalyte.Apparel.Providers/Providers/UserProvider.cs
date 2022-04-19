@@ -1,8 +1,8 @@
 ﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Providers.Auth;
 using Catalyte.Apparel.Providers.Interfaces;
 using Catalyte.Apparel.Utilities;
-using Catalyte.Apparel.Providers.Auth;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
@@ -99,7 +99,7 @@ namespace Catalyte.Apparel.Providers.Providers
             // TIMESTAMP THE UPDATE
             updatedUser.DateModified = DateTime.UtcNow;
 
-                try
+            try
             {
                 await _userRepository.UpdateUserAsync(updatedUser);
                 _logger.LogInformation("User updated.");

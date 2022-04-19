@@ -1,11 +1,11 @@
-﻿﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs.PromoCodes;
 using Catalyte.Apparel.Providers.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.API.Controllers
 {

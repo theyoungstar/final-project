@@ -1,9 +1,7 @@
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
-using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Providers;
-using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -22,7 +20,8 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly Mock<ILogger<ProductProvider>> loggerStub;
         private readonly ProductProvider provider;
         private readonly Product testProduct;
-        private readonly List<Data.Model.Product> testProducts;
+        private readonly List<Product> testProducts;
+
 
 
         public ProductProviderTest()
@@ -31,44 +30,86 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub = new Mock<IProductRepository>();
             loggerStub = new Mock<ILogger<ProductProvider>>();
             provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
-            testProduct = _factory.GenerateActiveProduct(1);
+            testProduct = _factory.GenerateActiveProduct(11);
             testProducts = _factory.GenerateActiveProducts(10);
-            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts); 
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
         }
-   
+
         [Fact]
         public async Task GetActiveProducts_Returns_ActiveProduct()
         {
             // Arrange
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
             var expectedResult = testProducts.FindAll(x => x.Active == true);
             // Act
             var result = await provider.GetActiveProductsAsync();
-            
-          // Assert
-          Assert.Equal(expectedResult.Count, result.ToList().Count);
+
+            // Assert
+            Assert.Equal(expectedResult.Count, result.ToList().Count);
         }
 
 
         [Fact]
-        public void GetInactiveProduct_Returns_False()
+        public void GetActiveProducts_WhenExceptionIsThrown_IsCompletedSuccessfully()
         {
             //Arrange
-            List<Product> products = new List<Product>();
-            Product product = new();
-            products.Add(product);
-          
+            List<Product> products = new();
             //Act
-            repositoryStub.Setup(stub => stub.GetActiveProductsAsync()).ReturnsAsync(products);
-            var result = products.Find(delegate (Product product)
-            {
-                return product.Active == false;
-            });
-            //var returnException = Assert.ThrowsAsync<BadRequestException>(() => _provider.GetActiveProductsAsync());
-            //var actual = await _provider.GetActiveProductsAsync();
-
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ThrowsAsync(new Exception("The product you requested is inactive."));
+            var returnException = Assert.ThrowsAsync<Exception>(() => repositoryStub.Object.GetActiveProductsAsync());
             //Assert
-           Assert.False(product.Active);
+            Assert.True(returnException.IsCompletedSuccessfully);
+
+        }
+
+
+        [Fact]
+        public void GetActiveProducts_WhenGivenEmptyProduct_ReturnsEmptyProductArray()
+        {
+            // Arrange
+            List<Product> products = new();
+            var product = new Product
+            {
+                Id = 660,
+                Name = "Lightweight Boxing Hat",
+                Sku = "NGH-KYH-RD",
+                Description = "Boxing, Men, Lightweight",
+                Demographic = "Men",
+                Category = "Boxing",
+                Type = "Hat",
+                ReleaseDate = "12/05/2020",
+                PrimaryColorCode = "#c25975",
+                SecondaryColorCode = "#637a91",
+                StyleNumber = "sc83418",
+                GlobalProductCode = "po-DREFRJM",
+                Active = false,
+                Brand = "Reusch",
+                ImageSrc = "https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg",
+                Material = "Cotton",
+                Price = "78.39",
+                Quantity = "46"
+            };
+
+            //Act
+
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync());
+            var expectedResult = product.Active == true;
+            // Act
+            var result = product.Active;
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+
+            //Arrange
+            //var expectedResult = inactiveProduct.Active == false;
+            //var result = await provider.GetActiveProductsAsync();
+
+            //Act
+            // var ex = await Assert.ThrowsAsync<BadRequestException>(() => provider.GetActiveProductsAsync());
+
+            //await Assert.ThrowsAsync<BadRequestException>(() => provider.GetActiveProductsAsync());
+
         }
     }
 }
