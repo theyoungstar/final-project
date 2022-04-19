@@ -45,7 +45,7 @@ namespace Catalyte.Apparel.Test.Unit
             productTypes = _factory.GetAllProductTypes();
             exception = new ServiceUnavailableException("There was a problem connecting to the database.");
             notFoundException = new NotFoundException($"Product with id: 6 could not be found.");
-            invalidProduct = new Product();
+            invalidProduct = null;
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
@@ -87,8 +87,11 @@ namespace Catalyte.Apparel.Test.Unit
             var productId = 6;
          
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ThrowsAsync(notFoundException);
+            repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ReturnsAsync(invalidProduct);
             
-            Assert.ThrowsAsync<NotFoundException>(() => provider.GetProductByIdAsync(6));
+            Assert.Null(provider.GetProductByIdAsync(productId).Result);
+            Assert.ThrowsAsync<NotFoundException>(() => provider.GetProductByIdAsync(productId));
+            
         }
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
@@ -116,7 +119,7 @@ namespace Catalyte.Apparel.Test.Unit
         public void GetAllUniqueTypes_ThrowsServiceUnavailableExceptionIfDatabaseIsInactive()
         {
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ThrowsAsync(exception);
-
+     
             Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetAllUniqueTypesAsync());
         }
         [Fact]
