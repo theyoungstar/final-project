@@ -425,18 +425,6 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Active = true;
             return product;
         }
-        /// <summary>
-        /// Generates an inactive product based on product Id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Product GenerateInactiveProduct(int id)
-        {
-            var product = GenerateRandomProduct(id);
-            product.Active = false;
-            return product;
-        }
-
 
         /// <summary>
         /// Generates a random string of characters.

@@ -3,6 +3,9 @@ using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Providers.Providers;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Xunit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Test.Unit
 {
@@ -19,10 +22,10 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub = new Mock<IPurchaseRepository>();
             loggerStub = new Mock<ILogger<PurchaseProvider>>();
             cardValidationStub = new Mock<CardValidation>();
-            //provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object, cardValidationStub.Object);
+            provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object, cardValidationStub.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task CreatePurchaseReturnsPurchase()
         {
             //Arrange
@@ -36,6 +39,6 @@ namespace Catalyte.Apparel.Test.Unit
 
             //Assert
             Assert.Equal(actual, purchase);
-        }*/
+        }
     }
 }

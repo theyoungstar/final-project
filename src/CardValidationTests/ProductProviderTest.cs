@@ -101,15 +101,7 @@ namespace Catalyte.Apparel.Test.Unit
             // Assert
             Assert.Equal(expectedResult, result);
 
-            //Arrange
-            //var expectedResult = inactiveProduct.Active == false;
-            //var result = await provider.GetActiveProductsAsync();
-
-            //Act
-            // var ex = await Assert.ThrowsAsync<BadRequestException>(() => provider.GetActiveProductsAsync());
-
-            //await Assert.ThrowsAsync<BadRequestException>(() => provider.GetActiveProductsAsync());
-
+    
         }
     }
 }
