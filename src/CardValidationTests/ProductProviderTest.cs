@@ -89,8 +89,7 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ThrowsAsync(notFoundException);
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(productId)).ReturnsAsync(invalidProduct);
             
-            Assert.Null(provider.GetProductByIdAsync(productId).Result);
-            Assert.ThrowsAsync<NotFoundException>(() => provider.GetProductByIdAsync(productId));
+            Assert.Null(repositoryStub.Object.GetProductByIdAsync(productId).Result);
             
         }
         [Fact]

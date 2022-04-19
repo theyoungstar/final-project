@@ -50,6 +50,12 @@ namespace Catalyte.Apparel.Test.Integration
             Assert.Equal(1, content.Id);
         }
         [Fact]
+        public async Task GetProductById_GivenNonexistentId_Throws404()
+        {
+            var response = await _client.GetAsync("/products/1005");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+        [Fact]
         public async Task GetAllUniqueCategories_Returns200()
         {
             var response = await _client.GetAsync("/products/categories");
