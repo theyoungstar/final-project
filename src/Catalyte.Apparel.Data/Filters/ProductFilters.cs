@@ -13,53 +13,54 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return products.Where(p => p.Id == productId).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductCategoryEquals(this IQueryable<Product> products, string category)
+        public static IQueryable<Product> WhereProductCategoryEquals(this IQueryable<Product> products, List<string> category)
         {
-            if(category == null) { return products; }
+            if (category.Count == 0) { return products; }
 
-            return products.Where(p => p.Category == category).AsQueryable();
+            return products.Where(p => category.Contains(p.Category)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductTypeEquals(this IQueryable<Product> products, string type)
+        public static IQueryable<Product> WhereProductTypeEquals(this IQueryable<Product> products, List<string> type)
         {
-            if(type == null) { return products; }
- 
-            return products.Where(p => p.Type == type).AsQueryable();
-        }
-        public static IQueryable<Product> WhereProductDemographicEquals(this IQueryable<Product> products, string demographic)
-        {
-            if(demographic == null) { return products; }
+            if (type.Count == 0) { return products; }
 
-            return products.Where(p => p.Demographic == demographic).AsQueryable();
+            return products.Where(p => type.Contains(p.Type)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, string price)
+        public static IQueryable<Product> WhereProductDemographicEquals(this IQueryable<Product> products, List<string> demographic)
         {
-            if(price == null) { return products; }
+            if (demographic.Count == 0) { return products; }
 
-            return products.Where(p => p.Price == price).AsQueryable();
+            return products.Where(p => demographic.Contains(p.Demographic)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, double min, double max)
         {
-            if(colorCode == null) { return products; }
+            if (min == 0 && max == 0) { return products; }
+            if (min > 0 && max == 0) { return products.Where(p => p.Price >= min).AsQueryable(); }
 
-            return products.Where(p => p.PrimaryColorCode == colorCode).AsQueryable();
+            return products.Where(p => p.Price <= max && p.Price >= min).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductSecondaryColorCodeEquals(this IQueryable<Product> products, string colorCode)
+        public static IQueryable<Product> WhereProductPrimaryColorCodeEquals(this IQueryable<Product> products, List<string> colorCode)
         {
-            if(colorCode == null) { return products; }    
-            return products.Where(p => p.SecondaryColorCode == colorCode).AsQueryable();
-        }
-        public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, string material)
-        {
-            if(material == null) { return products; }
+            if (colorCode.Count == 0) { return products; }
 
-            return products.Where(p => p.Material == material).AsQueryable();
+            return products.Where(p => colorCode.Contains(p.PrimaryColorCode)).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, string brand)
+        public static IQueryable<Product> WhereProductSecondaryColorCodeEquals(this IQueryable<Product> products, List<string> colorCode)
         {
-            if(brand == null) { return products; }
-
-            return products.Where(p => p.Brand == brand).AsQueryable();
+            if (colorCode.Count == 0) { return products; }
+            return products.Where(p => colorCode.Contains(p.SecondaryColorCode)).AsQueryable();
         }
-        
+        public static IQueryable<Product> WhereProductMaterialEquals(this IQueryable<Product> products, List<string> material)
+        {
+            if (material.Count == 0) { return products; }
+
+            return products.Where(p => material.Contains(p.Material)).AsQueryable();
+        }
+        public static IQueryable<Product> WhereProductBrandEquals(this IQueryable<Product> products, List<string> brand)
+        {
+            if (brand.Count == 0) { return products; }
+
+            return products.Where(p => brand.Contains(p.Brand)).AsQueryable();
+        }
+
     }
 }

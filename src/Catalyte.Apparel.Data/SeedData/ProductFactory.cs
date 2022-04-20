@@ -301,7 +301,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random generated price.
         /// </summary>
         /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
-        private string GetPrice() => $"{Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+        private double GetPrice() => Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero);
 
         /// <summary>
         /// Returns a random material from a list of materials.
@@ -362,7 +362,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
-        private Product CreateRandomProduct(int id)
+        public Product CreateRandomProduct(int id)
         {
             var product = new Product();
             var adjective = GetProductAdjective();

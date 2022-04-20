@@ -194,31 +194,31 @@ namespace Catalyte.Apparel.Data.SeedData
         }
 
 
-            /// <summary>
-            /// Generates a number of random products based on input.
-            /// </summary>
-            /// <param name="numberOfProducts">The number of random products to generate.</param>
-            /// <returns>A list of random products.</returns>
-            public List<Purchase> GenerateRandomPurchases(int numberOfPurchases)
+        /// <summary>
+        /// Generates a number of random products based on input.
+        /// </summary>
+        /// <param name="numberOfProducts">The number of random products to generate.</param>
+        /// <returns>A list of random products.</returns>
+        public List<Purchase> GenerateRandomPurchases(int numberOfPurchases)
+        {
+
+            var purchaseList = new List<Purchase>();
+
+            for (var i = 0; i < numberOfPurchases; i++)
             {
-
-                var purchaseList = new List<Purchase>();
-
-                for (var i = 0; i < numberOfPurchases; i++)
-                {
-                    purchaseList.Add(CreateRandomPurchase(i + 1));
-                }
-
-                return purchaseList;
+                purchaseList.Add(CreateRandomPurchase(i + 1));
             }
 
-            /// <summary>
-            /// Uses random generators to build a products.
-            /// </summary>
-            /// <param name="id">ID to assign to the product.</param>
-            /// <returns>A randomly generated product.</returns>
-            public Purchase CreateRandomPurchase(int id)
-            {
+            return purchaseList;
+        }
+
+        /// <summary>
+        /// Uses random generators to build a products.
+        /// </summary>
+        /// <param name="id">ID to assign to the product.</param>
+        /// <returns>A randomly generated product.</returns>
+        public Purchase CreateRandomPurchase(int id)
+        {
             return new Purchase
             {
                 Id = id,
@@ -227,52 +227,52 @@ namespace Catalyte.Apparel.Data.SeedData
                 BillingPhone = GetPhone(),
                 BillingState = GetState(),
                 BillingEmail = GetEmail(),
-               
-            
+
+
 
 
                 //Active = false do this as has purchase instead?
             };
-            }
+        }
 
-            /// <summary>
-            /// Generates a random string of characters.
-            /// </summary>
-            /// <param name="size">Number of characters in the string.</param>
-            /// <param name="lowerCase">Boolean if the character string should be lowercase only; defaults to false.</param>
-            /// <returns>A random string of characters.</returns>
-            //private string RandomString(int size, bool lowerCase = false)
-            //{
+        /// <summary>
+        /// Generates a random string of characters.
+        /// </summary>
+        /// <param name="size">Number of characters in the string.</param>
+        /// <param name="lowerCase">Boolean if the character string should be lowercase only; defaults to false.</param>
+        /// <returns>A random string of characters.</returns>
+        //private string RandomString(int size, bool lowerCase = false)
+        //{
 
-            //    // ** Learning moment **
-            //    // Code From
-            //    // https://www.c-sharpcorner.com/article/generating-random-number-and-string-in-C-Sharp/
+        //    // ** Learning moment **
+        //    // Code From
+        //    // https://www.c-sharpcorner.com/article/generating-random-number-and-string-in-C-Sharp/
 
-            //    // ** Learning moment **
-            //    // Always use a string builder when concatenating more than a couple of strings.
-            //    // Why? https://www.geeksforgeeks.org/c-sharp-string-vs-stringbuilder/
-            //    var builder = new StringBuilder(size);
+        //    // ** Learning moment **
+        //    // Always use a string builder when concatenating more than a couple of strings.
+        //    // Why? https://www.geeksforgeeks.org/c-sharp-string-vs-stringbuilder/
+        //    var builder = new StringBuilder(size);
 
-            //    // Unicode/ASCII Letters are divided into two blocks
-            //    // (Letters 65–90 / 97–122):
-            //    // The first group containing the uppercase letters and
-            //    // the second group containing the lowercase.  
+        //    // Unicode/ASCII Letters are divided into two blocks
+        //    // (Letters 65–90 / 97–122):
+        //    // The first group containing the uppercase letters and
+        //    // the second group containing the lowercase.  
 
-            //    // char is a single Unicode character  
-            //    char offset = lowerCase ? 'a' : 'A';
-            //    const int lettersOffset = 26; // A...Z or a..z: length=26  
+        //    // char is a single Unicode character  
+        //    char offset = lowerCase ? 'a' : 'A';
+        //    const int lettersOffset = 26; // A...Z or a..z: length=26  
 
-            //    for (var i = 0; i < size; i++)
-            //    {
-            //        // ** Learning moment **
-            //        // Because 'char' is a reserved word you can put '@' at the beginning to allow
-            //        // its use as a variable name.  You could do the same thing with 'class'
-            //        var @char = (char)_rand.Next(offset, offset + lettersOffset);
-            //        builder.Append(@char);
-            //    }
+        //    for (var i = 0; i < size; i++)
+        //    {
+        //        // ** Learning moment **
+        //        // Because 'char' is a reserved word you can put '@' at the beginning to allow
+        //        // its use as a variable name.  You could do the same thing with 'class'
+        //        var @char = (char)_rand.Next(offset, offset + lettersOffset);
+        //        builder.Append(@char);
+        //    }
 
-            //    return lowerCase ? builder.ToString().ToLower() : builder.ToString();
-            //}
-        
+        //    return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+        //}
+
     }
 }

@@ -32,6 +32,8 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <param name="productId">The id of the product to retrieve.</param>
         /// <returns>The product.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             Product product;
@@ -59,6 +61,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// Asynchronously retrieves all products from the database.
         /// </summary>
         /// <returns>All products in the database.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             IEnumerable<Product> products;
@@ -75,6 +78,11 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+        /// <summary>
+        /// Asynchronously retrieves all unique product categories currently in the database.
+        /// </summary>
+        /// <returns>A list of all unique product categories.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             IEnumerable<string> categories;
@@ -91,6 +99,11 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return categories;
         }
+        /// <summary>
+        /// Asynchronously retrieves all unique product types currently in the database. 
+        /// </summary>
+        /// <returns>A list of all unique product types.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
         public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
         {
             IEnumerable<string> types;
@@ -98,132 +111,38 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 types = await _productRepository.GetAllUniqueTypesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
             return types;
         }
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
+        /// <summary>
+        /// Asynchrously retrieves products based on filter parameters passed in the HTTP request.
+        /// </summary>
+        /// <param name="brands">The brands of the products you want to see.</param>
+        /// <param name="category">The categories of products you want to see.</param>
+        /// <param name="type">The type of products you want to see.</param>
+        /// <param name="demographic">The demographics of products you want to see.</param>
+        /// <param name="primaryColorCode">The color code of products you want to see.</param>
+        /// <param name="secondaryColorCode">The color code of products you want to see.</param>
+        /// <param name="material">The material of products you want to see.</param>
+        /// <param name="price">The price range of products you want to see.</param>
+        /// <returns>Filtered list of products.</returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
+            if (min > max && max != 0)
+            {
+                throw new BadRequestException("Minimum price value must be less than the maximum.");
+            }
 
             try
             {
-                products = await _productRepository.GetProductsByCategoryAsync(category);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByTypeAsync(string type)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByTypeAsync(type);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByDemographicAsync(string demographic)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByDemographicAsync(demographic);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByPrimaryColorCodeAsync(string primaryColorCode)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByPrimaryColorCodeAsync(primaryColorCode);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsBySecondaryColorCodeAsync(string secondaryColorCode)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsBySecondaryColorCodeAsync(secondaryColorCode);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByMaterialAsync(string material)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByMaterialAsync(material);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string brand)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByBrandAsync(brand);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            return products;
-        }
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
-        {
-            IEnumerable<Product> products;
-
-            try
-            {
-                products = await _productRepository.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, price);
+                products = await _productRepository.GetProductsByAllFiltersAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
             }
             catch (Exception ex)
             {
