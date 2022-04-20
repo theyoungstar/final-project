@@ -47,34 +47,6 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public void  PostPromoCodes_Returns201()
-        {
-
-            //PostCodeHelper();
-
-           // GetCodeHelper();
-            //var task1 = PostCodeHelper();
-
-           //var task2 = GetCodeHelper();
-
-           //await Task.WhenAll(task1, task2);
-
-           //var uri = Path.Combine("/promocodes");
-
-           //var response = await _client.DeleteAsync(uri);
-           //response.EnsureSuccessStatusCode();
-
-           //var response = await _client.GetAsync("/promocodes");            
-
-           //var actual = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
-            
-           //await _promoCodeRepository.DeletePromoCodesAsync(actual);
-           //var expected = Array.Empty<object>();
-           //Assert.Equal(expected, actual);
-           
-
-        }
-        [Fact]
         public async Task PostCodeHelper()
         {
             var promoCode = new PromoCode()
@@ -95,7 +67,6 @@ namespace Catalyte.Apparel.Test.Integration
         {
             var response = await _client.GetAsync("/promocodes");
             var actual = await response.Content.ReadAsAsync<PromoCode>();
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             if (actual != null)
             {
                 _promoCodeRepository.DeletePromoCodesAsync(actual);
