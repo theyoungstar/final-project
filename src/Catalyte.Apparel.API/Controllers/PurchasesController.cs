@@ -1,14 +1,11 @@
-﻿﻿using AutoMapper;
-using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.API.DTOMappings;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Catalyte.Apparel.API.DTOMappings;
 using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -43,10 +40,10 @@ namespace Catalyte.Apparel.API.Controllers
 
             var purchases = await _purchaseProvider.GetAllPurchasesByEmailAsync(email);
             var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos(purchases);
-          
+
             return Ok(purchaseDTOs);
         }
-        
+
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)

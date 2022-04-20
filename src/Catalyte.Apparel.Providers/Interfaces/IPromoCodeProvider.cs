@@ -1,6 +1,4 @@
 ﻿using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.DTOs.PromoCodes;
-using Catalyte.Apparel.Utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

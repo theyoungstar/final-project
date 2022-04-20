@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 
+
 namespace Catalyte.Apparel.Test.Unit
 {
     public class ProductProviderTest
@@ -29,6 +30,8 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> pricedProducts;
         private readonly ServiceUnavailableException exception;
         private readonly Product invalidProduct;
+
+
 
         public ProductProviderTest()
         {
@@ -49,6 +52,7 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
 
+            exception = new NotFoundException("The product you requested is inactive.");
         }
         [Fact]
         public void GetProductsAsync_ReturnsAllProducts()
@@ -88,6 +92,8 @@ namespace Catalyte.Apparel.Test.Unit
 
             Assert.Null(repositoryStub.Object.GetProductByIdAsync(productId).Result);
         }
+
+
         [Fact]
         public void GetAllUniqueCategories_ReturnsAllCategories()
         {

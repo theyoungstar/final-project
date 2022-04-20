@@ -1,5 +1,4 @@
 ﻿using Catalyte.Apparel.Data.Context;
-using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
 
 namespace Catalyte.Apparel.Test.Integration.Utilities

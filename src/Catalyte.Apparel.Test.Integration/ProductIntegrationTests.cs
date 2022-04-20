@@ -1,7 +1,7 @@
+using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Catalyte.Apparel.Data.SeedData;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;

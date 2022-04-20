@@ -60,14 +60,14 @@ namespace Catalyte.Apparel.Data.Model
                 if (x.GetType() != y.GetType()) return false;
                 return x.Name == y.Name &&
                     x.Description == y.Description &&
-                    x.Demographic == y.Demographic && 
-                    x.Category == y.Category && 
+                    x.Demographic == y.Demographic &&
+                    x.Category == y.Category &&
                     x.Type == y.Type &&
-                    x.ReleaseDate.Equals(y.ReleaseDate) && 
+                    x.ReleaseDate.Equals(y.ReleaseDate) &&
                     x.PrimaryColorCode == y.PrimaryColorCode &&
-                    x.SecondaryColorCode == y.SecondaryColorCode && 
-                    x.StyleNumber == y.StyleNumber && 
-                    x.GlobalProductCode == y.GlobalProductCode && 
+                    x.SecondaryColorCode == y.SecondaryColorCode &&
+                    x.StyleNumber == y.StyleNumber &&
+                    x.GlobalProductCode == y.GlobalProductCode &&
                     x.Active == y.Active;
             }
             public int GetHashCode(Product obj)
