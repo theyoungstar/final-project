@@ -97,5 +97,20 @@ namespace Catalyte.Apparel.Test.Integration
             var response = await _client.GetAsync("/products/filters/?min=50&max=40");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        [Fact]
+        public async Task GetActiveProductsAsync_Returns200AndActive()
+        {
+            var response = await _client.GetAsync("/products/active");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync<List<ProductDTO>>();
+            var expected = true;
+            var result = content.Find(delegate (ProductDTO product)
+            {
+                return product.Active == true;
+            });
+            var actual = result.Active;
+            Assert.Equal(expected, actual);
+        }
     }
 }

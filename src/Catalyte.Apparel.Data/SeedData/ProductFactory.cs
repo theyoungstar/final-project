@@ -358,7 +358,7 @@ namespace Catalyte.Apparel.Data.SeedData
 
             for (var i = 0; i < numberOfProducts; i++)
             {
-                productList.Add(GenerateRandomProduct(i + 1));
+                productList.Add(CreateRandomProduct(i + 1));
             }
 
             return productList;
@@ -421,7 +421,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// <returns></returns>
         public Product GenerateActiveProduct(int id)
         {
-            var product = GenerateRandomProduct(id);
+            var product = CreateRandomProduct(id);
             product.Active = true;
             return product;
         }

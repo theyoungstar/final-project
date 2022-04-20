@@ -30,8 +30,9 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly List<Product> pricedProducts;
         private readonly ServiceUnavailableException exception;
         private readonly Product invalidProduct;
-
-
+        private readonly NotFoundException exception1;
+        private readonly Product testProduct1;
+        private readonly List<Product> testProducts1;
 
         public ProductProviderTest()
         {
@@ -51,8 +52,10 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetProductByIdAsync(5)).ReturnsAsync(testProduct);
             repositoryStub.Setup(repo => repo.GetAllUniqueCategoriesAsync()).ReturnsAsync(productCategories);
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
-
-            exception = new NotFoundException("The product you requested is inactive.");
+            testProduct1 = _factory.GenerateActiveProduct(11);
+            testProducts1 = _factory.GenerateActiveProducts(10);
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
+            exception1 = new NotFoundException("The product you requested is inactive.");
         }
         [Fact]
         public void GetProductsAsync_ReturnsAllProducts()
@@ -151,5 +154,72 @@ namespace Catalyte.Apparel.Test.Unit
 
             Assert.ThrowsAsync<ServiceUnavailableException>(() => provider.GetProductsByAllFiltersAsync(null, null, null, null, null, null, null, 0, 0));
         }
+        ////////Active Products testing
+        [Fact]
+        public async Task GetActiveProducts_Returns_ActiveProduct()
+        {
+            // Arrange
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts1);
+            var expectedResult = testProducts1.FindAll(x => x.Active == true);
+            // Act
+            var result = await provider.GetActiveProductsAsync();
+
+            // Assert
+            Assert.Equal(expectedResult.Count, result.ToList().Count);
+        }
+
+
+        [Fact]
+        public void GetActiveProducts_WhenExceptionIsThrown_IsCompletedSuccessfully()
+        {
+
+
+            //Act
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ThrowsAsync(exception);
+
+            //Assert
+            Assert.ThrowsAsync<NotFoundException>(() => provider.GetActiveProductsAsync());
+
+        }
+
+
+        [Fact]
+        public void GetActiveProducts_WhenGivenEmptyProduct_ReturnsEmptyProductArray()
+        {
+            // Arrange
+            List<Product> products = new();
+            var product = new Product
+            {
+                Id = 660,
+                Name = "Lightweight Boxing Hat",
+                Sku = "NGH-KYH-RD",
+                Description = "Boxing, Men, Lightweight",
+                Demographic = "Men",
+                Category = "Boxing",
+                Type = "Hat",
+                ReleaseDate = "12/05/2020",
+                PrimaryColorCode = "#c25975",
+                SecondaryColorCode = "#637a91",
+                StyleNumber = "sc83418",
+                GlobalProductCode = "po-DREFRJM",
+                Active = false,
+                Brand = "Reusch",
+                ImageSrc = "https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg",
+                Material = "Cotton",
+                Price = 78.39,
+                Quantity = "46"
+            };
+
+            //Act
+
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync());
+            var expectedResult = product.Active == true;
+            // Act
+            var result = product.Active;
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
     }
 }
+

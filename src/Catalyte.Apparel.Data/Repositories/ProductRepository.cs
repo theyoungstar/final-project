@@ -38,6 +38,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductEqualsActive()
+                .ToListAsync();
+        }
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             return await GetAllUniquesOf(x => x.Category);
@@ -56,6 +63,7 @@ namespace Catalyte.Apparel.Data.Repositories
 
             return uniques;
         }
+
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             return await _ctx.Products.AsNoTracking()
