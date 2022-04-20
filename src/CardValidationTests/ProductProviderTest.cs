@@ -91,7 +91,7 @@ namespace Catalyte.Apparel.Test.Unit
                 Brand = "Reusch",
                 ImageSrc = "https://m.media-amazon.com/images/I/81zNUlGpqJL._AC_UY550_.jpg",
                 Material = "Cotton",
-                Price = "78.39",
+                Price = 78.39,
                 Quantity = "46"
             };
 
