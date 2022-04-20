@@ -73,7 +73,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             List<string> inactiveItemsList = new List<string>();
-            
+
             if (newPurchase.LineItems.Count == 0)
             {
                 throw new ArgumentException("Purchase is empty and could not be completed");
@@ -111,7 +111,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
     }
 }
-    
 
-        
+
+
 

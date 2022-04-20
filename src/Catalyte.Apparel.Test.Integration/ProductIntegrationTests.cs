@@ -35,7 +35,7 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetProducts_Returns200()
         {
-            
+
             var response = await _client.GetAsync("/products");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -72,7 +72,7 @@ namespace Catalyte.Apparel.Test.Integration
             Assert.Equal(expected, actual);
         }
         [Fact]
-        
+
         public async Task GetProductsByAllFiltersAsync_Returns200AndCorrectPropertyValues()
         {
             var response = await _client.GetAsync("/products/filters/?brand=Nike&category=Baseball");
@@ -85,7 +85,7 @@ namespace Catalyte.Apparel.Test.Integration
                 return product.Brand == "Nike" && product.Category == "Baseball";
             });
             var actual = result.Brand;
-            Assert.Equal(expected,actual);
+            Assert.Equal(expected, actual);
         }
         /// <summary>
         /// Integration test for active products filter

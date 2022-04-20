@@ -1,4 +1,4 @@
-﻿﻿using AutoMapper;
+﻿using AutoMapper;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.API.DTOMappings;
 using System.Collections.Generic;
@@ -43,10 +43,10 @@ namespace Catalyte.Apparel.API.Controllers
 
             var purchases = await _purchaseProvider.GetAllPurchasesByEmailAsync(email);
             var purchaseDTOs = _mapper.MapPurchasesToPurchaseDtos(purchases);
-          
+
             return Ok(purchaseDTOs);
         }
-        
+
 
         [HttpPost]
         public async Task<ActionResult<List<PurchaseDTO>>> CreatePurchaseAsync([FromBody] CreatePurchaseDTO model)

@@ -1,4 +1,4 @@
-﻿﻿using AutoMapper;
+﻿using AutoMapper;
 using Catalyte.Apparel.DTOs.PromoCodes;
 using Catalyte.Apparel.Providers.Interfaces;
 using System.Collections.Generic;

@@ -26,7 +26,7 @@ namespace Catalyte.Apparel.Test.Integration
         public PromoCodeIntegrationTests(CustomWebApplicationFactory factory)
         {
             _code = new PromoCode();
-            
+
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
@@ -37,7 +37,7 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetPromoCodes_ReturnsEmptyArrayWhenNoDataIsPresent_Returns201()
         {
-            
+
             var response = await _client.GetAsync("/promocodes");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -71,6 +71,6 @@ namespace Catalyte.Apparel.Test.Integration
             {
                 _promoCodeRepository.DeletePromoCodesAsync(actual);
             }
-        }                
+        }
     }
 }

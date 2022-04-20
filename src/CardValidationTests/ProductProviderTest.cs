@@ -33,10 +33,10 @@ namespace Catalyte.Apparel.Test.Unit
             provider = new ProductProvider(repositoryStub.Object, loggerStub.Object);
             testProduct = _factory.GenerateActiveProduct(1);
             testProducts = _factory.GenerateActiveProducts(10);
-            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts); 
+            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
             repositoryStub.Setup(repo => repo.GetProductsAsync()).ReturnsAsync(testProducts);
         }
-   
+
         [Fact]
         public async Task GetActiveProducts_Returns_ActiveProduct()
         {
@@ -44,9 +44,9 @@ namespace Catalyte.Apparel.Test.Unit
             var expectedResult = testProducts.FindAll(x => x.Active == true);
             // Act
             var result = await provider.GetActiveProductsAsync();
-            
-          // Assert
-          Assert.Equal(expectedResult.Count, result.ToList().Count);
+
+            // Assert
+            Assert.Equal(expectedResult.Count, result.ToList().Count);
         }
 
 
@@ -57,7 +57,7 @@ namespace Catalyte.Apparel.Test.Unit
             List<Product> products = new List<Product>();
             Product product = new();
             products.Add(product);
-          
+
             //Act
             repositoryStub.Setup(stub => stub.GetActiveProductsAsync()).ReturnsAsync(products);
             var result = products.Find(delegate (Product product)
@@ -68,7 +68,7 @@ namespace Catalyte.Apparel.Test.Unit
             //var actual = await _provider.GetActiveProductsAsync();
 
             //Assert
-           Assert.False(product.Active);
+            Assert.False(product.Active);
         }
     }
 }

@@ -26,9 +26,9 @@ namespace Catalyte.Apparel.API
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.BillingEmail))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.BillingPhone))
                 .ReverseMap();
-            
+
             CreateMap<LineItem, LineItemDTO>().ReverseMap();
-            
+
             CreateMap<User, UserDTO>().ReverseMap();
 
             CreateMap<PromoCode, PromoCodeDTO>().ReverseMap();

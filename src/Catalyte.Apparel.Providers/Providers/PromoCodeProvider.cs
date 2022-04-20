@@ -120,7 +120,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError("Title is taken.");
                 throw new ConflictException("Title is taken");
             }
-                        
+
             PromoCode savedPromoCode;
 
             try

@@ -417,7 +417,7 @@ namespace Catalyte.Apparel.Data.SeedData
             product.Active = true;
             return product;
         }
-        
+
 
 
         /// <summary>

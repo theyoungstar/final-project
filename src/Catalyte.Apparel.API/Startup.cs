@@ -1,5 +1,5 @@
 ﻿using Catalyte.Apparel.API.Filters;
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Catalyte.Apparel.Data;
 using Catalyte.Apparel.Data.Context;
 using Catalyte.Apparel.Providers;

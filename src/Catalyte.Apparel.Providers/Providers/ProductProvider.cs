@@ -98,13 +98,13 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 types = await _productRepository.GetAllUniqueTypesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
             return types;
-        } 
+        }
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
         {
             IEnumerable<Product> products;
@@ -240,19 +240,19 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <exception cref="BadRequestException"></exception>
         public async Task<IEnumerable<Product>> GetActiveProductsAsync()
         {
-                IEnumerable<Product> products;
+            IEnumerable<Product> products;
 
-                try
-                {
-                    products = await _productRepository.GetActiveProductsAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                    throw new BadRequestException("The product you requested is inactive.");
-                }
+            try
+            {
+                products = await _productRepository.GetActiveProductsAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new BadRequestException("The product you requested is inactive.");
+            }
 
-                return products;
+            return products;
         }
     }
 }
