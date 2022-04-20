@@ -114,7 +114,7 @@ namespace Catalyte.Apparel.Data.Repositories
         }
 
 
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, double price)
         {
             return await _ctx.Products.AsNoTracking()
                 .WhereProductBrandEquals(brand)

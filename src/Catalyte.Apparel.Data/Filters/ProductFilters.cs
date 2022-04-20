@@ -30,7 +30,7 @@ namespace Catalyte.Apparel.Data.Filters
 
             return products.Where(p => p.Demographic == demographic).AsQueryable();
         }
-        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, string price)
+        public static IQueryable<Product> WhereProductPriceEquals(this IQueryable<Product> products, double price)
         {
             if (price == null) { return products; }
 
