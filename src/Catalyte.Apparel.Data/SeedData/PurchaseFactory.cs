@@ -1,7 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
 {

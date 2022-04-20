@@ -5,7 +5,6 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -20,12 +19,23 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly CardValidation _cardValidation;
         private readonly IProductRepository _productRepository;
 
+        public IPurchaseRepository Object1 { get; }
+        public ILogger<PurchaseProvider> Object2 { get; }
+        public CardValidation Object3 { get; }
+
         public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
             _productRepository = productRepository;
             _cardValidation = cardValidation;
+        }
+
+        public PurchaseProvider(IPurchaseRepository object1, ILogger<PurchaseProvider> object2, CardValidation object3)
+        {
+            Object1 = object1;
+            Object2 = object2;
+            Object3 = object3;
         }
 
         /// <summary>

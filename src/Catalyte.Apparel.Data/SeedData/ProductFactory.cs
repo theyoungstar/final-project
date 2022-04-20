@@ -1,7 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
@@ -309,7 +308,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random generated price.
         /// </summary>
         /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
-        private string GetPrice() => $"{Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+        private double GetPrice() => Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero);
 
         /// <summary>
         /// Returns a random material from a list of materials.
@@ -364,6 +363,11 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return productList;
         }
+        /// <summary>
+        /// Generates a number of active products based on input.
+        /// </summary>
+        /// <param name="numberOfProducts"></param>
+        /// <returns></returns>
         public List<Product> GenerateActiveProducts(int numberOfProducts)
         {
 
@@ -410,15 +414,17 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return product;
         }
-
+        /// <summary>
+        /// Generates an active product based on product Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Product GenerateActiveProduct(int id)
         {
             var product = GenerateRandomProduct(id);
             product.Active = true;
             return product;
         }
-
-
 
         /// <summary>
         /// Generates a random string of characters.

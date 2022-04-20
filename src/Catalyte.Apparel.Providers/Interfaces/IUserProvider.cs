@@ -1,6 +1,4 @@
 ﻿using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.DTOs;
-using Catalyte.Apparel.Utilities;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Interfaces

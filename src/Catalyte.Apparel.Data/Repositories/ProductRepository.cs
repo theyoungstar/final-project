@@ -3,11 +3,10 @@ using Catalyte.Apparel.Data.Filters;
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
-using Catalyte.Apparel.Utilities.HttpResponseExceptions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Catalyte.Apparel.Data.Repositories
@@ -113,6 +112,7 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductEqualsActive()
                 .ToListAsync();
         }
+
 
         public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(string brand, string category, string type, string demographic, string primaryColorCode, string secondaryColorCode, string material, string price)
         {

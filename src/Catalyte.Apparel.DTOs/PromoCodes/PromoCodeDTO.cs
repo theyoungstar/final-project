@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Catalyte.Apparel.DTOs.PromoCodes
+﻿namespace Catalyte.Apparel.DTOs.PromoCodes
 {
     /// <summary>
     /// Describes a data transfer object for a promo code.

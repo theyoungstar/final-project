@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.API.Controllers
 {

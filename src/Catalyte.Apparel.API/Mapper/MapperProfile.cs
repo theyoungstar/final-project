@@ -2,13 +2,8 @@
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs;
 using Catalyte.Apparel.DTOs.Products;
-using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.DTOs.PromoCodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Catalyte.Apparel.DTOs.Purchases;
 
 namespace Catalyte.Apparel.API
 {

@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Catalyte.Apparel.Data.Interfaces;
+﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
-using Catalyte.Apparel.Utilities;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -237,21 +233,22 @@ namespace Catalyte.Apparel.Providers.Providers
         /// This task retrieves all of the products marked active
         /// </summary>
         /// <returns>active products</returns>
-        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<IEnumerable<Product>> GetActiveProductsAsync()
         {
             IEnumerable<Product> products;
 
-            try
             {
-                products = await _productRepository.GetActiveProductsAsync();
+                try
+                {
+                    products = await _productRepository.GetActiveProductsAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw new NotFoundException("The product you requested is inactive.");
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new BadRequestException("The product you requested is inactive.");
-            }
-
             return products;
         }
     }

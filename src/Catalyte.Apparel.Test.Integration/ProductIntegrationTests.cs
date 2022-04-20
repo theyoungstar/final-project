@@ -1,7 +1,7 @@
+using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Catalyte.Apparel.Data.SeedData;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -91,7 +91,7 @@ namespace Catalyte.Apparel.Test.Integration
         /// Integration test for active products filter
         /// </summary>
         [Fact]
-        public async Task GetProductsByAllFiltersAsync_Returns200AndActive()
+        public async Task GetActiveProductsAsync_Returns200AndActive()
         {
             var response = await _client.GetAsync("/products/active");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
