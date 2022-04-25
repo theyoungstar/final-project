@@ -77,6 +77,15 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductPriceEquals(min, max)
                 .ToListAsync();
         }
+
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            _ctx.Products.Add(newProduct);
+            await _ctx.SaveChangesAsync();
+
+            return newProduct;
+        }
+
     }
 
 
