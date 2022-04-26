@@ -178,46 +178,34 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The persisted purchase with IDs.</returns>
         public async Task<Product> CreateProductAsync(Product newProduct)
         {
-            Product savedProduct;
-            //List<string> errorsList = _productValidation.ProductValidation(newProduct);
-            //if (errorsList.Count > 0)
-            //{
-            //    throw new BadRequestException(errorsList[0]);
-            //}
+            Product product;
 
-            //List<string> inactiveItemsList = new List<string>();
-
-            //if (newPurchase.LineItems.Count == 0)
-            //{
-            //    throw new ArgumentException("Purchase is empty and could not be completed");
-            //}
-            //foreach (var item in newPurchase.LineItems)
-            //{
-            //    var product = await _productRepository.GetProductByIdAsync(item.ProductId);
-
-            //    if (product.Active == false)
-            //    {
-            //        inactiveItemsList.Add(product.Id.ToString());
-            //    }
-            //}
-            //if (inactiveItemsList.Count > 0)
-            //{
-            //    var inactiveItemsString = string.Join(",", inactiveItemsList);
-            //    throw new UnprocessableEntityException($"Purchase could not be completed because the following product(s) are not active: {inactiveItemsString}");
-            //}
-            //else
-            //{
             try
             {
-                savedProduct = await _productRepository.CreateProductAsync(newProduct);
+                product = await _productRepository.GetProductByIdAsync(newProduct.Id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            //}
-            return savedProduct;
+            if (product != null)
+            {
+
+                throw new UnprocessableEntityException($"Product Id already exists in the database.");
+            }
+
+            try
+            {
+                product = await _productRepository.CreateProductAsync(newProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            
+            return product;
 
         }
 
