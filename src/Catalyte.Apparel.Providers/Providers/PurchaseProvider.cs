@@ -20,7 +20,7 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly CardValidation _cardValidation;
         private readonly IProductRepository _productRepository;
-
+     
         public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
@@ -70,7 +70,9 @@ namespace Catalyte.Apparel.Providers.Providers
             List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
             if (errorsList.Count > 0)
             {
-                throw new BadRequestException(errorsList);
+                
+                var result = string.Join("," , errorsList);
+                throw new BadRequestException(result);
             }
 
             List<string> inactiveItemsList = new List<string>();
