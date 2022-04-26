@@ -139,7 +139,7 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add(" Card Holder name required");
             }
-            Regex cardHolder = new Regex(@"^[a-zA-Z-' ]+[ ]{1}[a-zA-Z-' ]{2,}");
+            Regex cardHolder = new Regex(@"^[a-zA-Z-' ]+[ ]{1}[a-zA-Z-' ]{2,}([^0-9]*)$");
             //checks if field has only letters and spaces
 
             if (!cardHolder.IsMatch(field.TrimEnd().TrimStart()) && field.Length > 0 )
