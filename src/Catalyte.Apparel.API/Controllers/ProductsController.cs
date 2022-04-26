@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Catalyte.Apparel.DTOs.Products;
@@ -94,7 +95,7 @@ namespace Catalyte.Apparel.API.Controllers
             var products = await _productProvider.GetActiveProductsAsync();
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
-            return Ok(productDTOs);
+            return Ok(productDTOs.OrderBy(p => p.Id));
         }
 
 
