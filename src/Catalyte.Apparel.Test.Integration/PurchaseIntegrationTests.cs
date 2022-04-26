@@ -1,17 +1,14 @@
 ﻿using Catalyte.Apparel.DTOs.Purchases;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
-using System.Linq;
-using System;
-using System.Net.Http.Json;
-using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.API.Controllers;
-using Microsoft.Extensions.Logging;
 
 namespace Catalyte.Apparel.Test.Integration
 {

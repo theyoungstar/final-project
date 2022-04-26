@@ -1,7 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Catalyte.Apparel.Data.SeedData
@@ -204,6 +203,14 @@ namespace Catalyte.Apparel.Data.SeedData
             }
             return active;
         }
+        /// <summary>
+        /// Returns a random boolean indicating active.
+        /// </summary>
+        /// <returns>Active as either true or false value boolean.</returns>
+        public bool GetOnlyActive()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Returns a random cateogry from the list of categories.
@@ -301,7 +308,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Returns a random generated price.
         /// </summary>
         /// <returns>A formated price string with 2 digits to the right of the decimal.</returns>
-        private string GetPrice() => $"{Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero).ToString("F2")}";
+        private double GetPrice() => Math.Round(_rand.NextDouble() * 100, 2, MidpointRounding.AwayFromZero);
 
         /// <summary>
         /// Returns a random material from a list of materials.
@@ -356,13 +363,29 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return productList;
         }
+        /// <summary>
+        /// Generates a number of active products based on input.
+        /// </summary>
+        /// <param name="numberOfProducts"></param>
+        /// <returns></returns>
+        public List<Product> GenerateActiveProducts(int numberOfProducts)
+        {
 
+            var productList = new List<Product>();
+
+            for (var i = 0; i < numberOfProducts; i++)
+            {
+                productList.Add(GenerateActiveProduct(i + 1));
+            }
+
+            return productList;
+        }
         /// <summary>
         /// Uses random generators to build a products.
         /// </summary>
         /// <param name="id">ID to assign to the product.</param>
         /// <returns>A randomly generated product.</returns>
-        private Product CreateRandomProduct(int id)
+        public Product CreateRandomProduct(int id)
         {
             var product = new Product();
             var adjective = GetProductAdjective();
@@ -391,7 +414,17 @@ namespace Catalyte.Apparel.Data.SeedData
 
             return product;
         }
-
+        /// <summary>
+        /// Generates an active product based on product Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Product GenerateActiveProduct(int id)
+        {
+            var product = CreateRandomProduct(id);
+            product.Active = true;
+            return product;
+        }
 
         /// <summary>
         /// Generates a random string of characters.

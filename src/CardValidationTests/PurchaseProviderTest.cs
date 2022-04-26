@@ -3,10 +3,9 @@ using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Providers.Providers;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
+using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace Catalyte.Apparel.Test.Unit
 {

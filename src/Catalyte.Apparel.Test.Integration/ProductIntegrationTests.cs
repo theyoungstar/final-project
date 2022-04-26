@@ -1,7 +1,7 @@
+using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Catalyte.Apparel.Data.SeedData;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -35,7 +35,6 @@ namespace Catalyte.Apparel.Test.Integration
         [Fact]
         public async Task GetProducts_Returns200()
         {
-            
             var response = await _client.GetAsync("/products");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -48,6 +47,12 @@ namespace Catalyte.Apparel.Test.Integration
 
             var content = await response.Content.ReadAsAsync<ProductDTO>();
             Assert.Equal(1, content.Id);
+        }
+        [Fact]
+        public async Task GetProductById_GivenNonexistentId_Throws404()
+        {
+            var response = await _client.GetAsync("/products/1005");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
         [Fact]
         public async Task GetAllUniqueCategories_Returns200()
@@ -72,7 +77,6 @@ namespace Catalyte.Apparel.Test.Integration
             Assert.Equal(expected, actual);
         }
         [Fact]
-        
         public async Task GetProductsByAllFiltersAsync_Returns200AndCorrectPropertyValues()
         {
             var response = await _client.GetAsync("/products/filters/?brand=Nike&category=Baseball");
@@ -85,7 +89,28 @@ namespace Catalyte.Apparel.Test.Integration
                 return product.Brand == "Nike" && product.Category == "Baseball";
             });
             var actual = result.Brand;
-            Assert.Equal(expected,actual);
+            Assert.Equal(expected, actual);
+        }
+        [Fact]
+        public async Task GetProductsByAllFiltersAsync_Returns400IfMinIsGreaterThanMax()
+        {
+            var response = await _client.GetAsync("/products/filters/?min=50&max=40");
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        [Fact]
+        public async Task GetActiveProductsAsync_Returns200AndActive()
+        {
+            var response = await _client.GetAsync("/products/active");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync<List<ProductDTO>>();
+            var expected = true;
+            var result = content.Find(delegate (ProductDTO product)
+            {
+                return product.Active == true;
+            });
+            var actual = result.Active;
+            Assert.Equal(expected, actual);
         }
     }
 }

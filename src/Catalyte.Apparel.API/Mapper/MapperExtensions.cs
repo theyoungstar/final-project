@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.DTOs.Purchases;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.DTOs.Purchases;
 
 namespace Catalyte.Apparel.API.DTOMappings
 {

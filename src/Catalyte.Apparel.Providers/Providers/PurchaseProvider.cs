@@ -5,7 +5,6 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -27,6 +26,13 @@ namespace Catalyte.Apparel.Providers.Providers
             _purchaseRepository = purchaseRepository;
             _productRepository = productRepository;
             _cardValidation = cardValidation;
+        }
+
+        public PurchaseProvider(IPurchaseRepository object1, ILogger<PurchaseProvider> object2, CardValidation object3)
+        {
+            Object1 = object1;
+            Object2 = object2;
+            Object3 = object3;
         }
 
         /// <summary>
@@ -76,7 +82,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             List<string> inactiveItemsList = new List<string>();
-            
+
             if (newPurchase.LineItems.Count == 0)
             {
                 throw new ArgumentException("Purchase is empty and could not be completed");
@@ -114,7 +120,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
     }
 }
-    
 
-        
+
+
 

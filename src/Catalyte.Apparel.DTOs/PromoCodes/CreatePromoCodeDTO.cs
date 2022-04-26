@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Catalyte.Apparel.DTOs.PromoCodes
+﻿namespace Catalyte.Apparel.DTOs.PromoCodes
 {
     /// <summary>
     /// Describes a data transfer object for creating a promo code entry.

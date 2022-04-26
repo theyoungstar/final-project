@@ -12,6 +12,6 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return purchases.Where(p => p.BillingEmail == billingEmail).AsQueryable();
         }
-        
+
     }
 }
