@@ -19,7 +19,7 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly CardValidation _cardValidation;
         private readonly IProductRepository _productRepository;
-     
+
         public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
@@ -28,12 +28,6 @@ namespace Catalyte.Apparel.Providers.Providers
             _cardValidation = cardValidation;
         }
 
-        public PurchaseProvider(IPurchaseRepository object1, ILogger<PurchaseProvider> object2, CardValidation object3)
-        {
-            Object1 = object1;
-            Object2 = object2;
-            Object3 = object3;
-        }
 
         /// <summary>
         /// Retrieves purchases from the repository that were filtered.
@@ -76,8 +70,8 @@ namespace Catalyte.Apparel.Providers.Providers
             List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
             if (errorsList.Count > 0)
             {
-                
-                var result = string.Join("," , errorsList);
+
+                var result = string.Join(",", errorsList);
                 throw new BadRequestException(result);
             }
 
