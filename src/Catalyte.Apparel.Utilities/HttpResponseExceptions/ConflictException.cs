@@ -12,6 +12,6 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
         {
             Value = new(status: 409, error: "Conflict", message: message);
         }
-        public HttpResponseExceptionValue Value { get; set; }
+        public HttpResponseExceptionValue Value { get; set; }  
     }
 }
