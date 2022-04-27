@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
 {
@@ -14,11 +15,13 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
             Status = status;
             Error = error;
             ErrorMessage = message;
+            
         }
         public DateTime Timestamp { get; set; }
         public int Status { get; set; }
         public string Error { get; set; }
         public string ErrorMessage { get; set; }
+        
 
     }
 }
