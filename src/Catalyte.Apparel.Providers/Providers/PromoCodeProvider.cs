@@ -91,11 +91,17 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new BadRequestException("Promo Code must have a type");
             }
 
-            //If Type is not "flat" or "%" throw error
-            if (newPromoCode.Type.ToLower() != "flat" && newPromoCode.Type != "percent")
+            ////If Type is not "flat" or "%" throw error
+            if (newPromoCode.Type != "flat" && newPromoCode.Type != "%")
             {
                 _logger.LogError("Promo Code must have a type of \"flat\" or \"percent\".");
                 throw new BadRequestException("Promo Code must have a type of \"flat\" or \"percent\".");
+            }
+
+            if (newPromoCode.Rate > 100)
+            {
+                _logger.LogError("Promo Code rate must not exceed 100.");
+                throw new BadRequestException("Promo Code rate must not exceed 100.");
             }
 
             // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN
