@@ -7,6 +7,7 @@ namespace Catalyte.Apparel.DTOs.Products
     /// </summary>
     public class ProductDTO
     {
+        
         public int Id { get; set; }
 
         public DateTime DateCreated { get; set; }

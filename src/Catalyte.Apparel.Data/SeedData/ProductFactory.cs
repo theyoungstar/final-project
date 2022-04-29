@@ -203,15 +203,7 @@ namespace Catalyte.Apparel.Data.SeedData
             }
             return active;
         }
-        /// <summary>
-        /// Returns a random boolean indicating active.
-        /// </summary>
-        /// <returns>Active as either true or false value boolean.</returns>
-        public bool GetOnlyActive()
-        {
-            return true;
-        }
-
+ 
         /// <summary>
         /// Returns a random cateogry from the list of categories.
         /// </summary>

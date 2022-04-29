@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -87,14 +88,14 @@ namespace Catalyte.Apparel.API.Controllers
         /// </summary>
         /// <returns>productDTOs</returns>
         [HttpGet("/products/active")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync(int pageNumber)
         {
             _logger.LogInformation("Request received for GetActiveProductsAsync");
 
-            var products = await _productProvider.GetActiveProductsAsync();
+            var products = await _productProvider.GetActiveProductsAsync(pageNumber);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
-            return Ok(productDTOs.OrderBy(p => p.Id));
+            return Ok(productDTOs);
         }
     }
 }

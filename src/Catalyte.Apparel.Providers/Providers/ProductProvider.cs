@@ -5,7 +5,9 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Catalyte.Apparel.Providers.Providers
 {
@@ -16,6 +18,7 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<ProductProvider> _logger;
         private readonly IProductRepository _productRepository;
+
 
         public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger)
         {
@@ -148,24 +151,75 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return products;
         }
+
+
         /// <summary>
         /// This task retrieves all of the products marked active
         /// </summary>
         /// <returns>active products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        public async Task<IEnumerable<Product>> GetActiveProductsAsync(int pageNumber)
         {
-            IEnumerable<Product> products;
 
+            IEnumerable<Product> products;
             {
                 try
                 {
-                    products = await _productRepository.GetActiveProductsAsync();
+                    products = await _productRepository.GetActiveProductsAsync(pageNumber);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message);
                     throw new NotFoundException("The product you requested is inactive.");
+                }
+
+                int currentPage = 1;
+                var totalActiveProducts = products.Count();
+                var pageSize = 20;
+                var totalPages = (int)Math.Ceiling((decimal)totalActiveProducts / (decimal)pageSize);
+                var maxPages = 25;
+
+                if (currentPage < 1)
+                {
+                    currentPage = 1;
+                }
+                else if (currentPage > totalPages)
+                {
+                    currentPage = totalPages;
+                }
+                int startPage, endPage;
+                if (totalPages <= maxPages)
+                {
+                    // total pages less than max so show all pages
+                    startPage = 1;
+                    endPage = totalPages;
+                }
+                else
+                {
+                    // total pages more than max so calculate start and end pages
+                    var maxPagesBeforeCurrentPage = (int)Math.Floor((decimal)maxPages / (decimal)2);
+                    var maxPagesAfterCurrentPage = (int)Math.Ceiling((decimal)maxPages / (decimal)2) - 1;
+                    if (currentPage <= maxPagesBeforeCurrentPage)
+                    {
+                        // current page near the start
+                        startPage = 1;
+                        endPage = maxPages;
+                    }
+                    else if (currentPage + maxPagesAfterCurrentPage >= totalPages)
+                    {
+                        // current page near the end
+                        startPage = totalPages - maxPages + 1;
+                        endPage = totalPages;
+                    }
+                    else
+                    {
+                        // current page somewhere in the middle
+                        startPage = currentPage - maxPagesBeforeCurrentPage;
+                        endPage = currentPage + maxPagesAfterCurrentPage;
+                    }
+                    // create an array of pages that can be looped over
+                    var pages = Enumerable.Range(startPage, (endPage + 1) - startPage);
+
                 }
             }
             return products;
