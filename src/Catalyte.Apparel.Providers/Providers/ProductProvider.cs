@@ -162,6 +162,7 @@ namespace Catalyte.Apparel.Providers.Providers
         {
 
             IEnumerable<Product> products;
+            IEnumerable<Page> totalPages;
             {
                 try
                 {
@@ -171,14 +172,16 @@ namespace Catalyte.Apparel.Providers.Providers
                 {
                     _logger.LogError(ex.Message);
                     throw new NotFoundException("The product you requested is inactive.");
-                }
+                }                
+                
 
+              
                 int currentPage = 1;
                 var totalActiveProducts = products.Count();
                 var pageSize = 20;
-                var totalPages = (int)Math.Ceiling((decimal)totalActiveProducts / (decimal)pageSize);
-                var maxPages = 25;
-
+                var pages = totalActiveProducts / pageSize;
+               
+                /*
                 if (currentPage < 1)
                 {
                     currentPage = 1;
@@ -188,39 +191,32 @@ namespace Catalyte.Apparel.Providers.Providers
                     currentPage = totalPages;
                 }
                 int startPage, endPage;
-                if (totalPages <= maxPages)
-                {
-                    // total pages less than max so show all pages
-                    startPage = 1;
-                    endPage = totalPages;
-                }
-                else
-                {
-                    // total pages more than max so calculate start and end pages
-                    var maxPagesBeforeCurrentPage = (int)Math.Floor((decimal)maxPages / (decimal)2);
-                    var maxPagesAfterCurrentPage = (int)Math.Ceiling((decimal)maxPages / (decimal)2) - 1;
-                    if (currentPage <= maxPagesBeforeCurrentPage)
-                    {
+            
+                // total pages more than max so calculate start and end pages
+                var maxPagesBeforeCurrentPage = (int)Math.Floor((decimal)maxPages / (decimal)2);
+                var maxPagesAfterCurrentPage = (int)Math.Ceiling((decimal)maxPages / (decimal)2) - 1;
+                 if (currentPage <= maxPagesBeforeCurrentPage)
+                 {
                         // current page near the start
                         startPage = 1;
                         endPage = maxPages;
-                    }
-                    else if (currentPage + maxPagesAfterCurrentPage >= totalPages)
-                    {
+                 }
+                 else if (currentPage + maxPagesAfterCurrentPage >= totalPages)
+                 {
                         // current page near the end
                         startPage = totalPages - maxPages + 1;
                         endPage = totalPages;
-                    }
-                    else
-                    {
+                 }
+                 else
+                 {
                         // current page somewhere in the middle
                         startPage = currentPage - maxPagesBeforeCurrentPage;
                         endPage = currentPage + maxPagesAfterCurrentPage;
-                    }
+                 }
                     // create an array of pages that can be looped over
                     var pages = Enumerable.Range(startPage, (endPage + 1) - startPage);
 
-                }
+                */
             }
             return products;
         }

@@ -48,7 +48,14 @@ namespace Catalyte.Apparel.Data.Repositories
                 .Take(20)    
                 .ToListAsync();
         }
-
+      /*  public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductEqualsActive()
+                .ToListAsync();
+        }
+*/
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             return await GetAllUniquesOf(x => x.Category);
