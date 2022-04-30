@@ -91,13 +91,8 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new BadRequestException("Promo Code must have a type");
             }
 
-<<<<<<< HEAD
-            ////If Type is not "flat" or "%" throw error
-            if (newPromoCode.Type != "flat" && newPromoCode.Type != "%")
-=======
             //If Type is not "flat" or "%" throw error
             if (newPromoCode.Type.ToLower() != "flat" && newPromoCode.Type != "%")
->>>>>>> 1281cf4 (working tests)
             {
                 _logger.LogError("Promo Code must have a type of \"flat\" or \"percent\".");
                 throw new BadRequestException("Promo Code must have a type of \"flat\" or \"percent\".");

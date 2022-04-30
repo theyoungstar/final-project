@@ -34,29 +34,6 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task GetPromoCodesAsync_GivenRateLessOrEqualTo100_ReturnsPromoCodes()
-        {
-            var promoCodeDTO = new CreatePromoCodeDTO()
-            {
-                Id = 7,
-                Title = "CODE07",
-                Type = "%",
-                Description = "Description of Promo",
-                Rate = 50,
-            };
-
-            var postPromoCode = JsonContent.Create(promoCodeDTO);
-            var post = await _client.PostAsync("/promocodes", postPromoCode);
-            Assert.Equal(HttpStatusCode.Created, post.StatusCode);
-
-            //var response = await _client.GetAsync("/promocodes");
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            //var content = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
-            //Assert.Equal(1, content.FirstOrDefault().Id);
-        }
-
-        [Fact]
         public async Task GetPromoCodes_ReturnsEmptyArrayWhenNoDataIsPresent_Returns201()
         {
 
