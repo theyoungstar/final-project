@@ -98,6 +98,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new BadRequestException("Promo Code must have a type of \"flat\" or \"percent\".");
             }
 
+            // Prevents promo code from persisting if rate is over 100.
             if (newPromoCode.Rate > 100)
             {
                 _logger.LogError("Promo Code rate must not exceed 100.");

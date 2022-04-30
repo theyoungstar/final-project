@@ -19,14 +19,10 @@ namespace Catalyte.Apparel.Test.Integration
     {
         private readonly HttpClient _client;
 
-        private readonly PromoCode _code;
-
         private readonly PromoCodeRepository _promoCodeRepository;
 
         public PromoCodeIntegrationTests(CustomWebApplicationFactory factory)
         {
-            _code = new PromoCode();
-
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
@@ -73,7 +69,7 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task GetPromoCodesAsync_GivenRateLessOrEqualTo100_ReturnsPromoCodes()
+        public async Task CreatePromoCodeAsync_GivenRateLessOrEqualTo100_ReturnsPromoCodes()
         {
             var promoCodeDTO = new CreatePromoCodeDTO()
             {
@@ -96,12 +92,12 @@ namespace Catalyte.Apparel.Test.Integration
         }
 
         [Fact]
-        public async Task GetPromoCodesAsync_GivenRateOver100_ThrowsBadRequestException()
+        public async Task CreatePromoCodeAsync_GivenRateOver100_ThrowsBadRequestException()
         {
             var promoCodeDTO = new CreatePromoCodeDTO()
             {
-                Id = 8,
-                Title = "CODE08",
+                Id = 9,
+                Title = "CODE09",
                 Type = "%",
                 Description = "Description of Promo",
                 Rate = 123,
