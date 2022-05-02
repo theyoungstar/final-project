@@ -21,7 +21,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber);
 
-        (Task<IEnumerable<Product>>, Task<IEnumerable<Pager>>) GetActiveProductsCountAsync();
+        Task<IEnumerable<Product>> GetActiveProductsCountAsync();
 
 
     }

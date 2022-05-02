@@ -18,14 +18,14 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<ProductProvider> _logger;
         private readonly IProductRepository _productRepository;
-        private Pager _pager;
+        
 
         public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger, Pager pager)
         {
             _logger = logger;
             _productRepository = productRepository;
-            _pager = pager;
-        }   
+           
+        }  
 
         /// <summary>
         /// Asynchronously retrieves the product with the provided id from the database.
@@ -177,10 +177,9 @@ namespace Catalyte.Apparel.Providers.Providers
                 return products;
             }
         }
-        public async (Task<IEnumerable<Product>>, Task<IEnumerable<Pager>>) GetActiveProductsCountAsync()
+        public async Task<IEnumerable<Product>> GetActiveProductsCountAsync()
         {
             IEnumerable<Product> products;
-            IEnumerable<Pager> pages;
             {
                 try
                 {
@@ -191,30 +190,10 @@ namespace Catalyte.Apparel.Providers.Providers
                     _logger.LogError(ex.Message);
                     throw new NotFoundException("The product you requested is inactive.");
                 }
-            /*    try
-                {
-                    
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                    throw new NotFoundException("The product you requested is inactive.");
-                }*/
-                List<Product> totalProducts = new List<Product>();
-                foreach (Product product in products)
-                {
-                    totalProducts.Add(product);
-                }
-                decimal pageSize = 20;
-                var productCount = totalProducts.Count();
-                var totalPages = (int)Math.Ceiling((decimal)productCount / (decimal)pageSize);
-                pages = null;
-
-
-
+         
 
             }
-            return (products, pages);
+            return products;
         }
     }
 }
