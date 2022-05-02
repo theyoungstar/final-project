@@ -88,11 +88,21 @@ namespace Catalyte.Apparel.API.Controllers
         /// </summary>
         /// <returns>productDTOs</returns>
         [HttpGet("/products/active")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync(int pageNumber)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsCountAsync()
+        {
+            _logger.LogInformation("Request received for GetActiveProductsCountAsync");
+
+            var products = await _productProvider.GetActiveProductsCountAsync();
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            return Ok(productDTOs);
+        }
+        [HttpGet("/products/active20")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsPagesAsync(int pageNumber)
         {
             _logger.LogInformation("Request received for GetActiveProductsPagesAsync");
 
-            var products = await _productProvider.GetActiveProductsAsync(pageNumber);
+            var products = await _productProvider.GetActiveProductsPagesAsync(pageNumber);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);

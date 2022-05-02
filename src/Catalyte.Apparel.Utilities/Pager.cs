@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.Data.Model
 {
@@ -63,15 +64,11 @@ namespace Catalyte.Apparel.Data.Model
             var pages = Enumerable.Range(startPage, (endPage + 1) - startPage);
 
             // update object instance with all pager properties required by the view
-            TotalProducts = totalProducts; 
+            TotalProducts = totalProducts;
             CurrentPage = currentPage;
             PageSize = pageSize;
             TotalPages = totalPages;
             StartPage = startPage;
-            EndPage = endPage;
-            StartIndex = startIndex;
-            EndIndex = endIndex;
-            Pages = pages;
         }
 
         public int TotalProducts { get; private set; }
@@ -79,9 +76,7 @@ namespace Catalyte.Apparel.Data.Model
         public int PageSize { get; private set; }
         public int TotalPages { get; private set; }
         public int StartPage { get; private set; }
-        public int EndPage { get; private set; }
-        public int StartIndex { get; private set; }
-        public int EndIndex { get; private set; }
+
         public IEnumerable<int> Pages { get; private set; }
     }
 

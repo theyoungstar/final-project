@@ -38,7 +38,7 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync(int pageNumber)
+        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
         {
             return await _ctx.Products
                 .AsNoTracking()
@@ -48,14 +48,15 @@ namespace Catalyte.Apparel.Data.Repositories
                 .Take(20)    
                 .ToListAsync();
         }
-      /*  public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        public async Task<IEnumerable<Product>> GetActiveProductsCountAsync()
         {
             return await _ctx.Products
                 .AsNoTracking()
                 .WhereProductEqualsActive()
                 .ToListAsync();
+                
         }
-*/
+
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             return await GetAllUniquesOf(x => x.Category);

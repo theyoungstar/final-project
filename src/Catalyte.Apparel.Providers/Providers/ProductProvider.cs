@@ -18,13 +18,14 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<ProductProvider> _logger;
         private readonly IProductRepository _productRepository;
+        private Pager _pager;
 
-
-        public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger)
+        public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger, Pager pager)
         {
             _logger = logger;
             _productRepository = productRepository;
-        }
+            _pager = pager;
+        }   
 
         /// <summary>
         /// Asynchronously retrieves the product with the provided id from the database.
@@ -158,67 +159,63 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <returns>active products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync(int pageNumber)
+        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
         {
-
             IEnumerable<Product> products;
-            IEnumerable<Page> totalPages;
             {
                 try
                 {
-                    products = await _productRepository.GetActiveProductsAsync(pageNumber);
+                    products = await _productRepository.GetActiveProductsPagesAsync(pageNumber);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message);
                     throw new NotFoundException("The product you requested is inactive.");
-                }                
-                
-
-              
-                int currentPage = 1;
-                var totalActiveProducts = products.Count();
-                var pageSize = 20;
-                var pages = totalActiveProducts / pageSize;
-               
-                /*
-                if (currentPage < 1)
-                {
-                    currentPage = 1;
                 }
-                else if (currentPage > totalPages)
-                {
-                    currentPage = totalPages;
-                }
-                int startPage, endPage;
-            
-                // total pages more than max so calculate start and end pages
-                var maxPagesBeforeCurrentPage = (int)Math.Floor((decimal)maxPages / (decimal)2);
-                var maxPagesAfterCurrentPage = (int)Math.Ceiling((decimal)maxPages / (decimal)2) - 1;
-                 if (currentPage <= maxPagesBeforeCurrentPage)
-                 {
-                        // current page near the start
-                        startPage = 1;
-                        endPage = maxPages;
-                 }
-                 else if (currentPage + maxPagesAfterCurrentPage >= totalPages)
-                 {
-                        // current page near the end
-                        startPage = totalPages - maxPages + 1;
-                        endPage = totalPages;
-                 }
-                 else
-                 {
-                        // current page somewhere in the middle
-                        startPage = currentPage - maxPagesBeforeCurrentPage;
-                        endPage = currentPage + maxPagesAfterCurrentPage;
-                 }
-                    // create an array of pages that can be looped over
-                    var pages = Enumerable.Range(startPage, (endPage + 1) - startPage);
 
-                */
+
+                return products;
             }
-            return products;
+        }
+        public async (Task<IEnumerable<Product>>, Task<IEnumerable<Pager>>) GetActiveProductsCountAsync()
+        {
+            IEnumerable<Product> products;
+            IEnumerable<Pager> pages;
+            {
+                try
+                {
+                    products = await _productRepository.GetActiveProductsCountAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw new NotFoundException("The product you requested is inactive.");
+                }
+            /*    try
+                {
+                    
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw new NotFoundException("The product you requested is inactive.");
+                }*/
+                List<Product> totalProducts = new List<Product>();
+                foreach (Product product in products)
+                {
+                    totalProducts.Add(product);
+                }
+                decimal pageSize = 20;
+                var productCount = totalProducts.Count();
+                var totalPages = (int)Math.Ceiling((decimal)productCount / (decimal)pageSize);
+                pages = null;
+
+
+
+
+            }
+            return (products, pages);
         }
     }
 }
+
