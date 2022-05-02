@@ -18,14 +18,14 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<ProductProvider> _logger;
         private readonly IProductRepository _productRepository;
-        
+
 
         public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger)
         {
             _logger = logger;
             _productRepository = productRepository;
-           
-        }  
+
+        }
 
         /// <summary>
         /// Asynchronously retrieves the product with the provided id from the database.
@@ -159,7 +159,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <returns>active products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
+        /*public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync()
         {
             IEnumerable<Product> products;
             {
@@ -176,24 +176,35 @@ namespace Catalyte.Apparel.Providers.Providers
 
                 return products;
             }
-        }
-        public async Task<IEnumerable<Product>> GetActiveProductsCountAsync()
+        }*/
+        public async (Task<IEnumerable<Product>>, Task<int>) GetActiveProductsPagesAsync(int pageNumber)
         {
             IEnumerable<Product> products;
+            int totalActive;
+            
+            try
             {
-                try
-                {
-                    products = await _productRepository.GetActiveProductsCountAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                    throw new NotFoundException("The product you requested is inactive.");
-                }
-         
-
+                totalActive = await _productRepository.GetActiveProductsCountAsync();                
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new NotFoundException("The product you requested is inactive.");
+            }
+
+            try
+            {
+                products = await _productRepository.GetActiveProductsPagesAsync(pageNumber, totalActive);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new NotFoundException("The product you requested is inactive.");
+            }
+
+           
             return products;
+
         }
     }
 }

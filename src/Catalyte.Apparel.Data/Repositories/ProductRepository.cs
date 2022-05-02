@@ -40,20 +40,26 @@ namespace Catalyte.Apparel.Data.Repositories
         }
         public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
         {
-            return await _ctx.Products
+            var products = await _ctx.Products
                 .AsNoTracking()
                 .WhereProductEqualsActive()
+                .ToListAsync();
+            var productsPerPage = products
                 .OrderBy(p => p.Id)
-                .Skip((pageNumber - 1 ) * 20)
-                .Take(20)    
-                .ToListAsync();
+                .Skip((pageNumber - 1) * 20)
+                .Take(20);
+            return productsPerPage;
+                
         }
-        public async Task<IEnumerable<Product>> GetActiveProductsCountAsync()
+        public async Task<int> GetActiveProductsCountAsync()
         {
-            return await _ctx.Products
+            var products = await _ctx.Products
                 .AsNoTracking()
                 .WhereProductEqualsActive()
                 .ToListAsync();
+                
+            var totalActive = products.Count();
+            return totalActive;
                 
         }
 
