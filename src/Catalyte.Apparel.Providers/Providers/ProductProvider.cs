@@ -20,7 +20,7 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly IProductRepository _productRepository;
         
 
-        public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger, Pager pager)
+        public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger)
         {
             _logger = logger;
             _productRepository = productRepository;
