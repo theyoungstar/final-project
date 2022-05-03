@@ -43,7 +43,7 @@ namespace Catalyte.Apparel.DTOs.Products
 
         public string Material { get; set; }
 
-        public string Price { get; set; }
+        public double Price { get; set; }
 
         public string Quantity { get; set; }
     }

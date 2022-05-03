@@ -134,7 +134,7 @@ namespace Catalyte.Apparel.Data.SeedData
             { "Sunglasses", new List<string>() { "Glass", "Acrylic", "Polycarbonate", "CR-39", "Polyurethene" } },
             { "Hat", new List<string>() { "Cotton", "Cotton Blends", "Wool", "Jersey Mesh", "Wool", "Acrylic/Wool Blend" } },
             { "Helmet", new List<string>() { "Polyethylene", "Aluminum", "Fiberglass" } },
-            { "Belt", new List<string>() { "Leather", "Cotton", "Nylon", "Polyesterh" } },
+            { "Belt", new List<string>() { "Leather", "Cotton", "Nylon", "Polyester" } },
             { "Visor", new List<string>() { "Polycarbonate", "Nylon Mesh", "Acetate", "Steel Mesh" } },
             { "Shin Guard", new List<string>() { "Fiberglass", "Polyurethane", "Foam Rubber" } },
             { "Elbow Pad", new List<string>() { "Polyester 4", "EPE 3", "EVA 3", "Nylon 3", "PVC 2" } },

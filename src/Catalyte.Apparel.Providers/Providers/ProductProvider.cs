@@ -1,5 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
@@ -172,10 +173,10 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Persists a purchase to the database.
+        /// Persists a product to the database.
         /// </summary>
-        /// <param name="model">PurchaseDTO used to build the purchase.</param>
-        /// <returns>The persisted purchase with IDs.</returns>
+        /// <param name="newProduct"> a new product object</param>
+        /// <returns>The persisted product with ID.</returns>
         public async Task<Product> CreateProductAsync(Product newProduct)
         {
             Product product;
@@ -204,7 +205,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-            
+
             return product;
 
         }

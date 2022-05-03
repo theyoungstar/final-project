@@ -21,6 +21,6 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<IEnumerable<Product>> GetActiveProductsAsync();
 
-        Task<Product> CreateProductAsync(Product newProduct);
+        Task<Product> CreateProductAsync(Product product);
     }
 }
