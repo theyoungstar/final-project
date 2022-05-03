@@ -159,13 +159,13 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <returns>active products</returns>
         /// <exception cref="NotFoundException"></exception>
-        /*public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync()
+        public async Task<int> GetActiveProductsCountAsync()
         {
-            IEnumerable<Product> products;
+            int products;
             {
                 try
                 {
-                    products = await _productRepository.GetActiveProductsPagesAsync(pageNumber);
+                    products = await _productRepository.GetActiveProductsCountAsync();
                 }
                 catch (Exception ex)
                 {
@@ -176,27 +176,16 @@ namespace Catalyte.Apparel.Providers.Providers
 
                 return products;
             }
-        }*/
-        public async Task<IEnumerable<Dictionary<int, IEnumerable<Product>>>> GetActiveProductsPagesAsync(int pageNumber)
-            //use dictionary
+        }
+        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
+            
         {
-            Dictionary<int, IEnumerable<Product>> myVar = new Dictionary<int, IEnumerable<Product>>();
             IEnumerable<Product> products;
-            int totalActive;
-            //Does the two try catches cause this issue?
+           
+            
             try
             {
-                totalActive = await _productRepository.GetActiveProductsCountAsync();                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new NotFoundException("The product you requested is inactive.");
-            }
-
-            try
-            {
-                products = await _productRepository.GetActiveProductsPagesAsync(pageNumber, totalActive);
+                products = await _productRepository.GetActiveProductsPagesAsync(pageNumber);                
             }
             catch (Exception ex)
             {
@@ -205,7 +194,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
            
-            return {myVar:{};
+            return products;
 
         }
     }
