@@ -177,11 +177,13 @@ namespace Catalyte.Apparel.Providers.Providers
                 return products;
             }
         }*/
-        public async (Task<IEnumerable<Product>>, Task<int>) GetActiveProductsPagesAsync(int pageNumber)
+        public async Task<IEnumerable<Dictionary<int, IEnumerable<Product>>>> GetActiveProductsPagesAsync(int pageNumber)
+            //use dictionary
         {
+            Dictionary<int, IEnumerable<Product>> myVar = new Dictionary<int, IEnumerable<Product>>();
             IEnumerable<Product> products;
             int totalActive;
-            
+            //Does the two try catches cause this issue?
             try
             {
                 totalActive = await _productRepository.GetActiveProductsCountAsync();                
@@ -203,7 +205,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
            
-            return products;
+            return {myVar:{};
 
         }
     }

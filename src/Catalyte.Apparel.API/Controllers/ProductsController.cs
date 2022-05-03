@@ -103,6 +103,7 @@ namespace Catalyte.Apparel.API.Controllers
             _logger.LogInformation("Request received for GetActiveProductsCountAsync");
 
             var products = await _productProvider.GetActiveProductsPagesAsync(pageNumber);
+            //something with GetActiveProductPagesAsync is causing issue (params?)
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
