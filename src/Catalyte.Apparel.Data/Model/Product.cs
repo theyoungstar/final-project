@@ -34,6 +34,16 @@ namespace Catalyte.Apparel.Data.Model
 
         public bool Active { get; set; }
 
+        public string Brand { get; set; }
+
+        public string ImageSrc { get; set; }
+
+        public string Material { get; set; }
+
+        public double Price { get; set; }
+
+        public string Quantity { get; set; }
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
@@ -48,7 +58,17 @@ namespace Catalyte.Apparel.Data.Model
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return x.Name == y.Name && x.Description == y.Description && x.Demographic == y.Demographic && x.Category == y.Category && x.Type == y.Type && x.ReleaseDate.Equals(y.ReleaseDate) && x.PrimaryColorCode == y.PrimaryColorCode && x.SecondaryColorCode == y.SecondaryColorCode && x.StyleNumber == y.StyleNumber && x.GlobalProductCode == y.GlobalProductCode && x.Active == y.Active;
+                return x.Name == y.Name &&
+                    x.Description == y.Description &&
+                    x.Demographic == y.Demographic &&
+                    x.Category == y.Category &&
+                    x.Type == y.Type &&
+                    x.ReleaseDate.Equals(y.ReleaseDate) &&
+                    x.PrimaryColorCode == y.PrimaryColorCode &&
+                    x.SecondaryColorCode == y.SecondaryColorCode &&
+                    x.StyleNumber == y.StyleNumber &&
+                    x.GlobalProductCode == y.GlobalProductCode &&
+                    x.Active == y.Active;
             }
 
             public int GetHashCode(Product obj)

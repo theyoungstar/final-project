@@ -16,26 +16,47 @@ namespace Catalyte.Apparel.Providers.Providers
     {
         private readonly ILogger<PurchaseProvider> _logger;
         private readonly IPurchaseRepository _purchaseRepository;
+        private readonly CardValidation _cardValidation;
+        private readonly IProductRepository _productRepository;
 
-        public PurchaseProvider(IPurchaseRepository purchaseRepository, ILogger<PurchaseProvider> logger)
+        public IPurchaseRepository Object1 { get; }
+        public ILogger<PurchaseProvider> Object2 { get; }
+        public CardValidation Object3 { get; }
+
+        public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
             _purchaseRepository = purchaseRepository;
+            _productRepository = productRepository;
+            _cardValidation = cardValidation;
+        }
+
+        public PurchaseProvider(IPurchaseRepository object1, ILogger<PurchaseProvider> object2, CardValidation object3)
+        {
+            Object1 = object1;
+            Object2 = object2;
+            Object3 = object3;
         }
 
         /// <summary>
-        /// Retrieves all purchases from the database.
+        /// Retrieves purchases from the repository that were filtered.
         /// </summary>
-        /// <param name="page">Number of pages.</param>
-        /// <param name="pageSize">How many purchases per page.</param>
+        /// <param name="billingEmail"> Billing email used to make purchase.</param>
         /// <returns>All purchases.</returns>
-        public async Task<IEnumerable<Purchase>> GetAllPurchasesAsync()
+
+        public async Task<IEnumerable<Purchase>> GetAllPurchasesByEmailAsync(string billingEmail)
         {
-            List<Purchase> purchases;
+            IEnumerable<Purchase> purchases;
+
+            if (billingEmail == null || billingEmail == "")
+            {
+                _logger.LogInformation($"Purchases with email: {billingEmail} does not exist.");
+                throw new NotFoundException($"Purchases with email: {billingEmail} does not exist.");
+            }
 
             try
             {
-                purchases = await _purchaseRepository.GetAllPurchasesAsync();
+                purchases = await _purchaseRepository.GetAllPurchasesByEmailAsync(billingEmail);
             }
             catch (Exception ex)
             {
@@ -46,6 +67,7 @@ namespace Catalyte.Apparel.Providers.Providers
             return purchases;
         }
 
+
         /// <summary>
         /// Persists a purchase to the database.
         /// </summary>
@@ -54,18 +76,52 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<Purchase> CreatePurchasesAsync(Purchase newPurchase)
         {
             Purchase savedPurchase;
-
-            try
+            List<string> errorsList = _cardValidation.CreditCardValidation(newPurchase);
+            if (errorsList.Count > 0)
             {
-                savedPurchase = await _purchaseRepository.CreatePurchaseAsync(newPurchase);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                throw new BadRequestException(errorsList[0]);
             }
 
+            List<string> inactiveItemsList = new List<string>();
+
+            if (newPurchase.LineItems.Count == 0)
+            {
+                throw new ArgumentException("Purchase is empty and could not be completed");
+            }
+            foreach (var item in newPurchase.LineItems)
+            {
+                var product = await _productRepository.GetProductByIdAsync(item.ProductId);
+
+                if (product.Active == false)
+                {
+                    inactiveItemsList.Add(product.Id.ToString());
+                }
+            }
+            if (inactiveItemsList.Count > 0)
+            {
+                var inactiveItemsString = string.Join(",", inactiveItemsList);
+                throw new UnprocessableEntityException($"Purchase could not be completed because the following product(s) are not active: {inactiveItemsString}");
+            }
+            else
+            {
+                try
+                {
+                    savedPurchase = await _purchaseRepository.CreatePurchaseAsync(newPurchase);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                }
+            }
             return savedPurchase;
+
         }
+
+
     }
 }
+
+
+
+

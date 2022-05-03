@@ -14,6 +14,7 @@ namespace Catalyte.Apparel.Data.Context
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             var productFactory = new ProductFactory();
+            var purchaseFactory = new PurchaseFactory();
 
             modelBuilder.Entity<Product>().HasData(productFactory.GenerateRandomProducts(1000));
 
@@ -50,11 +51,22 @@ namespace Catalyte.Apparel.Data.Context
                 CardHolder = "Max Perkins",
                 CardNumber = "1435678998761234",
                 Expiration = "11/21",
-                CVV = 456,
+                CVV = "123",
                 OrderDate = new DateTime(2021, 5, 4)
             };
 
             modelBuilder.Entity<Purchase>().HasData(purchase);
+
+            var promoCode = new PromoCode()
+            {
+                Id = 1,
+                Title = "CODE00",
+                Type = "flat or %",
+                Description = "Description of Promo",
+                Rate = 8888,
+            };
+
+            //modelBuilder.Entity<PromoCode>().HasData(promoCode);
         }
     }
 }

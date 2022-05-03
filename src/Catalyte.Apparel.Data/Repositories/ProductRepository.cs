@@ -3,14 +3,18 @@ using Catalyte.Apparel.Data.Filters;
 using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Catalyte.Apparel.Data.Repositories
 {
     /// <summary>
     /// This class handles methods for making requests to the product repository.
     /// </summary>
+
     public class ProductRepository : IProductRepository
     {
         private readonly IApparelCtx _ctx;
@@ -34,6 +38,49 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        {
+            return await _ctx.Products
+                .AsNoTracking()
+                .WhereProductEqualsActive()
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
+        {
+            return await GetAllUniquesOf(x => x.Category);
+        }
+        public async Task<IEnumerable<string>> GetAllUniqueTypesAsync()
+        {
+            return await GetAllUniquesOf(x => x.Type);
+        }
+        private async Task<IEnumerable<string>> GetAllUniquesOf(Func<Product, string> select)
+        {
+            var products = await _ctx.Products
+                .AsNoTracking()
+                .ToListAsync();
+            var uniques = new HashSet<string>(products.Select(select)).ToList();
+            uniques.Sort();
+
+            return uniques;
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
+        {
+            return await _ctx.Products.AsNoTracking()
+                .WhereProductBrandEquals(brand)
+                .WhereProductCategoryEquals(category)
+                .WhereProductTypeEquals(type)
+                .WhereProductDemographicEquals(demographic)
+                .WhereProductPrimaryColorCodeEquals(primaryColorCode)
+                .WhereProductSecondaryColorCodeEquals(secondaryColorCode)
+                .WhereProductMaterialEquals(material)
+                .WhereProductPriceEquals(min, max)
+                .ToListAsync();
+        }
     }
 
+
+
+
 }
+

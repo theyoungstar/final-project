@@ -1,5 +1,5 @@
-﻿using Catalyte.Apparel.Utilities.HttpResponseExceptions;
-using Catalyte.Apparel.Data.Model;
+﻿using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Google.Apis.Auth;
 using System;
 using System.Threading.Tasks;

@@ -14,4 +14,6 @@ namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
         }
         public HttpResponseExceptionValue Value { get; set; }
     }
+
+
 }

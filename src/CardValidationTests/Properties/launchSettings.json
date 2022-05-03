@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Catalyte.Apparel.Test.Unit": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54192;http://localhost:54193"
+    }
+  }
+}
