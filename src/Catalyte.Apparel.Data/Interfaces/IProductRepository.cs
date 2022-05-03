@@ -23,6 +23,8 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber);
 
         Task<int> GetActiveProductsCountAsync();
+
+        
     } 
   
 }

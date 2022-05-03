@@ -39,29 +39,28 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
         }
         public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
-            //Dictionary<TKey,TValue> to my understanding this should have the pageNumber(int) and the active products for the page selected(list)
-            //How to implement 
+            
         {
-            //collects active products
+            
             return await _ctx.Products
                 .AsNoTracking()
                 .WhereProductEqualsActive()
                 .OrderBy(p => p.Id)
                 .Skip((pageNumber - 1) * 20)
                 .Take(20)
-                .ToListAsync();
-            
-            
+                .ToListAsync();       
                 
         }
+
+       
         public async Task<int> GetActiveProductsCountAsync()
         {
             var products = await _ctx.Products
                 .AsNoTracking()
                 .WhereProductEqualsActive()
                 .ToListAsync();
-             //active product count (int)   
             var totalActive = products.Count();
+
             return totalActive;
                 
         }
