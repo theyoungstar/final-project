@@ -85,33 +85,18 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         /// <summary>
-        /// Endpoint for count of active products
+        /// Endpoint for count of total pages for active products
         /// </summary>
         /// <returns>prodCount</returns>
         [HttpGet("/products/count")]
-        public async Task<ActionResult<int>> GetActiveProductsCountAsync()
+        public async Task<ActionResult<double>> GetActiveProductsCountAsync()
         {
             _logger.LogInformation("Request received for GetActiveProductsCountAsync");
 
-            var prodCount = await _productProvider.GetActiveProductsCountAsync();
-            
+            var prodCount = await _productProvider.GetActiveProductsCountAsync();            
 
             return Ok(prodCount);
         }
-        [HttpGet("/products/active")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsPagesAsync(int pageNumber)
-        {
-            _logger.LogInformation("Request received for GetActiveProductsCountAsync");
-
-            var products = await _productProvider.GetActiveProductsPagesAsync(pageNumber);
-            //something with GetActiveProductPagesAsync is causing issue (params?)
-            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
-
-            return Ok(productDTOs);
-        }
-
-        // Create endpoint for active product count
-        // Create function that calls to database and returns count of items (int)
-        
+                
     }
 }

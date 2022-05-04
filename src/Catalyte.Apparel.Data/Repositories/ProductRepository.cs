@@ -38,22 +38,9 @@ namespace Catalyte.Apparel.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
-            
-        {
-            
-            return await _ctx.Products
-                .AsNoTracking()
-                .WhereProductEqualsActive()
-                .OrderBy(p => p.Id)
-                .Skip((pageNumber - 1) * 20)
-                .Take(20)
-                .ToListAsync();       
-                
-        }
-
+        
        
-        public async Task<int> GetActiveProductsCountAsync()
+        public async Task<double> GetActiveProductsCountAsync()
         {
             var products = await _ctx.Products
                 .AsNoTracking()
@@ -96,9 +83,10 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductMaterialEquals(material)
                 .WhereProductPriceEquals(min, max)
                 .WhereProductEqualsActive()
-                .OrderBy(p => p.Id)
-                .Skip((pageNumber - 1) * 20)
-                .Take(20)
+                //remove in new branch
+                //.OrderBy(p => p.Id)
+                //.Skip((pageNumber - 1) * 20)
+                //.Take(20)
                 .ToListAsync();
         }
 

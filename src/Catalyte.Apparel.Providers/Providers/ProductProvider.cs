@@ -155,13 +155,14 @@ namespace Catalyte.Apparel.Providers.Providers
 
 
         /// <summary>
-        /// This task retrieves a count all of the products marked active
+        /// Asynchronously retrieves a count all of the products marked active
+        /// and calculates number of total pages for pagination
         /// </summary>
-        /// <returns>count of active products</returns>
+        /// <returns>count of pages of active products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<int> GetActiveProductsCountAsync()
+        public async Task<double> GetActiveProductsCountAsync()
         {
-            int productsCount;
+            double productsCount;
             {
                 try
                 {
@@ -173,31 +174,10 @@ namespace Catalyte.Apparel.Providers.Providers
                     throw new NotFoundException("Unable to access product count");
                 }
 
-
-                return productsCount;
+                return Math.Round(productsCount / 20);
             }
         }
-        public async Task<IEnumerable<Product>> GetActiveProductsPagesAsync(int pageNumber)
-            
-        {
-            IEnumerable<Product> products;
-           
-            
-            try
-            {
-                products = await _productRepository.GetActiveProductsPagesAsync(pageNumber);                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new NotFoundException("The product you requested is inactive.");
-            }
-
-           
-            return products;
-
-        }
-
+        
        
     }
 }
