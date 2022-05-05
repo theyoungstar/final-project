@@ -149,7 +149,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-
+           
             return products;
         }
 
@@ -174,7 +174,7 @@ namespace Catalyte.Apparel.Providers.Providers
                     throw new NotFoundException("Unable to access product count");
                 }
 
-                return Math.Round(productsCount / 20);
+                return Math.Ceiling(productsCount / 20);
             }
         }
         

@@ -84,9 +84,9 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductPriceEquals(min, max)
                 .WhereProductEqualsActive()
                 //remove in new branch
-                //.OrderBy(p => p.Id)
-                //.Skip((pageNumber - 1) * 20)
-                //.Take(20)
+                .OrderBy(p => p.Id)
+                .Skip((pageNumber-1) *20)
+                .Take(20)
                 .ToListAsync();
         }
 
