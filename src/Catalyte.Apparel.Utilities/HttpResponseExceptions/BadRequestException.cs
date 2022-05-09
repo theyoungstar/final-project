@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Catalyte.Apparel.Utilities.HttpResponseExceptions
 {
