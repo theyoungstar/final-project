@@ -67,6 +67,13 @@ namespace Catalyte.Apparel.Data.Context
             };
 
             //modelBuilder.Entity<PromoCode>().HasData(promoCode);
+
+            var shippingRate = new ShippingRate()
+            {
+                Id = 1,
+                State = "HI",
+                Rate = 10,
+            };
         }
     }
 }
