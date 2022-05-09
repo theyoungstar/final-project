@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -73,28 +74,29 @@ namespace Catalyte.Apparel.API.Controllers
 
         }
         [HttpGet("/products/filters")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync(int pageNumber, [FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
 
-            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
+            var products = await _productProvider.GetProductsByAllFiltersAsync(pageNumber, brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
         }
+
         /// <summary>
-        /// Endpoint for active products
+        /// Endpoint for count of total pages for active products
         /// </summary>
-        /// <returns>productDTOs</returns>
-        [HttpGet("/products/active")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync()
+        /// <returns>prodCount</returns>
+        [HttpGet("/products/count")]
+        public async Task<ActionResult<double>> GetActiveProductsCountAsync()
         {
-            _logger.LogInformation("Request received for GetActiveProductsAsync");
+            _logger.LogInformation("Request received for GetActiveProductsCountAsync");
 
-            var products = await _productProvider.GetActiveProductsAsync();
-            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var prodCount = await _productProvider.GetActiveProductsCountAsync();            
 
-            return Ok(productDTOs.OrderBy(p => p.Id));
+            return Ok(prodCount);
         }
+                
     }
 }
