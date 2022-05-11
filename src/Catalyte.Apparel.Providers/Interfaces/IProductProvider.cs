@@ -20,12 +20,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(int pageNumber, List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
                 
         Task<double> GetActiveProductsCountAsync();
-
         
-        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
-
-        Task<IEnumerable<Product>> GetActiveProductsAsync();
-
         Task<Product> CreateProductAsync(Product product);
     }
 }

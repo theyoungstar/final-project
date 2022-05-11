@@ -22,8 +22,6 @@ namespace Catalyte.Apparel.Data.Interfaces
                 
         Task<double> GetActiveProductsCountAsync();
 
-        Task<IEnumerable<Product>> GetActiveProductsAsync();
-
         Task<Product> CreateProductAsync(Product newProduct);
     }
 }
