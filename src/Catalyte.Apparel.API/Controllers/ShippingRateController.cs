@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Catalyte.Apparel.Data.Model;
-using Catalyte.Apparel.DTOs.PromoCodes;
 using Catalyte.Apparel.DTOs.ShippingRates;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -33,23 +33,24 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ShippingRateDTO>>> GetShippingRatesAsync()
+        public async Task<ActionResult<int>> GetShippingRatesAsync()
         {
             _logger.LogInformation("Request received for GetShippingRatesAsync");
 
             var shippingRates = await _shippingRateProvider.GetShippingRatesAsync();
             var shippingRateDTOs = _mapper.Map<IEnumerable<ShippingRateDTO>>(shippingRates);
+            var one = shippingRateDTOs.FirstOrDefault().Rate;
 
-            return Ok(shippingRateDTOs);
+            return Ok(one);
         }
 
-        [HttpGet("/{state}")]
-        public async Task<ActionResult<ShippingRateDTO>> GetShippingRateByStateAsync(string state)
+        [HttpGet("/shippingrates/{state}")]
+        public async Task<ActionResult<int>> GetShippingRateByStateAsync(string state)
         {
             _logger.LogInformation($"Request received for GetShippingRateByStateAsync for state: {state}");
 
             var shippingRate = await _shippingRateProvider.GetShippingRateByStateAsync(state);
-            var shippingRateDTO = _mapper.Map<ShippingRateDTO>(shippingRate);
+            var shippingRateDTO = _mapper.Map<ShippingRateDTO>(shippingRate).Rate;
 
             return Ok(shippingRateDTO);
         }

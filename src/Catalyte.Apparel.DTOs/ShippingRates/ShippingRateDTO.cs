@@ -1,4 +1,4 @@
-﻿namespace Catalyte.Apparel.DTOs.PromoCodes
+﻿namespace Catalyte.Apparel.DTOs.ShippingRates
 {
     /// <summary>
     /// Describes a data transfer object for a promo code.

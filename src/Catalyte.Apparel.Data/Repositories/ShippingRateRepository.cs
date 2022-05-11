@@ -20,11 +20,11 @@ namespace Catalyte.Apparel.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task<ShippingRate> GetShippingRateByStateAsync(string shippingRateState)
+        public async Task<ShippingRate> GetShippingRateByStateAsync(string state)
         {
             return await _ctx.ShippingRates
                 .AsNoTracking()
-                .WhereShippingRateStateEquals(shippingRateState)
+                .WhereShippingRateStateEquals(state)
                 .SingleOrDefaultAsync();
         }
 

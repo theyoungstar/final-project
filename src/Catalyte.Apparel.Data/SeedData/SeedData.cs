@@ -71,9 +71,10 @@ namespace Catalyte.Apparel.Data.Context
             var shippingRate = new ShippingRate()
             {
                 Id = 1,
-                State = "HI",
+                State = "Hawaii",
                 Rate = 10,
             };
+            modelBuilder.Entity<ShippingRate>().HasData(shippingRate);
         }
     }
 }

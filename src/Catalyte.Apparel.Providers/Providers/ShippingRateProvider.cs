@@ -28,13 +28,13 @@ namespace Catalyte.Apparel.Providers.Providers
         /// </summary>
         /// <param name="promoCodeId">The id of the promocode to retrieve.</param>
         /// <returns>The promocode.</returns>
-        public async Task<ShippingRate> GetShippingRateByStateAsync(string shippingRateState)
+        public async Task<ShippingRate> GetShippingRateByStateAsync(string state)
         {
             ShippingRate shippingRate;
 
             try
             {
-                shippingRate = await _shippingRateRepository.GetShippingRateByStateAsync(shippingRateState);
+                shippingRate = await _shippingRateRepository.GetShippingRateByStateAsync(state);
             }
             catch (Exception ex)
             {
@@ -44,8 +44,8 @@ namespace Catalyte.Apparel.Providers.Providers
 
             if (shippingRate == null || shippingRate == default)
             {
-                _logger.LogInformation($"ShippingRate with state: {shippingRateState} could not be found.");
-                throw new NotFoundException($"ShippingRate with state: {shippingRateState} could not be found.");
+                _logger.LogInformation($"ShippingRate with state: {state} could not be found.");
+                throw new NotFoundException($"ShippingRate with state: {state} could not be found.");
             }
 
             return shippingRate;

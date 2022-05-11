@@ -9,7 +9,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
     /// </summary>
     public interface IShippingRateProvider
     {
-        Task<ShippingRate> GetShippingRateByStateAsync(string shippingRateState);
+        Task<ShippingRate> GetShippingRateByStateAsync(string state);
 
         Task<IEnumerable<ShippingRate>> GetShippingRatesAsync();
 

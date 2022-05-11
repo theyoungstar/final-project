@@ -11,7 +11,7 @@ namespace Catalyte.Apparel.Data.Filters
       
         public static IQueryable<ShippingRate> WhereShippingRateStateEquals(this IQueryable<ShippingRate> shippingRates, string state)
         {
-            return shippingRates.Where(u => u.State == state).AsQueryable();
+            return shippingRates.Where(p => state.Contains(p.State)).AsQueryable();
         }
     }
 }
