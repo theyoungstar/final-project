@@ -1,7 +1,7 @@
 ﻿using Catalyte.Apparel.Data.Model;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-//using Catalyte.Apparel.Providers.Providers;
 
 namespace Catalyte.Apparel.Data.Interfaces
 {
@@ -18,7 +18,9 @@ namespace Catalyte.Apparel.Data.Interfaces
 
         Task<IEnumerable<string>> GetAllUniqueTypesAsync();
 
-        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
+        Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(int pageNumber,List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max);
+                
+        Task<double> GetActiveProductsCountAsync();
 
         Task<IEnumerable<Product>> GetActiveProductsAsync();
 

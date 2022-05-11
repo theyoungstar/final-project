@@ -6,7 +6,9 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Catalyte.Apparel.Providers.Providers
 {
@@ -18,10 +20,12 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<ProductProvider> _logger;
         private readonly IProductRepository _productRepository;
 
+
         public ProductProvider(IProductRepository productRepository, ILogger<ProductProvider> logger)
         {
             _logger = logger;
             _productRepository = productRepository;
+
         }
 
         /// <summary>
@@ -129,7 +133,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>Filtered list of products.</returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="ServiceUnavailableException"></exception>
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(int pageNumber, List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             IEnumerable<Product> products;
             if (min > max && max != 0)
@@ -139,37 +143,40 @@ namespace Catalyte.Apparel.Providers.Providers
 
             try
             {
-                products = await _productRepository.GetProductsByAllFiltersAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
+                products = await _productRepository.GetProductsByAllFiltersAsync(pageNumber, brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
-
+           
             return products;
         }
-        /// <summary>
-        /// This task retrieves all of the products marked active
-        /// </summary>
-        /// <returns>active products</returns>
-        /// <exception cref="NotFoundException"></exception>
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
-        {
-            IEnumerable<Product> products;
 
+
+        /// <summary>
+        /// Asynchronously retrieves a count all of the products marked active
+        /// and calculates number of total pages for pagination
+        /// </summary>
+        /// <returns>count of pages of active products</returns>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<double> GetActiveProductsCountAsync()
+        {
+            double productsCount;
             {
                 try
                 {
-                    products = await _productRepository.GetActiveProductsAsync();
+                    productsCount = await _productRepository.GetActiveProductsCountAsync();
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex.Message);
-                    throw new NotFoundException("The product you requested is inactive.");
+                    throw new NotFoundException("Unable to access product count");
                 }
+
+                return Math.Ceiling(productsCount / 20);
             }
-            return products;
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using Catalyte.Apparel.Test.Integration.Utilities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -18,20 +19,15 @@ namespace Catalyte.Apparel.Test.Integration
     {
         private readonly HttpClient _client;
 
-        private readonly PromoCode _code;
-
         private readonly PromoCodeRepository _promoCodeRepository;
 
         public PromoCodeIntegrationTests(CustomWebApplicationFactory factory)
         {
-            _code = new PromoCode();
-
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
             });
         }
-
 
         [Fact]
         public async Task GetPromoCodes_ReturnsEmptyArrayWhenNoDataIsPresent_Returns201()
@@ -71,5 +67,46 @@ namespace Catalyte.Apparel.Test.Integration
                 _promoCodeRepository.DeletePromoCodesAsync(actual);
             }
         }
+
+        [Fact]
+        public async Task CreatePromoCodeAsync_GivenRateLessOrEqualTo100_ReturnsPromoCodes()
+        {
+            var promoCodeDTO = new CreatePromoCodeDTO()
+            {
+                Id = 7,
+                Title = "CODE07",
+                Type = "%",
+                Description = "Description of Promo",
+                Rate = 50,
+            };
+
+            var postPromoCode = JsonContent.Create(promoCodeDTO);
+            var post = await _client.PostAsync("/promocodes", postPromoCode);
+            Assert.Equal(HttpStatusCode.Created, post.StatusCode);
+
+            var response = await _client.GetAsync("/promocodes");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsAsync<IEnumerable<PromoCodeDTO>>();
+            Assert.Equal(7, content.FirstOrDefault().Id);
+        }
+
+        [Fact]
+        public async Task CreatePromoCodeAsync_GivenRateOver100_ThrowsBadRequestException()
+        {
+            var promoCodeDTO = new CreatePromoCodeDTO()
+            {
+                Id = 9,
+                Title = "CODE09",
+                Type = "%",
+                Description = "Description of Promo",
+                Rate = 123,
+            };
+
+            var postPromoCode = JsonContent.Create(promoCodeDTO);
+            var post = await _client.PostAsync("/promocodes", postPromoCode);
+            Assert.Equal(HttpStatusCode.BadRequest, post.StatusCode);
+        }
+
     }
 }
