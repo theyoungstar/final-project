@@ -12,7 +12,7 @@ namespace Catalyte.Apparel.Data.Model
 
         public string State { get; set; }
 
-        public int Rate { get; set; }
+        public double Rate { get; set; }
 
         public override string ToString()
         {

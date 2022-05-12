@@ -44,7 +44,7 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         [HttpGet("/shippingrates/")]
-        public async Task<ActionResult<int>> GetShippingRateByStateAsync([FromQuery] string state)
+        public async Task<ActionResult<double>> GetShippingRateByStateAsync([FromQuery] string state)
         {
             _logger.LogInformation($"Request received for GetShippingRateByStateAsync for state: {state}");
 

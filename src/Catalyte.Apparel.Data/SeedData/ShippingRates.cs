@@ -80,28 +80,15 @@ namespace Catalyte.Apparel.Data.SeedData
                 var shippingRate = new ShippingRate();
                 shippingRateList.Add(shippingRate);
                 
-                if (state == "Hawaii") 
+                if (state == "Hawaii" || state == "Alaska")
                 {
-                    shippingRate.Rate = 10;
+                    shippingRate.Rate = 10.00;
                     shippingRate.State = state;
                     shippingRate.Id = rnd.Next();
                 }
-                if (state == "Alaska")
-                {
-                    shippingRate.Rate = 10;
-                    shippingRate.State = state;
-                    shippingRate.Id = rnd.Next();
-                }
-                if (state == "Alabama")
-                {
-                    shippingRate.Rate = 5;
-                    shippingRate.State = state;
-                    shippingRate.Id = rnd.Next();
-                }
-
                 else
                 {
-                    shippingRate.Rate = 5;
+                    shippingRate.Rate = 5.00;
                     shippingRate.State = state;
                     shippingRate.Id = rnd.Next();
                 }
