@@ -73,20 +73,39 @@ namespace Catalyte.Apparel.Data.SeedData
         public List<ShippingRate> AssignRates(string[] statesArray)
         {
             var shippingRateList = new List<ShippingRate>();
-            var shippingRate = new ShippingRate();
-            Random rnd = new();
-            int num = rnd.Next();
+           
             foreach (string state in statesArray)
             {
+                Random rnd = new();
+                var shippingRate = new ShippingRate();
                 shippingRateList.Add(shippingRate);
-              
+                
+                if (state == "Hawaii") 
+                {
+                    shippingRate.Rate = 10;
+                    shippingRate.State = state;
+                    shippingRate.Id = rnd.Next();
+                }
+                if (state == "Alaska")
+                {
+                    shippingRate.Rate = 10;
+                    shippingRate.State = state;
+                    shippingRate.Id = rnd.Next();
+                }
                 if (state == "Alabama")
                 {
                     shippingRate.Rate = 5;
                     shippingRate.State = state;
-                    shippingRate.Id = 1;
+                    shippingRate.Id = rnd.Next();
                 }
 
+                else
+                {
+                    shippingRate.Rate = 5;
+                    shippingRate.State = state;
+                    shippingRate.Id = rnd.Next();
+                }
+                
             }
             return shippingRateList;
 
