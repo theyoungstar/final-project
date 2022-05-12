@@ -2,6 +2,7 @@
 using Catalyte.Apparel.Data.SeedData;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Catalyte.Apparel.Data.Context
 {
@@ -14,7 +15,9 @@ namespace Catalyte.Apparel.Data.Context
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             var productFactory = new ProductFactory();
-            var purchaseFactory = new PurchaseFactory();
+            var shippingRates = new ShippingRates();
+            var shippingRateList = new ShippingRates();
+
 
             modelBuilder.Entity<Product>().HasData(productFactory.GenerateRandomProducts(1000));
 
@@ -67,14 +70,85 @@ namespace Catalyte.Apparel.Data.Context
             };
 
             //modelBuilder.Entity<PromoCode>().HasData(promoCode);
-
-            var shippingRate = new ShippingRate()
+            
+            var shippingRateHawaii = new ShippingRate()
             {
                 Id = 1,
                 State = "Hawaii",
                 Rate = 10,
             };
-            modelBuilder.Entity<ShippingRate>().HasData(shippingRate);
+            var shippingRateAlaska = new ShippingRate()
+            {
+                Id = 2,
+                State = "Alabama",
+                Rate = 5,
+            };
+            var statesArray = new string []
+        {
+            "Alabama",
+            "Alaska",
+            "American Samoa",
+            "Arizona",
+            "Arkansas",
+            "California",
+            "Colorado",
+            "Connecticut",
+            "Delaware",
+            "District of Columbia",
+            "Federated States of Micronesia",
+            "Florida",
+            "Georgia",
+            "Guam",
+            "Hawaii",
+            "Idaho",
+            "Illinois",
+            "Indiana",
+            "Iowa",
+            "Kansas",
+            "Kentucky",
+            "Louisiana",
+            "Maine",
+            "Marshall Island",
+            "Maryland",
+            "Massachusetts",
+            "Michigan",
+            "Minnesota",
+            "Mississippi",
+            "Missouri",
+            "Montana",
+            "Nebraska",
+            "Nevada",
+            "New Hampshire",
+            "New Jersey",
+            "New Mexico",
+            "New York",
+            "North Carolina",
+            "North Dakota",
+            "Northern Mariana Islands",
+            "Ohio",
+            "Oklahoma",
+            "Oregon",
+            "Palau",
+            "Pennslyvania",
+            "Puerto Rico",
+            "Rhode Island",
+            "South Carolina",
+            "South Dakota",
+            "Tennessee",
+            "Texas",
+            "Utah",
+            "Vermont",
+            "Virgin Island",
+            "Virginia",
+            "Washington",
+            "West Virginia",
+            "Wisconsin",
+            "Wyoming",
+        };
+
+
+        //modelBuilder.Entity<ShippingRate>().HasData(shippingRateHawaii, shippingRateAlaska);
+        modelBuilder.Entity<ShippingRate>().HasData(shippingRateList.AssignRates(statesArray));
         }
     }
 }

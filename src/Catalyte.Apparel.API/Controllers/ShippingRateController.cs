@@ -32,20 +32,19 @@ namespace Catalyte.Apparel.API.Controllers
             _shippingRateProvider = shippingRateProvider;
         }
 
-        [HttpGet]
+        [HttpGet("/shippingrates/all")]
         public async Task<ActionResult<int>> GetShippingRatesAsync()
         {
             _logger.LogInformation("Request received for GetShippingRatesAsync");
 
             var shippingRates = await _shippingRateProvider.GetShippingRatesAsync();
             var shippingRateDTOs = _mapper.Map<IEnumerable<ShippingRateDTO>>(shippingRates);
-            var one = shippingRateDTOs.FirstOrDefault().Rate;
 
-            return Ok(one);
+            return Ok(shippingRateDTOs);
         }
 
-        [HttpGet("/shippingrates/{state}")]
-        public async Task<ActionResult<int>> GetShippingRateByStateAsync(string state)
+        [HttpGet("/shippingrates/")]
+        public async Task<ActionResult<int>> GetShippingRateByStateAsync([FromQuery] string state)
         {
             _logger.LogInformation($"Request received for GetShippingRateByStateAsync for state: {state}");
 
