@@ -22,6 +22,8 @@ namespace Catalyte.Apparel.Data.Interfaces
                 
         Task<double> GetActiveProductsCountAsync();
 
+        Task<Product> UpdateProductAsync(Product product);
+
         
     } 
   
