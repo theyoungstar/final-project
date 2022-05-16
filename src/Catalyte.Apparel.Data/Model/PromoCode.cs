@@ -16,7 +16,7 @@ namespace Catalyte.Apparel.Data.Model
 
         public string Type { get; set; }
 
-        public int Rate { get; set; }
+        public decimal Rate { get; set; }
 
         public override string ToString()
         {

@@ -13,7 +13,7 @@
 
         public string Description { get; set; }
 
-        public int Rate { get; set; }
+        public decimal Rate { get; set; }
 
     }
 }
