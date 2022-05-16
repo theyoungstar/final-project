@@ -1,5 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
@@ -177,8 +178,44 @@ namespace Catalyte.Apparel.Providers.Providers
                 return Math.Ceiling(productsCount / 20);
             }
         }
-        
-       
+
+        /// <summary>
+        /// Persists a product to the database.
+        /// </summary>
+        /// <param name="newProduct"> a new product object</param>
+        /// <returns>The persisted product with ID.</returns>
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            Product product;
+
+            try
+            {
+                product = await _productRepository.GetProductByIdAsync(newProduct.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            if (product != null)
+            {
+
+                throw new UnprocessableEntityException($"Product Id already exists in the database.");
+            }
+
+            try
+            {
+                product = await _productRepository.CreateProductAsync(newProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            return product;
+
+        }
+
     }
 }
-

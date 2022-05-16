@@ -89,7 +89,14 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
         }
 
-       
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            _ctx.Products.Add(newProduct);
+            await _ctx.SaveChangesAsync();
+
+            return newProduct;
+        }
+
     }
 
 
