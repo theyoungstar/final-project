@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Catalyte.Apparel.Data.Repositories
 {
     /// <summary>
-    /// This class handles methods for making requests to the promo code repository.
+    /// This class handles methods for making requests to the shipping rate repository.
     /// </summary>
     public class ShippingRateRepository : IShippingRateRepository
     {
@@ -21,6 +21,7 @@ namespace Catalyte.Apparel.Data.Repositories
             _ctx = ctx;
         }
 
+        //Retrieves shipping rate by state
         public async Task<ShippingRate> GetShippingRateByStateAsync(string state)
         {
             return await _ctx.ShippingRates
@@ -29,6 +30,7 @@ namespace Catalyte.Apparel.Data.Repositories
                 .SingleOrDefaultAsync();
         }
 
+        //Retrieves all shipping rates
         public async Task<IEnumerable<ShippingRate>> GetShippingRatesAsync()
         {
             return await _ctx.ShippingRates
@@ -37,18 +39,15 @@ namespace Catalyte.Apparel.Data.Repositories
                 .ToListAsync();
         }
 
-        //Delete PromoCode Repo Function
+        //Deletes Shipping Rate
         public async void DeleteShippingRatesAsync(ShippingRate shippingRate)
         {
             _ctx.ShippingRates.Remove(shippingRate);
             await _ctx.SaveChangesAsync();
 
         }
-        public async Task<ShippingRate> GetShippingRateByStaetAsync(string state)
-        {
-            return await _ctx.ShippingRates.AsNoTracking().WhereShippingRateStateEquals(state).SingleOrDefaultAsync();
-        }
 
+        //Creates Shipping Rates
         public async Task<ShippingRate> CreateShippingRateAsync(ShippingRate shippingRate)
         {
             _ctx.ShippingRates.Add(shippingRate);

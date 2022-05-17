@@ -5,72 +5,16 @@ using Catalyte.Apparel.Data.Model;
 
 namespace Catalyte.Apparel.Data.SeedData
 {
+    /// <summary>
+    /// This class provides a function for assigning data to a ShippingRate.
+    /// </summary>
     public class ShippingRates
     {
-        //public readonly string[] statesArray =
-        //{
-        //    "Alabama",
-        //    "Alaska",
-        //    "American Samoa",
-        //    "Arizona",
-        //    "Arkansas",
-        //    "California",
-        //    "Colorado",
-        //    "Connecticut",
-        //    "Delaware",
-        //    "District of Columbia",
-        //    "Federated States of Micronesia",
-        //    "Florida",
-        //    "Georgia",
-        //    "Guam",
-        //    "Hawaii",
-        //    "Idaho",
-        //    "Illinois",
-        //    "Indiana",
-        //    "Iowa",
-        //    "Kansas",
-        //    "Kentucky",
-        //    "Louisiana",
-        //    "Maine",
-        //    "Marshall Island",
-        //    "Maryland",
-        //    "Massachusetts",
-        //    "Michigan",
-        //    "Minnesota",
-        //    "Mississippi",
-        //    "Missouri",
-        //    "Montana",
-        //    "Nebraska",
-        //    "Nevada",
-        //    "New Hampshire",
-        //    "New Jersey",
-        //    "New Mexico",
-        //    "New York",
-        //    "North Carolina",
-        //    "North Dakota",
-        //    "Northern Mariana Islands",
-        //    "Ohio",
-        //    "Oklahoma",
-        //    "Oregon",
-        //    "Palau",
-        //    "Pennslyvania",
-        //    "Puerto Rico",
-        //    "Rhode Island",
-        //    "South Carolina",
-        //    "South Dakota",
-        //    "Tennessee",
-        //    "Texas",
-        //    "Utah",
-        //    "Vermont",
-        //    "Virgin Island",
-        //    "Virginia",
-        //    "Washington",
-        //    "West Virginia",
-        //    "Wisconsin",
-        //    "Wyoming",
-        //};
-       
-        public List<ShippingRate> AssignRates(string[] statesArray)
+        /// <summary>
+        /// Assigns shipping rates and id to each state.
+        /// </summary>
+        /// <returns>A list of ShippingRates</returns>
+        public static List<ShippingRate> AssignRates(string[] statesArray)
         {
             var shippingRateList = new List<ShippingRate>();
            

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Catalyte.Apparel.Providers.Providers
 {
     /// <summary>
-    /// This class provides the implementation of the IPromoCodeProvider interface, providing service methods for products.
+    /// This class provides the implementation of the IShippingRateProvider interface, providing service methods for products.
     /// </summary>
     public class ShippingRateProvider : IShippingRateProvider
     {
@@ -24,10 +24,10 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Asynchronously retrieves the promocode with the provided id from the database.
+        /// Asynchronously retrieves the shipping rate with the provided id from the database.
         /// </summary>
-        /// <param name="promoCodeId">The id of the promocode to retrieve.</param>
-        /// <returns>The promocode.</returns>
+        /// <param name="state">The state of the shipping rate to retrieve.</param>
+        /// <returns>The shipping rate.</returns>
         public async Task<ShippingRate> GetShippingRateByStateAsync(string state)
         {
             ShippingRate shippingRate;
@@ -52,9 +52,9 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Asynchronously retrieves all promoCodes from the database.
+        /// Asynchronously retrieves all shipping rates from the database.
         /// </summary>
-        /// <returns>All promoCodes in the database.</returns>
+        /// <returns>All shipping rates in the database.</returns>
         public async Task<IEnumerable<ShippingRate>> GetShippingRatesAsync()
         {
             IEnumerable<ShippingRate> shippingRates;
@@ -72,11 +72,10 @@ namespace Catalyte.Apparel.Providers.Providers
             return shippingRates;
         }
         /// <summary>
-        /// Persists a promo code to the database given the provided title is not already in the database or null
-        /// and type field is valid.
+        /// Persists a shipping rate to the database.
         /// </summary>
-        /// <param name="newPromoCode">The promo code to persist.</param>
-        /// <returns>The promo code.</returns>
+        /// <param name="newShippingRate">The shipping rate to persist.</param>
+        /// <returns>The shipping rate model.</returns>
         public async Task<ShippingRate> CreateShippingRateAsync(ShippingRate newShippingRate)
         {
             if (newShippingRate.State == null)
@@ -85,7 +84,7 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new BadRequestException("Shipping Rate must have a state field");
             }
 
-            // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN
+            // Check to make sure the shipping rate state is not already entered
             ShippingRate existingShippingRate;
 
             try
@@ -100,8 +99,8 @@ namespace Catalyte.Apparel.Providers.Providers
 
             if (existingShippingRate != default)
             {
-                _logger.LogError("Title is taken.");
-                throw new ConflictException("Title is taken");
+                _logger.LogError("Shipping rate for state already in the database.");
+                throw new ConflictException("Shipping rate for state already in the database");
             }
 
             ShippingRate savedShippingRate;
@@ -109,7 +108,7 @@ namespace Catalyte.Apparel.Providers.Providers
             try
             {
                 savedShippingRate = await _shippingRateRepository.CreateShippingRateAsync(newShippingRate);
-                _logger.LogInformation("Promo code saved.");
+                _logger.LogInformation("Shipping rate saved.");
             }
             catch (Exception ex)
             {

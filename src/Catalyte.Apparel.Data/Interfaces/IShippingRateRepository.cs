@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Catalyte.Apparel.Data.Interfaces
 {
     /// <summary>
-    /// This interface provides an abstraction layer for promo code repository methods.
+    /// This interface provides an abstraction layer for shipping rate repository methods.
     /// </summary>
     public interface IShippingRateRepository
     {

@@ -4,7 +4,7 @@ using System.Linq;
 namespace Catalyte.Apparel.Data.Filters
 {
     /// <summary>
-    /// Filter collection for promo code context queries.
+    /// Filter collection for shipping rate context queries.
     /// </summary>
     public static class ShippingRateFilters
     {

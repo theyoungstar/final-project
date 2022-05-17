@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace Catalyte.Apparel.API.Controllers
 {
     /// <summary>
-    /// The PromoCodesController exposes endpoints for promo code related actions.
+    /// The ShippingRateController exposes endpoints for shipping rate related actions.
     /// </summary>
     [ApiController]
     [Route("/shippingrates")]
