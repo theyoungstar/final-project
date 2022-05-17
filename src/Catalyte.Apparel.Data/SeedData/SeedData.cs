@@ -66,7 +66,20 @@ namespace Catalyte.Apparel.Data.Context
                 Rate = 8888,
             };
 
-            //modelBuilder.Entity<PromoCode>().HasData(promoCode);
+            var user = new User()
+            {
+                Id = 1,
+                Email = "blamboy@catalyte.io",
+                Role = "customer",
+                FirstName = "Benjamin",
+                LastName = "Lamboy",
+                Street = "123 Main",
+                City = "Denver",
+                State = "Colorado",
+                Zip = 12345
+            };
+
+            modelBuilder.Entity<User>().HasData(user);
         }
     }
 }
