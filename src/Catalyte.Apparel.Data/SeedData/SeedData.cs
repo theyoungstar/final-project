@@ -1,4 +1,4 @@
-﻿using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -69,6 +69,7 @@ namespace Catalyte.Apparel.Data.Context
                 Rate = 8888,
             };
 
+
             //modelBuilder.Entity<PromoCode>().HasData(promoCode);
        
             var statesArray = new string []
@@ -135,6 +136,22 @@ namespace Catalyte.Apparel.Data.Context
         };
 
         modelBuilder.Entity<ShippingRate>().HasData(shippingRateList.AssignRates(statesArray));
+
+            var user = new User()
+            {
+                Id = 1,
+                Email = "blamboy@catalyte.io",
+                Role = "customer",
+                FirstName = "Benjamin",
+                LastName = "Lamboy",
+                Street = "123 Main",
+                City = "Denver",
+                State = "Colorado",
+                Zip = 12345
+            };
+
+            modelBuilder.Entity<User>().HasData(user);
+
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly CardValidation _cardValidation;
         private readonly IProductRepository _productRepository;
 
+
+
         public PurchaseProvider(IPurchaseRepository purchaseRepository, IProductRepository productRepository, ILogger<PurchaseProvider> logger, CardValidation cardValidation)
         {
             _logger = logger;
@@ -27,7 +29,6 @@ namespace Catalyte.Apparel.Providers.Providers
             _productRepository = productRepository;
             _cardValidation = cardValidation;
         }
-
 
         /// <summary>
         /// Retrieves purchases from the repository that were filtered.
