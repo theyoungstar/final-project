@@ -14,7 +14,7 @@ namespace Catalyte.Apparel.Data.SeedData
         /// Assigns shipping rates and id to each state.
         /// </summary>
         /// <returns>A list of ShippingRates</returns>
-        public static List<ShippingRate> AssignRates(string[] statesArray)
+        public List<ShippingRate> AssignRates(string[] statesArray)
         {
             var shippingRateList = new List<ShippingRate>();
            

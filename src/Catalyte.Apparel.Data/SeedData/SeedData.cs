@@ -15,7 +15,6 @@ namespace Catalyte.Apparel.Data.Context
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             var productFactory = new ProductFactory();
-            var shippingRates = new ShippingRates();
             var shippingRateList = new ShippingRates();
 
 
@@ -73,7 +72,7 @@ namespace Catalyte.Apparel.Data.Context
             //modelBuilder.Entity<PromoCode>().HasData(promoCode);
        
             var statesArray = new string []
-        {
+            {
             "Alabama",
             "Alaska",
             "American Samoa",
@@ -133,9 +132,8 @@ namespace Catalyte.Apparel.Data.Context
             "West Virginia",
             "Wisconsin",
             "Wyoming",
-        };
-
-        modelBuilder.Entity<ShippingRate>().HasData(shippingRateList.AssignRates(statesArray));
+            };
+            modelBuilder.Entity<ShippingRate>().HasData(shippingRateList.AssignRates(statesArray));
 
             var user = new User()
             {
