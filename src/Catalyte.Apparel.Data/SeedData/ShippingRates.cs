@@ -77,6 +77,8 @@ namespace Catalyte.Apparel.Data.SeedData
             foreach (string state in statesArray)
             {
                 Random rnd = new();
+                int count = 1;
+
                 var shippingRate = new ShippingRate();
                 shippingRateList.Add(shippingRate);
                 
@@ -84,15 +86,18 @@ namespace Catalyte.Apparel.Data.SeedData
                 {
                     shippingRate.Rate = 10.00;
                     shippingRate.State = state;
-                    shippingRate.Id = rnd.Next();
+                    var id = shippingRateList.IndexOf(shippingRate) + 1;
+                    shippingRate.Id = id;
                 }
                 else
                 {
                     shippingRate.Rate = 5.00;
                     shippingRate.State = state;
-                    shippingRate.Id = rnd.Next();
+                    var id = shippingRateList.IndexOf(shippingRate) + 1;
+                    shippingRate.Id = id;
+
                 }
-                
+
             }
             return shippingRateList;
 

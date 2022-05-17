@@ -70,19 +70,7 @@ namespace Catalyte.Apparel.Data.Context
             };
 
             //modelBuilder.Entity<PromoCode>().HasData(promoCode);
-            
-            var shippingRateHawaii = new ShippingRate()
-            {
-                Id = 1,
-                State = "Hawaii",
-                Rate = 10,
-            };
-            var shippingRateAlaska = new ShippingRate()
-            {
-                Id = 2,
-                State = "Alabama",
-                Rate = 5,
-            };
+       
             var statesArray = new string []
         {
             "Alabama",
@@ -146,8 +134,6 @@ namespace Catalyte.Apparel.Data.Context
             "Wyoming",
         };
 
-
-        //modelBuilder.Entity<ShippingRate>().HasData(shippingRateHawaii, shippingRateAlaska);
         modelBuilder.Entity<ShippingRate>().HasData(shippingRateList.AssignRates(statesArray));
         }
     }
