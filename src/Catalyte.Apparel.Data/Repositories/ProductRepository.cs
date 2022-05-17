@@ -36,6 +36,7 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
+                .OrderBy(p => p.Id)
                 .ToListAsync();
         }
         
