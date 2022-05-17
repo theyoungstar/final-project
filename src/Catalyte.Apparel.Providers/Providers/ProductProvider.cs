@@ -156,18 +156,18 @@ namespace Catalyte.Apparel.Providers.Providers
 
 
         /// <summary>
-        /// Asynchronously retrieves a count all of the products marked active
+        /// Asynchronously retrieves a count all of the filtered products
         /// and calculates number of total pages for pagination
         /// </summary>
-        /// <returns>count of pages of active products</returns>
+        /// <returns>count of pages of filtered products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<double> GetActiveProductsCountAsync()
+        public async Task<double> GetProductsCountByFilterAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             double productsCount;
             {
                 try
                 {
-                    productsCount = await _productRepository.GetActiveProductsCountAsync();
+                    productsCount = await _productRepository.GetProductsCountByFilterAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
                 }
                 catch (Exception ex)
                 {

@@ -86,15 +86,15 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         /// <summary>
-        /// Endpoint for count of total pages for active products
+        /// Endpoint for count of total pages for filtered products
         /// </summary>
         /// <returns>prodCount</returns>
         [HttpGet("/products/count")]
-        public async Task<ActionResult<double>> GetActiveProductsCountAsync()
+        public async Task<ActionResult<double>> GetProductsCountByFilterAsync([FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
         {
-            _logger.LogInformation("Request received for GetActiveProductsCountAsync");
+            _logger.LogInformation("Request received for GetProductsCountByFilterAsync");
 
-            var prodCount = await _productProvider.GetActiveProductsCountAsync();            
+            var prodCount = await _productProvider.GetProductsCountByFilterAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);            
 
             return Ok(prodCount);
         }
