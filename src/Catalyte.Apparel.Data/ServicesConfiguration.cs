@@ -34,6 +34,7 @@ namespace Catalyte.Apparel.Data
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
+            services.AddScoped<IShippingRateRepository, ShippingRateRepository>();
 
             return services;
 
