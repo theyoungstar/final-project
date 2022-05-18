@@ -7,40 +7,34 @@ namespace Catalyte.Apparel.Data.Model
     /// <summary>
     /// This class is a representation of a promo code.
     /// </summary>
-    public class PromoCode : BaseEntity
+    public class ShippingRate : BaseEntity
     {
 
-        public string Title { get; set; }
+        public string State { get; set; }
 
-        public string Description { get; set; }
-
-        public string Type { get; set; }
-
-        public decimal Rate { get; set; }
+        public double Rate { get; set; }
 
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }
-        public static IEqualityComparer<PromoCode> PromoCodeComparer { get; } = new PromoCodeEqualityComparer();
+        public static IEqualityComparer<ShippingRate> ShippingRateComparer { get; } = new ShippingRateEqualityComparer();
 
-        private sealed class PromoCodeEqualityComparer : IEqualityComparer<PromoCode>
+        private sealed class ShippingRateEqualityComparer : IEqualityComparer<ShippingRate>
         {
-            public bool Equals(PromoCode x, PromoCode y)
+            public bool Equals(ShippingRate x, ShippingRate y)
             {
                 if (ReferenceEquals(x, y)) return true;
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return x.Title == y.Title && x.Description == y.Description && x.Type == y.Type && x.Rate == y.Rate;
+                return x.State == y.State && x.Rate == y.Rate;
             }
 
-            public int GetHashCode(PromoCode obj)
+            public int GetHashCode(ShippingRate obj)
             {
                 var hashCode = new HashCode();
-                hashCode.Add(obj.Title);
-                hashCode.Add(obj.Description);
-                hashCode.Add(obj.Type);
+                hashCode.Add(obj.State);
                 hashCode.Add(obj.Rate);
                 return hashCode.ToHashCode();
             }

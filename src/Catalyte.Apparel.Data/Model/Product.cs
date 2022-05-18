@@ -89,6 +89,7 @@ namespace Catalyte.Apparel.Data.Model
                 hashCode.Add(obj.Material);
                 hashCode.Add(obj.Price);
                 hashCode.Add(obj.Quantity);
+                hashCode.Add(obj.Sku);
 
                 return hashCode.ToHashCode();
             }

@@ -41,10 +41,18 @@ namespace Catalyte.Apparel.Data.Repositories
         }
         
        
-        public async Task<double> GetActiveProductsCountAsync()
+        public async Task<double> GetProductsCountByFilterAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             var products = await _ctx.Products
                 .AsNoTracking()
+                .WhereProductBrandEquals(brand)
+                .WhereProductCategoryEquals(category)
+                .WhereProductTypeEquals(type)
+                .WhereProductDemographicEquals(demographic)
+                .WhereProductPrimaryColorCodeEquals(primaryColorCode)
+                .WhereProductSecondaryColorCodeEquals(secondaryColorCode)
+                .WhereProductMaterialEquals(material)
+                .WhereProductPriceEquals(min, max)
                 .WhereProductEqualsActive()
                 .ToListAsync();
             var totalActive = products.Count();
@@ -97,7 +105,14 @@ namespace Catalyte.Apparel.Data.Repositories
 
         }
 
-       
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            _ctx.Products.Add(newProduct);
+            await _ctx.SaveChangesAsync();
+
+            return newProduct;
+        }
+
     }
 
 

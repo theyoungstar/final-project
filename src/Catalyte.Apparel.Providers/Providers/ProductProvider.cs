@@ -1,5 +1,6 @@
 ﻿using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
+using Catalyte.Apparel.DTOs.Products;
 using Catalyte.Apparel.Providers.Interfaces;
 using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
@@ -155,18 +156,18 @@ namespace Catalyte.Apparel.Providers.Providers
 
 
         /// <summary>
-        /// Asynchronously retrieves a count all of the products marked active
+        /// Asynchronously retrieves a count all of the filtered products
         /// and calculates number of total pages for pagination
         /// </summary>
-        /// <returns>count of pages of active products</returns>
+        /// <returns>count of pages of filtered products</returns>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<double> GetActiveProductsCountAsync()
+        public async Task<double> GetProductsCountByFilterAsync(List<string> brands, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             double productsCount;
             {
                 try
                 {
-                    productsCount = await _productRepository.GetActiveProductsCountAsync();
+                    productsCount = await _productRepository.GetProductsCountByFilterAsync(brands, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
                 }
                 catch (Exception ex)
                 {
@@ -218,6 +219,43 @@ namespace Catalyte.Apparel.Providers.Providers
             return updatedProduct;
         }
 
+        /// <summary>
+        /// Persists a product to the database.
+        /// </summary>
+        /// <param name="newProduct"> a new product object</param>
+        /// <returns>The persisted product with ID.</returns>
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            Product product;
+
+            try
+            {
+                product = await _productRepository.GetProductByIdAsync(newProduct.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            if (product != null)
+            {
+
+                throw new UnprocessableEntityException($"Product Id already exists in the database.");
+            }
+
+            try
+            {
+                product = await _productRepository.CreateProductAsync(newProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            return product;
+
+        }
+
     }
 }
-
