@@ -23,7 +23,7 @@ namespace Catalyte.Apparel.Data.SeedData
                 var shippingRate = new ShippingRate();
                 shippingRateList.Add(shippingRate);
                 
-                if (state == "HI" || state == "Alaska")
+                if (state == "HI" || state == "AK")
                 {
                     shippingRate.Rate = 10.00;
                     shippingRate.State = state;
