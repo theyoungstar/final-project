@@ -36,6 +36,7 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
+                .OrderBy(p => p.Id)
                 .ToListAsync();
         }
         
@@ -95,6 +96,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .Skip((pageNumber-1) *20)
                 .Take(20)
                 .ToListAsync();
+        }
+        public async Task<Product> UpdateProductAsync(Product product)
+        {
+            _ctx.Products.Update(product);
+            await _ctx.SaveChangesAsync();
+            return product;
+
         }
 
         public async Task<Product> CreateProductAsync(Product newProduct)

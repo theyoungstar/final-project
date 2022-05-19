@@ -99,6 +99,20 @@ namespace Catalyte.Apparel.API.Controllers
             return Ok(prodCount);
         }
 
+        [HttpPut("/products/update/{id}")]
+        public async Task<ActionResult<ProductDTO>> UpdateUserAsync(
+            int id,
+            [FromBody] ProductDTO productToUpdate)
+        {
+            _logger.LogInformation("Request received for UpdateProductAsync");
+
+            var product = _mapper.Map<Product>(productToUpdate);
+            var updatedProduct = await _productProvider.UpdateProductAsync(id, product);
+            var productDTO = _mapper.Map<ProductDTO>(updatedProduct);
+
+            return Ok(productDTO);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody] ProductDTO product)
