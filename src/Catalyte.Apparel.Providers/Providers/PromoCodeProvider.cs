@@ -129,7 +129,7 @@ namespace Catalyte.Apparel.Providers.Providers
                     throw new BadRequestException("Percent promo code rate must be a whole number.");
                 }
                 // Prevents promo code from persisting if rate is over 100 or less than 0.
-                if (newPromoCode.Rate > 100 || newPromoCode.Rate < 1)
+                if (newPromoCode.Rate > 99 || newPromoCode.Rate < 1)
                 {
                     _logger.LogError("Percent promo code rate must be between 1-99.");
                     throw new BadRequestException("Percent promo code rate must be between 1-99.");
