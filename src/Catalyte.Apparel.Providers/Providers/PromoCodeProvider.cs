@@ -5,6 +5,8 @@ using Catalyte.Apparel.Utilities.HttpResponseExceptions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -96,6 +98,42 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 _logger.LogError("Promo Code must have a type of \"flat\" or \"percent\".");
                 throw new BadRequestException("Promo Code must have a type of \"flat\" or \"percent\".");
+            }
+
+            // Prevents promo code from persisting if rate is entered with a negative sign.
+            if (newPromoCode.Rate.ToString().Contains('-'))
+            {
+                _logger.LogError("Promo Code rate must not be negative.");
+                throw new BadRequestException("Promo Code rate must not be negative.");
+            }
+
+            //// Validation to only submit with numbers and decimals for flat rate
+            if (newPromoCode.Type.ToLower().Equals("flat"))
+            {
+                Regex rx = new(@"^(0(?!\.00)|[1-9]\d{0,6})\.\d{2}$");
+                string pattern = newPromoCode.Rate.ToString();
+                //if (pattern.Contains("-"))
+                if (!rx.IsMatch(pattern))
+                {
+                    _logger.LogError("Flat rate promo codes must contain two digits following a decimal. Example: 10.99 or 100.00.");
+                    throw new BadRequestException("Flat rate promo codes must contain two digits following the decimal. Example: 10.99 or 100.00.");
+                }
+            }
+            // Validation for % rate
+            if (newPromoCode.Type.Equals("percent"))
+            {
+                //  Prevents promo code from persisting if rate is entered with decimal.
+                if (newPromoCode.Rate.ToString().Contains("."))
+                {
+                    _logger.LogError("Percent promo code rate must be a whole number.");
+                    throw new BadRequestException("Percent promo code rate must be a whole number.");
+                }
+                // Prevents promo code from persisting if rate is over 100 or less than 0.
+                if (newPromoCode.Rate > 99 || newPromoCode.Rate < 1)
+                {
+                    _logger.LogError("Percent promo code rate must be between 1-99.");
+                    throw new BadRequestException("Percent promo code rate must be between 1-99.");
+                }
             }
 
             // CHECK TO MAKE SURE THE PROMOCODE TITLE IS NOT TAKEN

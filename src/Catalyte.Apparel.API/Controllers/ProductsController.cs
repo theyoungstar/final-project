@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Catalyte.Apparel.DTOs.Products;
+using Catalyte.Apparel.API.DTOMappings;
+using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -72,28 +75,60 @@ namespace Catalyte.Apparel.API.Controllers
 
         }
         [HttpGet("/products/filters")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync([FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByAllFiltersAsync(int pageNumber, [FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
         {
             _logger.LogInformation("Request received for GetProductsByAllFiltersAsync");
 
-            var products = await _productProvider.GetProductsByAllFiltersAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
+            var products = await _productProvider.GetProductsByAllFiltersAsync(pageNumber, brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
             return Ok(productDTOs);
         }
+
         /// <summary>
-        /// Endpoint for active products
+        /// Endpoint for count of total pages for filtered products
         /// </summary>
-        /// <returns>productDTOs</returns>
-        [HttpGet("/products/active")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetActiveProductsAsync()
+        /// <returns>prodCount</returns>
+        [HttpGet("/products/count")]
+        public async Task<ActionResult<double>> GetProductsCountByFilterAsync([FromQuery] List<string> brand, [FromQuery] List<string> category, [FromQuery] List<string> type, [FromQuery] List<string> demographic, [FromQuery] List<string> primaryColorCode, [FromQuery] List<string> secondaryColorCode, [FromQuery] List<string> material, double min, double max)
         {
-            _logger.LogInformation("Request received for GetActiveProductsAsync");
+            _logger.LogInformation("Request received for GetProductsCountByFilterAsync");
 
-            var products = await _productProvider.GetActiveProductsAsync();
-            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var prodCount = await _productProvider.GetProductsCountByFilterAsync(brand, category, type, demographic, primaryColorCode, secondaryColorCode, material, min, max);            
 
-            return Ok(productDTOs);
+            return Ok(prodCount);
+        }
+
+        [HttpPut("/products/update/{id}")]
+        public async Task<ActionResult<ProductDTO>> UpdateUserAsync(
+            int id,
+            [FromBody] ProductDTO productToUpdate)
+        {
+            _logger.LogInformation("Request received for UpdateProductAsync");
+
+            var product = _mapper.Map<Product>(productToUpdate);
+            var updatedProduct = await _productProvider.UpdateProductAsync(id, product);
+            var productDTO = _mapper.Map<ProductDTO>(updatedProduct);
+
+            return Ok(productDTO);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody] ProductDTO product)
+        {
+            _logger.LogInformation("Request received for CreateProduct");
+
+            var newProduct = _mapper.Map<Product>(product);
+            var savedProduct = await _productProvider.CreateProductAsync(newProduct);
+            var productDTO = _mapper.Map<ProductDTO>(savedProduct);
+
+            if (productDTO != null)
+            {
+                return Created($"/products", productDTO);
+            }
+
+            return NoContent();
         }
     }
 }

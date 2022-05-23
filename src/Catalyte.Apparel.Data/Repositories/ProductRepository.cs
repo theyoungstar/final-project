@@ -36,15 +36,31 @@ namespace Catalyte.Apparel.Data.Repositories
         {
             return await _ctx.Products
                 .AsNoTracking()
+                .OrderBy(p => p.Id)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetActiveProductsAsync()
+        
+       
+        public async Task<double> GetProductsCountByFilterAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
-            return await _ctx.Products
+            var products = await _ctx.Products
                 .AsNoTracking()
+                .WhereProductBrandEquals(brand)
+                .WhereProductCategoryEquals(category)
+                .WhereProductTypeEquals(type)
+                .WhereProductDemographicEquals(demographic)
+                .WhereProductPrimaryColorCodeEquals(primaryColorCode)
+                .WhereProductSecondaryColorCodeEquals(secondaryColorCode)
+                .WhereProductMaterialEquals(material)
+                .WhereProductPriceEquals(min, max)
                 .WhereProductEqualsActive()
                 .ToListAsync();
+            var totalActive = products.Count();
+
+            return totalActive;
+                
         }
+
         public async Task<IEnumerable<string>> GetAllUniqueCategoriesAsync()
         {
             return await GetAllUniquesOf(x => x.Category);
@@ -63,8 +79,8 @@ namespace Catalyte.Apparel.Data.Repositories
 
             return uniques;
         }
-
-        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
+  
+        public async Task<IEnumerable<Product>> GetProductsByAllFiltersAsync(int pageNumber, List<string> brand, List<string> category, List<string> type, List<string> demographic, List<string> primaryColorCode, List<string> secondaryColorCode, List<string> material, double min, double max)
         {
             return await _ctx.Products.AsNoTracking()
                 .WhereProductBrandEquals(brand)
@@ -75,8 +91,28 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereProductSecondaryColorCodeEquals(secondaryColorCode)
                 .WhereProductMaterialEquals(material)
                 .WhereProductPriceEquals(min, max)
+                .WhereProductEqualsActive()
+                .OrderBy(p => p.Id)
+                .Skip((pageNumber-1) *20)
+                .Take(20)
                 .ToListAsync();
         }
+        public async Task<Product> UpdateProductAsync(Product product)
+        {
+            _ctx.Products.Update(product);
+            await _ctx.SaveChangesAsync();
+            return product;
+
+        }
+
+        public async Task<Product> CreateProductAsync(Product newProduct)
+        {
+            _ctx.Products.Add(newProduct);
+            await _ctx.SaveChangesAsync();
+
+            return newProduct;
+        }
+
     }
 
 

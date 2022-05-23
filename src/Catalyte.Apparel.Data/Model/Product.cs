@@ -22,7 +22,7 @@ namespace Catalyte.Apparel.Data.Model
 
         public string Type { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         public string PrimaryColorCode { get; set; }
 
@@ -85,6 +85,13 @@ namespace Catalyte.Apparel.Data.Model
                 hashCode.Add(obj.StyleNumber);
                 hashCode.Add(obj.GlobalProductCode);
                 hashCode.Add(obj.Active);
+                hashCode.Add(obj.Brand);
+                hashCode.Add(obj.ImageSrc);
+                hashCode.Add(obj.Material);
+                hashCode.Add(obj.Price);
+                hashCode.Add(obj.Quantity);
+                hashCode.Add(obj.Sku);
+
                 return hashCode.ToHashCode();
             }
         }

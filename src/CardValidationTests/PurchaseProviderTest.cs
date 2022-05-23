@@ -15,14 +15,16 @@ namespace Catalyte.Apparel.Test.Unit
         private readonly Mock<IPurchaseRepository> repositoryStub;
         private readonly Mock<ILogger<PurchaseProvider>> loggerStub;
         private readonly Mock<CardValidation> cardValidationStub;
-
+        private readonly Mock<IProductRepository> productRepositoryStub;
 
         public PurchaseProviderTest()
         {
             repositoryStub = new Mock<IPurchaseRepository>();
+            productRepositoryStub = new Mock<IProductRepository>();
             loggerStub = new Mock<ILogger<PurchaseProvider>>();
             cardValidationStub = new Mock<CardValidation>();
-           // provider = new PurchaseProvider(repositoryStub.Object, loggerStub.Object, cardValidationStub.Object);
+            
+            provider = new PurchaseProvider(repositoryStub.Object, productRepositoryStub.Object, loggerStub.Object, cardValidationStub.Object);
         }
 
         [Fact]
