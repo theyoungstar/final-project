@@ -70,6 +70,7 @@ namespace Catalyte.Apparel.Data.Model
                     x.GlobalProductCode == y.GlobalProductCode &&
                     x.Active == y.Active;
             }
+
             public int GetHashCode(Product obj)
             {
                 var hashCode = new HashCode();
