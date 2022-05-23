@@ -80,7 +80,7 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add(" Expiration date is required ");
             }
-            else if (field.Length > 0)
+            if (field.Length > 0)
             {
                 Regex dateFormat = new Regex(@"^(0[1-9]|1[0-2])([\/-]{1})[0-9]{2}$");
                 if (!dateFormat.IsMatch(field))
@@ -89,30 +89,30 @@ namespace Catalyte.Apparel.Data.Model
                 "contain no letters or special characters, and be entered in one of " +
                 "the following formats: mm/yy or mm-yy ");
                 }
-                else if (dateFormat.IsMatch(field.Trim()))
+                if (dateFormat.IsMatch(field.Trim()))
                 {
                     string[] dateParts = new string[0];
                     if (field.Trim().Contains('/'))
                     {
                         dateParts = field.Split('/');
                     }
-                    else if (field.Trim().Contains('-'))
+                    if (field.Trim().Contains('-'))
                     {
                         dateParts = field.Split('-');
-                        var month = int.Parse(dateParts[0]);
-                        var shortYear = int.Parse(dateParts[1]);
-                        var stringYear = $"20{shortYear}";
-                        var year = int.Parse(stringYear);
+                    }
+                    var month = int.Parse(dateParts[0]);
+                    var shortYear = int.Parse(dateParts[1]);
+                    var stringYear = $"20{shortYear}";
+                    var year = int.Parse(stringYear);
 
-                        var lastDateOfExpirationMonth = DateTime.DaysInMonth(year, month);
-                        var cardExpiration = new DateTime(year, month, lastDateOfExpirationMonth, 23, 59, 59);
+                    var lastDateOfExpirationMonth = DateTime.DaysInMonth(year, month);
+                    var cardExpiration = new DateTime(year, month, lastDateOfExpirationMonth, 23, 59, 59);
 
-                    
-                        if (cardExpiration < DateTime.Now)
-                        {
-                            errorsList.Add(" Expiration date must be a future date");
 
-                        }
+                    if (cardExpiration < DateTime.Now)
+                    {
+                        errorsList.Add(" Expiration date must be a future date");
+
                     }
 
                 }
@@ -134,15 +134,15 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add(" Card Holder name required");
             }
-                else if(field.Length > 1)
-                {
+            else if (field.Length > 1)
+            {
                 Regex cardHolder = new Regex(@"^[a-zA-Z-' ]+[ ]{1}[a-zA-Z-' ]{2,}([^0-9]*)$");
-                    if (!cardHolder.IsMatch(field.TrimEnd().TrimStart()))
-                    {
+                if (!cardHolder.IsMatch(field.TrimEnd().TrimStart()))
+                {
                     errorsList.Add(" Cardholder name can only contain spaces, apostrohes, and letters");
-                    }
-
                 }
+
+            }
         }
 
     }
