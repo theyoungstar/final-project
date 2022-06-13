@@ -14,6 +14,7 @@ namespace Catalyte.Apparel.Data.Context
         public ApparelCtx(DbContextOptions<ApparelCtx> options) : base(options)
         { }
 
+        public DbSet<Patient> Patients { get; set; }
         public DbSet<Product> Products { get; set; }
 
         public DbSet<LineItem> LineItems { get; set; }

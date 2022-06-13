@@ -37,6 +37,7 @@ namespace Catalyte.Apparel.API
             services.AddProviders();
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddScoped<CardValidation, CardValidation>();
+            services.AddScoped<PatientValidation, PatientValidation>();
             //services.AddAuthentication()
             //    .AddGoogle(options =>
             //    {

@@ -11,6 +11,7 @@ namespace Catalyte.Apparel.Data.Context
     public interface IApparelCtx
     {
 
+        public DbSet<Patient> Patients { get; set; }
         public DbSet<Product> Products { get; set; }
 
         public DbSet<LineItem> LineItems { get; set; }

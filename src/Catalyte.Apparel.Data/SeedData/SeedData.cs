@@ -150,6 +150,26 @@ namespace Catalyte.Apparel.Data.Context
 
             modelBuilder.Entity<User>().HasData(user);
 
+            var patient = new Patient()
+            {
+                Id = 1,
+                FirstName = "Hulk",
+                LastName = "Hogan",
+                Ssn = "123-45-6789",
+                Email = "hulksnewemailaddress@wwf.com",
+                Age = 66,
+                Height = 79,
+                Weight = 299,
+                Insurance = "Self-Insured",
+                Gender = "Male",
+                Street = "8430 W Sunset Blvd",
+                City = "Los Angeles",
+                State = "CA",
+                Postal = "90049"
+            };
+
+            modelBuilder.Entity<Patient>().HasData(patient);
+
         }
     }
 }
