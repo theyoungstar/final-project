@@ -30,6 +30,7 @@ namespace Catalyte.Apparel.Data
             });
 
             services.AddScoped<IApparelCtx>(provider => provider.GetService<ApparelCtx>());
+            services.AddScoped<IEncounterRepository, EncounterRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();

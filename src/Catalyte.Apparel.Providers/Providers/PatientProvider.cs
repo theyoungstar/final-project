@@ -18,15 +18,15 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<PatientProvider> _logger;
         private readonly IPatientRepository _patientRepository;
         private readonly PatientValidation _patientValidation;
-       /* private readonly IProductRepository _productRepository;*/
+        private readonly IEncounterRepository _encounterRepository;
 
 
-
-        public PatientProvider(IPatientRepository patientRepository,  ILogger<PatientProvider> logger, PatientValidation patientValidation)
+        public PatientProvider(IPatientRepository patientRepository,  ILogger<PatientProvider> logger, PatientValidation patientValidation, IEncounterRepository encounterRepository)
         {
             _logger = logger;
             _patientRepository = patientRepository;
             _patientValidation = patientValidation;
+            _encounterRepository = encounterRepository; 
         }
 
         /// <summary>
@@ -131,9 +131,9 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <exception cref="NotFoundException"></exception>
         public async Task<Patient> UpdatePatientAsync(string email, int id, Patient updatedPatient)
         {
-            // VALIDATE MOVIE TO UPDATE EXISTS
+            // VALIDATE Patient TO UPDATE EXISTS
             Patient existingPatient;
-
+            IEnumerable<Patient> existingPatients;
             List<string> errorsList = _patientValidation.ValidationForPatient(updatedPatient);
             if (errorsList.Count > 0)
             {
@@ -149,7 +149,7 @@ namespace Catalyte.Apparel.Providers.Providers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                throw new ServiceUnavailableException("There was a problem connecting getting existing patient.");
             }
 
             if (existingPatient == default || existingPatient == null)
@@ -159,21 +159,22 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             try
             {
-                var existingPatients = await _patientRepository.GetAllPatientsAsync();
-                foreach (var patient in existingPatients)
-                    if (patient.Email == updatedPatient.Email)
-                    {
-                        _logger.LogInformation($"Patient Email already exists.");
-                        throw new ConflictException($"This Email is already in use.");
-                    }
+                 existingPatients = await _patientRepository.GetAllPatientsAsync();
+                
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                throw new ServiceUnavailableException("There was a problem verifying patient email.");
             }
+            /*foreach (var patient in existingPatients)
+                if (patient.Email == updatedPatient.Email)
+                {
+                    _logger.LogInformation($"Patient Email already exists.");
+                    throw new ConflictException($"This Email is already in use.");
+                }*/
 
-            // GIVE THE MOVIE ID IF NOT SPECIFIED IN BODY TO AVOID DUPLICATE PRODUCTS
+            // GIVE THE Patient ID IF NOT SPECIFIED IN BODY TO AVOID DUPLICATE PRODUCTS
             if (updatedPatient.Id == default)
                 updatedPatient.Id = id;
 
@@ -193,6 +194,73 @@ namespace Catalyte.Apparel.Providers.Providers
             }
 
             return updatedPatient;
+        }
+        public async Task<IEnumerable<Encounter>> GetPatientEncounterByIdAsync(int patientId, int encounterId)
+        {
+            Patient patient;
+            IEnumerable<Encounter> encounters;
+            try
+            {
+               patient = await _patientRepository.GetPatientByIdAsync(patientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was aproblem connecting to the database");
+            }
+            if (patient == null)
+            {
+                throw new NotFoundException("There is currently no Patient with that ID in the database");
+            }
+            try
+            {
+                encounters = await _encounterRepository.GetAllEncountersAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database");
+            }
+            if (encounters == null)
+            {
+                throw new NotFoundException("There are no Encounters");
+            }
+            foreach (Encounter encounter in encounters)
+            {
+               
+            }
+            return encounters;
+
+        }
+        public async Task<Patient> DeletePatientAsync(int patientId)
+        {
+            Patient existingPatient;
+            try
+            {
+                existingPatient = await _patientRepository.GetPatientByIdAsync(patientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            if (existingPatient == null)
+            {
+                _logger.LogInformation($"Patient with id: {patientId} does not exist.");
+                throw new NotFoundException($"Patient with id: {patientId} not found.");
+            }
+            try
+            {
+                await _patientRepository.DeletePatientAsync(existingPatient);
+                _logger.LogInformation("User updated.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+            return existingPatient;
+
         }
 
     }

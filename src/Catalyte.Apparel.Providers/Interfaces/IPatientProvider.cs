@@ -17,5 +17,7 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<Patient> CreatePatientAsync(Patient patient);
 
+        Task<Patient> DeletePatientAsync(int patientId);
+
     }
 }

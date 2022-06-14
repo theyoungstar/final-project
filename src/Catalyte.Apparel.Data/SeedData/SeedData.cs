@@ -170,6 +170,26 @@ namespace Catalyte.Apparel.Data.Context
 
             modelBuilder.Entity<Patient>().HasData(patient);
 
+            var encounter = new Encounter()
+            {
+                Id = 1,
+                PatientId = 1,
+                Notes = "New Encounter",
+                VisitCode = "N3W 3C3",
+                Provider = "New Hospital",
+                BillingCode = "123.456.789.00",
+                ICD10 = "Z99",
+                TotalCost = 0.11,
+                Copay = 0,
+                ChiefComplaint = "New Complaint",
+                Pulse = 0,
+                Systolic = 0,
+                Diastolic = 0,
+                Date = "2020-08-04"
+            };
+
+            modelBuilder.Entity<Encounter>().HasData(encounter);
+
         }
     }
 }

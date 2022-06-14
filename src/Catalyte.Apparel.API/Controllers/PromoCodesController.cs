@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Catalyte.Apparel.Data.Model;
@@ -65,3 +65,4 @@ namespace Catalyte.Apparel.API.Controllers
         }
     }
 }
+*/

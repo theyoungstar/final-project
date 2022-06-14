@@ -8,6 +8,7 @@ using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Providers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Catalyte.Apparel.DTOs.Encounters;
 
 namespace Catalyte.Apparel.API.Controllers
 {
@@ -21,6 +22,7 @@ namespace Catalyte.Apparel.API.Controllers
         private readonly ILogger<PatientsController> _logger;
         private readonly IPatientProvider _patientProvider;
         private readonly IMapper _mapper;
+        private readonly IEncounterProvider _encounterProvider;
 
         public PatientsController(
             ILogger<PatientsController> logger,
@@ -82,6 +84,42 @@ namespace Catalyte.Apparel.API.Controllers
             {
                 return Created($"/patients", patientDTO);
             }
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("/{id}/encounters")]
+        public ActionResult<PatientDTO> CreatePatientEncounter(int id, [FromBody] EncounterDTO newEncounter)
+        {
+            _logger.LogInformation("Request received for CreatePatient");
+
+            var encounter = _mapper.Map<Encounter>(newEncounter);
+            var savedEncounter = _encounterProvider.CreateEncounterAsync;
+            var encounterDTO = _mapper.Map<EncounterDTO>(savedEncounter);
+
+            if (encounterDTO != null)
+            {
+                return Created($"/encounters", encounterDTO);
+            }
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("{patientId}/encounters")]
+        public async Task<IActionResult> GetAllEncounterAsync(int patientId)
+        {
+            var encounters = await _patientProvider.GetPatientByIdAsync(patientId);
+            var mappedEncounters = _mapper.Map<EncounterDTO>(encounters);
+
+            return Ok(mappedEncounters);
+        }
+        [HttpDelete("/patients/{id}")]
+        public async Task<IActionResult> DeletePatientAsync(int id)
+        {
+            _logger.LogInformation("Request received for DeletePatientAsync");
+            await _patientProvider.DeletePatientAsync(id);
 
             return NoContent();
         }

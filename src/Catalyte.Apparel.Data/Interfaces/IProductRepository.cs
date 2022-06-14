@@ -25,5 +25,6 @@ namespace Catalyte.Apparel.Data.Interfaces
         Task<Product> UpdateProductAsync(Product product);
 
         Task<Product> CreateProductAsync(Product newProduct);
+
     }
 }

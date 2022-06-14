@@ -10,7 +10,7 @@ namespace Catalyte.Apparel.Data.Context
     /// </summary>
     public interface IApparelCtx
     {
-
+        public DbSet<Encounter> Encounters { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Product> Products { get; set; }
 

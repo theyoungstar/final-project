@@ -21,6 +21,10 @@ namespace Catalyte.Apparel.Data.Filters
         {
             return patients.Where(p => p.FirstName == firstName).AsQueryable();
         }
+        public static IQueryable<Encounter> WherePatientHasEncounterEquals(this IQueryable<Encounter> encounters, int patientId, int encounterId)
+        {
+            return encounters.Where(e => e.PatientId == patientId && e.Id == encounterId);
+        }
 
     }
 

@@ -11,6 +11,7 @@ namespace Catalyte.Apparel.Providers
     {
         public static IServiceCollection AddProviders(this IServiceCollection services)
         {
+            services.AddScoped<IEncounterProvider, EncounterProvider>();
             services.AddScoped<IPatientProvider, PatientProvider>();
             services.AddScoped<IProductProvider, ProductProvider>();
             services.AddScoped<IPurchaseProvider, PurchaseProvider>();

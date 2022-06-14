@@ -61,13 +61,21 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WherePatientEmailEquals(patientEmail)
                 .SingleOrDefaultAsync();
         }
-        public async Task<Patient> DeleteMoviesAsync(Patient patient)
+        public async Task<Patient> DeletePatientAsync(Patient patient)
         {
             _ctx.Patients.Remove(patient);
             await _ctx.SaveChangesAsync();
             return patient;
 
         }
-
+        public async Task<IEnumerable<Encounter>> GetPatientEncounterByIdAsync(int patientId, int encounterId)
+        {
+            return await _ctx.Encounters
+                .AsNoTracking()
+                .WherePatientHasEncounterEquals(patientId, encounterId)
+                .OrderBy(p => p.Id)
+                .ToListAsync();
+        }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿/*using System.Threading.Tasks;
 using AutoMapper;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.DTOs;
@@ -70,3 +70,4 @@ namespace Catalyte.Apparel.API.Controllers
         }
     }
 }
+*/

@@ -1,4 +1,4 @@
-using Catalyte.Apparel.Data.Interfaces;
+/*using Catalyte.Apparel.Data.Interfaces;
 using Catalyte.Apparel.Data.Model;
 using Catalyte.Apparel.Data.SeedData;
 using Catalyte.Apparel.DTOs.Purchases;
@@ -54,7 +54,6 @@ namespace Catalyte.Apparel.Test.Unit
             repositoryStub.Setup(repo => repo.GetAllUniqueTypesAsync()).ReturnsAsync(productTypes);
             testProduct1 = _factory.GenerateActiveProduct(11);
             testProducts1 = _factory.GenerateActiveProducts(10);
-            repositoryStub.Setup(repo => repo.GetActiveProductsAsync()).ReturnsAsync(testProducts);
             exception1 = new NotFoundException("The product you requested is inactive.");
         }
         [Fact]
@@ -223,3 +222,4 @@ namespace Catalyte.Apparel.Test.Unit
     }
 }
 
+*/
