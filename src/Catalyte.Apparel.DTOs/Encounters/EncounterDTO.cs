@@ -10,11 +10,6 @@ namespace Catalyte.Apparel.DTOs.Encounters
     {
 
         public int Id { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateModified { get; set; }
-
         public int PatientId  { get; set; }
         public string Notes { get; set; }
         public string VisitCode { get; set; }

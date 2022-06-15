@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Catalyte.Apparel.DTOs.Encounters;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Catalyte.Apparel.DTOs.Patients
 {
@@ -7,13 +10,7 @@ namespace Catalyte.Apparel.DTOs.Patients
     /// </summary>
     public class PatientDTO
     {
-
         public int Id { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateModified { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Ssn { get; set; }
@@ -27,5 +24,7 @@ namespace Catalyte.Apparel.DTOs.Patients
         public int Weight { get; set; }
         public string Insurance { get; set; }
         public string Gender { get; set; }
+
+        public ICollection<EncounterDTO> Encounters { get; set; }
     }
 }
