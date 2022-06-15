@@ -22,7 +22,7 @@ namespace Catalyte.Apparel.Data.Model
         public int Diastolic { get; set; }
         public string Date { get; set; }
 
-        public Patient Patient { get; set; }
+        /*public Patient Patient { get; set; }*/
 
     }
 

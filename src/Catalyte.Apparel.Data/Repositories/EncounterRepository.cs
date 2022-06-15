@@ -55,9 +55,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereEncounterIdEquals(Id)
                 .SingleOrDefaultAsync();
         }
-        public async Task<IEnumerable<Encounter>> GetEncountersByPatientIdAsync(int patientId)
+        public async Task<IEnumerable<Encounter>> GetAllEncountersByPatientIdAsync(int patientId)
         {
-            return null;
+            return await _ctx.Encounters
+                .AsNoTracking()
+                .Where(p => p.PatientId == patientId)
+                .AsQueryable()
+                .ToListAsync();
         }
         public async Task<Encounter> GetPatientEncounterByIdAsync(int patientId, int encounterId)
         {

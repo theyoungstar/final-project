@@ -27,11 +27,12 @@ namespace Catalyte.Apparel.API.Controllers
         public PatientsController(
             ILogger<PatientsController> logger,
             IPatientProvider patientProvider,
-            IMapper mapper)
+            IMapper mapper, IEncounterProvider encounterProvider)
         {
             _logger = logger;
             _mapper = mapper;
             _patientProvider = patientProvider;
+            _encounterProvider = encounterProvider;
         }
 
         [HttpGet]
@@ -89,21 +90,17 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         [HttpPost]
-        [Route("/{id}/encounters")]
-        public ActionResult<PatientDTO> CreatePatientEncounter(int id, [FromBody] EncounterDTO newEncounter)
+        [Route("/patients/{patientId}/encounters")]
+        public async Task<IActionResult> CreatePatientEncounter(int patientid, [FromBody] EncounterDTO newEncounter)
         {
             _logger.LogInformation("Request received for CreatePatient");
 
             var encounter = _mapper.Map<Encounter>(newEncounter);
-            var savedEncounter = _encounterProvider.CreateEncounterAsync;
-            var encounterDTO = _mapper.Map<EncounterDTO>(savedEncounter);
+            encounter.PatientId = patientid;
+            var addedEncounter = await _encounterProvider.CreateEncounterAsync(encounter);
 
-            if (encounterDTO != null)
-            {
-                return Created($"/encounters", encounterDTO);
-            }
 
-            return NoContent();
+            return Created("/encounters", addedEncounter);
         }
 
         [HttpGet]

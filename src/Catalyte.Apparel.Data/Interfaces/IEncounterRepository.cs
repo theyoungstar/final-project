@@ -16,12 +16,11 @@ namespace Catalyte.Apparel.Data.Interfaces
 
         Task<Encounter> UpdateEncounterAsync(Encounter encounter);
 
-        Task<IEnumerable<Encounter>> GetEncountersByPatientIdAsync(int patientId);
-
-
         Task<Encounter> GetEncounterByIdAsync(int Id);
 
         Task<Encounter> GetPatientEncounterByIdAsync(int patientId, int encounterId);
+
+        Task<IEnumerable<Encounter>> GetAllEncountersByPatientIdAsync(int patientId);
 
 
 

@@ -18,15 +18,16 @@ namespace Catalyte.Apparel.Providers.Providers
         private readonly ILogger<EncounterProvider> _logger;
         private readonly IEncounterRepository _encounterRepository;
         private readonly EncounterValidation _encounterValidation;
-       /* private readonly IProductRepository _productRepository;*/
+        private readonly IPatientRepository _patientRepository;
 
 
 
-        public EncounterProvider(IEncounterRepository encounterRepository,  ILogger<EncounterProvider> logger, EncounterValidation encounterValidation)
+        public EncounterProvider(IEncounterRepository encounterRepository,  ILogger<EncounterProvider> logger, EncounterValidation encounterValidation, IPatientRepository patientRepository)
         {
             _logger = logger;
             _encounterRepository = encounterRepository;
             _encounterValidation = encounterValidation;
+            _patientRepository = patientRepository;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             try
             {
-                encounters = await _encounterRepository.GetEncountersByPatientIdAsync(patientId);
+                encounters = await _encounterRepository.GetAllEncountersByPatientIdAsync(patientId);
             }
             catch (Exception ex)
             {
@@ -86,9 +87,10 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The product.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<Encounter> CreateEncounterAsync(Encounter newEncounter )
+        public async Task<IEnumerable<Encounter>> CreateEncounterAsync(Encounter newEncounter)
         {
             IEnumerable<Encounter> savedEncounters;
+            Patient patient;
  
             List<string> errorsList = _encounterValidation.ValidationForEncounter(newEncounter);
             if (errorsList.Count > 0)
@@ -96,29 +98,34 @@ namespace Catalyte.Apparel.Providers.Providers
                 var result = string.Join(",", errorsList);
                 throw new BadRequestException(result);
             }
-
             try
             {
-                savedEncounters = await _encounterRepository.GetEncountersByPatientIdAsync(newEncounter.Id);
+                patient = await _patientRepository.GetPatientByIdAsync(newEncounter.PatientId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                throw new ServiceUnavailableException("There was a problem getting the patient.");
             }
-            if (savedEncounters == null || savedEncounters == default)
+            if (patient.Id.ToString() == null || patient.Id == default)
             {
-                throw new ConflictException("Patient Id already exist in database ");
+                throw new NotFoundException("Patient with this Id does not exist");
             }
-            if (newEncounter != default)
+            try
             {
-                foreach (var encounter in savedEncounters)
-                {
-                    
-                }
+                savedEncounters = await _encounterRepository.GetAllEncountersByPatientIdAsync(patient.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem getting the encounter.");
+            }
+            if (savedEncounters == null)
+            {
+                throw new NotFoundException("Encounter with this Patient Id does not exist");
             }
 
-            return (Encounter)savedEncounters;
+            return savedEncounters;
         }
         /// <summary>
         /// Asynchronously retrieves the product with the provided id from the database.
