@@ -137,7 +137,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (totalCost.ToString().Length > 0)
             {
-                var totalCostCheck = new Regex(@"^([1-9])([0-9]{4,4})\.[0-9]{2,2}$");
+                var totalCostCheck = new Regex(@"^([1-9])([0-9]{1,5})\.[0-9]{2}$");
                 var totalCostString = totalCost.ToString();
                 if (!totalCostCheck.IsMatch(totalCostString.Trim()))
                 {
@@ -159,7 +159,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (copay.ToString().Length > 0)
             {
-                var copayCheck = new Regex(@"^([1-9])([0-9]{2,2})\.[0-9]{2,2}$");
+                var copayCheck = new Regex(@"^([1-9])([0-9]{2,2})\.[0-9]{2}$");
                 var copayString = copay.ToString();
                 if (copayCheck.IsMatch(copayString.Trim()))
                 {

@@ -180,7 +180,7 @@ namespace Catalyte.Apparel.Data.Context
                 BillingCode = "123.456.789.00",
                 ICD10 = "Z99",
                 TotalCost = 0.11,
-                Copay = 0,
+                Copay = 10.25,
                 ChiefComplaint = "New Complaint",
                 Pulse = 0,
                 Systolic = 0,

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 
 namespace Catalyte.Apparel.Providers.Providers
@@ -235,6 +236,7 @@ namespace Catalyte.Apparel.Providers.Providers
         public async Task<Patient> DeletePatientAsync(int patientId)
         {
             Patient existingPatient;
+            IEnumerable<Encounter> encounter;
             try
             {
                 existingPatient = await _patientRepository.GetPatientByIdAsync(patientId);
@@ -249,6 +251,21 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogInformation($"Patient with id: {patientId} does not exist.");
                 throw new NotFoundException($"Patient with id: {patientId} not found.");
             }
+            try
+            {
+                encounter = await _encounterRepository.GetAllEncountersByPatientIdAsync(patientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex?.Message);
+                throw new ServiceUnavailableException("err");
+            }
+            if (encounter.Count() != 0)
+            {
+                _logger.LogInformation("Cannot delete a patient with an encounter");
+                throw new ConflictException("Cannot delete a patient with an encounter");
+            }
+
             try
             {
                 await _patientRepository.DeletePatientAsync(existingPatient);

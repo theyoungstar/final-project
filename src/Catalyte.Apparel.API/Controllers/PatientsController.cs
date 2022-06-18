@@ -108,11 +108,24 @@ namespace Catalyte.Apparel.API.Controllers
         public async Task<ActionResult<EncounterDTO>> GetAllEncountersByPatientIdAsync(int patientId)
         {
             var encounters = await _encounterProvider.GetEncountersByPatientIdAsync(patientId);
-            var mappedEncounters =_mapper.Map<IEnumerable<EncounterDTO>>(encounters);
+            var mappedEncounters = _mapper.Map<IEnumerable<EncounterDTO>>(encounters);
 
             return Ok(mappedEncounters);
 
         }
+
+        [HttpGet]
+        [Route("/patients/{patientId}/encounters/{encounterId}")]
+        public async Task<ActionResult<EncounterDTO>> GetAllEncounterByIdAsync(int encounterId)
+        {
+            var encounters = await _encounterProvider.GetEncounterByIdAsync(encounterId);
+            var mappedEncounters = _mapper.Map<EncounterDTO>(encounters);
+
+            return Ok(mappedEncounters);
+
+        }
+
+
         [HttpDelete("/patients/{id}")]
         public async Task<IActionResult> DeletePatientAsync(int id)
         {
@@ -123,14 +136,14 @@ namespace Catalyte.Apparel.API.Controllers
         }
 
         [HttpPut("/patients/{patientId}/encounters/{encounterId}")]
-        public async Task<ActionResult<EncounterDTO>> UpdateEncounterByIdAsync(int patientId,
+        public async Task<ActionResult<EncounterDTO>> UpdateEncounterByIdAsync(
            int encounterId,
            [FromBody] EncounterDTO encounterToUpdate)
         {
             _logger.LogInformation("Request received for UpdateEncounterAsync");
 
             var encounter = _mapper.Map<Encounter>(encounterToUpdate);
-            var updatedEncounter = await _encounterProvider.UpdateEncounterAsync(patientId, encounterId, encounter);
+            var updatedEncounter = await _encounterProvider.UpdateEncounterAsync(encounterId, encounter);
             var encounterDTO = _mapper.Map<EncounterDTO>(updatedEncounter);
 
             return Ok(encounterDTO);

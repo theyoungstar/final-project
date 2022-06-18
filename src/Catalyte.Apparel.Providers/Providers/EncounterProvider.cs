@@ -120,10 +120,10 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The product.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<Encounter> UpdateEncounterAsync(int patientId, int encounterId, Encounter updatedEncounter)
+        public async Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter updatedEncounter)
         {
             // VALIDATE MOVIE TO UPDATE EXISTS
-            IEnumerable<Encounter> existingEncounters;
+            Encounter existingEncounter;
 
             List<string> errorsList = _encounterValidation.ValidationForEncounter(updatedEncounter);
             if (errorsList.Count > 0)
@@ -135,28 +135,27 @@ namespace Catalyte.Apparel.Providers.Providers
 
             try
             {
-                existingEncounters = await _encounterRepository.GetAllEncountersByPatientIdAsync(patientId);
+                existingEncounter = await _encounterRepository.GetEncounterByIdAsync(encounterId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                throw new ServiceUnavailableException("There was a problem accessing an encounter from the database.");
             }
-
-            if (existingEncounters == default || existingEncounters == null)
+            if (existingEncounter == null)
             {
-                _logger.LogInformation($"There are no encounters attached to patient Id: {patientId}.");
-                throw new NotFoundException($"There are no encounters attached to patient Id: {patientId}.");
+                _logger.LogInformation($"Enounter ID cannot be null.");
+                throw new NotFoundException("Encounter Id not found");
             }
-            foreach (var encounter in existingEncounters)
-                if (encounter.Id != updatedEncounter.Id)
-                {
-                    _logger.LogInformation($"Encounter Id does not exist. Please create a new encounter");
-                    throw new NotFoundException($"This is a new encounter Id. Are you trying to create a new encounter?");
-                }
-                else if (encounter.Id == default)
-                    encounter.Id = updatedEncounter.Id;
 
+            if (existingEncounter.PatientId != updatedEncounter.PatientId)
+            {
+                _logger.LogInformation($"This encounter belongs to a different patient. Please verify.");
+                throw new NotFoundException($"This encounter belongs to a differnt patient.");
+            }
+            // GIVE THE MOVIE ID IF NOT SPECIFIED IN BODY TO AVOID DUPLICATE PRODUCTS
+            if (updatedEncounter.Id == default)
+                updatedEncounter.Id = encounterId;
             try
             {
                 await _encounterRepository.UpdateEncounterAsync(updatedEncounter);
@@ -168,34 +167,25 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
 
-            // GIVE THE MOVIE ID IF NOT SPECIFIED IN BODY TO AVOID DUPLICATE PRODUCTS
-            if (updatedEncounter.Id == default)
-                updatedEncounter.Id = encounterId;
-
-
-            // TIMESTAMP THE UPDATE
-            updatedEncounter.DateModified = DateTime.UtcNow;
-
-            try
-            {
-                await _encounterRepository.UpdateEncounterAsync(updatedEncounter);
-                _logger.LogInformation("User updated.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
+       
 
             return updatedEncounter;
         }
-        public async Task<Encounter> GetEncounterByIdAsync(int id)
+        
+        /// <summary>
+        /// Asynchronously retrieves the product with the provided id from the database.
+        /// </summary>
+        /// <param name="productId">The id of the product to retrieve.</param>
+        /// <returns>The product.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<Encounter> GetEncounterByIdAsync(int encounterId)
         {
             Encounter encounter;
 
             try
             {
-                encounter = await _encounterRepository.GetEncounterByIdAsync(id);
+                encounter = await _encounterRepository.GetEncounterByIdAsync(encounterId);
             }
             catch (Exception ex)
             {
@@ -203,9 +193,16 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new ServiceUnavailableException("There was a problem connecting to the database.");
             }
 
+            if (encounter == null || encounter == default)
+            {
+                _logger.LogInformation($"Enounter with id: {encounterId} could not be found.");
+                throw new NotFoundException($"Encounter with id: {encounterId} could not be found.");
+            }
+
             return encounter;
         }
-    
+       
+
 
     }
 }
