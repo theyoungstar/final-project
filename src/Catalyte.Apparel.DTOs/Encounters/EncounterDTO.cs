@@ -19,9 +19,9 @@ namespace Catalyte.Apparel.DTOs.Encounters
         public double TotalCost { get; set; }
         public double Copay { get; set; }
         public string ChiefComplaint { get; set; }
-        public int Pulse { get; set; }
-        public int Systolic { get; set; }
-        public int Diastolic { get; set; }
+        public string Pulse { get; set; }
+        public string Systolic { get; set; }
+        public string Diastolic { get; set; }
         public string Date { get; set; }
     }
 }

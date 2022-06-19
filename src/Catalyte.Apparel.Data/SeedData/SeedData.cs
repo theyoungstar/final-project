@@ -179,12 +179,12 @@ namespace Catalyte.Apparel.Data.Context
                 Provider = "New Hospital",
                 BillingCode = "123.456.789.00",
                 ICD10 = "Z99",
-                TotalCost = 0.11,
-                Copay = 10.25,
+                TotalCost = 10.00,
+                Copay = 5.25,
                 ChiefComplaint = "New Complaint",
-                Pulse = 0,
-                Systolic = 0,
-                Diastolic = 0,
+                Pulse = "",
+                Systolic = "",
+                Diastolic = "",
                 Date = "2020-08-04"
             };
 

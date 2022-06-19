@@ -56,15 +56,16 @@ namespace Catalyte.Apparel.Data.Model
         /// <returns>the boolean true</returns>
         public void HasValidVisitCode(string visitCode, List<string> errorsList)
         {
+            
             if ((visitCode == null) || visitCode.Length < 1 || visitCode == "")
             {
                 errorsList.Add("A Visit Code is required ");
             }
             else if (visitCode.Length > 0)
-            {
+            {  
                 var vCodeCheck = new Regex(@"^([A-Z][\d][A-Z]\s[\d][A-Z][\d])$");
-                if (!vCodeCheck.IsMatch(visitCode.Trim().ToUpper()))
-                    errorsList.Add("Visit Code must be in this format: Q4W 5T3");
+                if (!vCodeCheck.IsMatch(visitCode))
+                    errorsList.Add("Visit Code must be in this format: Q4W 5T3 with a space in between and no excess spaces ");
             }
         }
         /// <summary>
@@ -77,7 +78,7 @@ namespace Catalyte.Apparel.Data.Model
         {
             if ((provider == null) || provider.Length < 1 || provider == "")
             {
-                errorsList.Add("A Provider is required ");
+                errorsList.Add("A Provider is required with no excess spaces ");
             }
            
         }
@@ -87,8 +88,9 @@ namespace Catalyte.Apparel.Data.Model
         /// <param name="email"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
-        public void HasValidBillingCode(string billingCode , List<string> errorsList)
+        public void HasValidBillingCode(string billingCode, List<string> errorsList)
         {
+            
             if ((billingCode == null) || billingCode.Length < 1 || billingCode == "")
             {
                 errorsList.Add("Billing Code is required ");
@@ -96,9 +98,9 @@ namespace Catalyte.Apparel.Data.Model
             else if (billingCode.Length > 0)
             {
                 var bCodeCheck = new Regex(@"^([\d]{3,3})\.([\d]{3,3})\.([\d]{3,3})\-([\d]{2,2})$");
-                if (!bCodeCheck.IsMatch(billingCode.Trim()))
+                if (!bCodeCheck.IsMatch(billingCode))
                 {
-                    errorsList.Add("Billing Code must be entered in the following format: 123.456.789-12");
+                    errorsList.Add(" Billing Code must be entered in the following format: 123.456.789-12 with no excess spaces");
                 }
             }
         }
@@ -112,14 +114,14 @@ namespace Catalyte.Apparel.Data.Model
         {
             if ((icd10 == null) || icd10.Length < 1 || icd10 == "")
             {
-                errorsList.Add("ICD10 Code is required ");
+                errorsList.Add(" ICD10 Code is required");
             }
             else if (icd10.Length > 0)
             {
                 var icd10Check = new Regex(@"^[A-Z][0-9][0-9]$");
-                if (!icd10Check.IsMatch(icd10.Trim().ToUpper()))
+                if (!icd10Check.IsMatch(icd10))
                 {
-                    errorsList.Add("ICD10 Code must be entered in the following format: A23 ");
+                    errorsList.Add(" ICD10 Code must be entered in the following format: A23 with no excess spaces");
                 }
             }
         }
@@ -131,17 +133,17 @@ namespace Catalyte.Apparel.Data.Model
         /// <returns>the boolean true</returns>
         public void HasValidTotalCost(double totalCost, List<string> errorsList)
         {
-            if ((totalCost == default) || totalCost.ToString().Length < 1 || totalCost.ToString() == "" || totalCost.ToString() == null)
+            if (totalCost.ToString().Length < 1 || totalCost.ToString() == "" || totalCost.ToString() == null)
             {
                 errorsList.Add("A total cost is required ");
             }
             else if (totalCost.ToString().Length > 0)
             {
-                var totalCostCheck = new Regex(@"^([1-9])([0-9]{1,5})\.[0-9]{2}$");
+                var totalCostCheck = new Regex(@"^(\d{1,9}(\,\d{3})*|(\d+))(\.\d{2})?|(\.\d{2})?$");
                 var totalCostString = totalCost.ToString();
-                if (!totalCostCheck.IsMatch(totalCostString.Trim()))
+                if (!totalCostCheck.IsMatch(totalCostString))
                 {
-                    errorsList.Add("Total cost must be a dollar amount ");
+                    errorsList.Add(" Total cost must be a dollar amount with no excess spaces");
                 }
             }
         }
@@ -153,17 +155,17 @@ namespace Catalyte.Apparel.Data.Model
         /// <returns>the boolean true</returns>
         public void HasValidCopay(double copay, List<string> errorsList)
         {
-            if ((copay == default) || copay.ToString().Length < 1 || copay.ToString() == "" || copay.ToString() == null)
+            if (copay.ToString().Length < 1 || copay.ToString() == "" || copay.ToString() == null)
             {
                 errorsList.Add("Copay is required ");
             }
             else if (copay.ToString().Length > 0)
             {
-                var copayCheck = new Regex(@"^([1-9])([0-9]{2,2})\.[0-9]{2}$");
+                var copayCheck = new Regex(@"^(\d{1,9}(\,\d{3})*|(\d+))(\.\d{2})?|(\.\d{2})?$");
                 var copayString = copay.ToString();
-                if (copayCheck.IsMatch(copayString.Trim()))
+                if (!copayCheck.IsMatch(copayString))
                 {
-                    errorsList.Add("Copay must be a dollar amount ");
+                    errorsList.Add(" Copay must be a dollar amount with no excess spaces");
                 }
             }
         }
@@ -186,22 +188,42 @@ namespace Catalyte.Apparel.Data.Model
         /// <param name="lastName"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
-        public void HasValidPulse(int? pulse, List<string> errorsList)
+        public void HasValidPulse(string pulse, List<string> errorsList)
         {
-         /*   if (pulse == default || pulse.ToString() == null)
+            if (pulse == null || pulse == "")
             {
-                errorsList.Add("An age is required ");
-            }*/
-            if (pulse > 0)
+                pulse = "0";
+            }
+            else if(pulse.Length > 0)
             {
-                var ageCheck = new Regex(@"^200|[1-9]?\d$");
-                var ageString = pulse.ToString();
-                if (!ageCheck.IsMatch(ageString.Trim()))
+                var pulseCheck = new Regex(@"^[1-9]\d+$");
+                if (!pulseCheck.IsMatch(pulse))
                 {
-                    errorsList.Add("Must use numbers for patient's pulse");
+                    errorsList.Add("Must use numbers for patient's pulse with no excess spaces");
+                }
+            }    
+        }
+
+        /// <summary>
+        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="errorsList"></param>
+        /// <returns>the boolean true</returns>
+        public void HasValidSystolic(string systolic, List<string> errorsList)
+        {
+            if (systolic == null || systolic == "")
+            {
+                systolic = "0";
+            }
+            else if (systolic.Length > 0)
+            {
+                var systolicCheck = new Regex(@"^[1-9]\d+$");
+                if (!systolicCheck.IsMatch(systolic))
+                {
+                    errorsList.Add("Must use numbers for systolic with no excess spaces");
                 }
             }
-            
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
@@ -209,45 +231,21 @@ namespace Catalyte.Apparel.Data.Model
         /// <param name="lastName"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
-        public void HasValidSystolic(int? systolic, List<string> errorsList)
+        public void HasValidDiastolic(string diastolic, List<string> errorsList)
         {
-            /*if (systolic == default || systolic.ToString() == null)
+            if (diastolic == null || diastolic == "")
             {
-                errorsList.Add("A height is required ");
-            }*/
-            if (systolic > 0)
+                diastolic = "0";
+            }
+            else if (diastolic.Length > 0)
             {
-                var systolicCheck = new Regex(@"^150|[1-9]?\d$");
-                var systolicString = systolic.ToString();
-                if (!systolicCheck.IsMatch(systolicString.Trim()))
+                var diastolicCheck = new Regex(@"^[1-9]\d+$");
+                if (!diastolicCheck.IsMatch(diastolic))
                 {
-                    errorsList.Add("Systolic must be a number");
+                    errorsList.Add("Must use numbers for diastolic with no excess spaces");
                 }
             }
-           
-        }
-        /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
-        /// </summary>
-        /// <param name="lastName"></param>
-        /// <param name="errorsList"></param>
-        /// <returns>the boolean true</returns>
-        public void HasValidDiastolic(int? diastolic, List<string> errorsList)
-        {
-            /*if (weight == default || weight.ToString() == null)
-            {
-                errorsList.Add("A weight is required ");
-            }*/
-            if (diastolic > 0)
-            {
-                var diastolicCheck = new Regex(@"^99|[1-9]?\d$");
-                var diastolicString = diastolic.ToString();
-                if (!diastolicCheck.IsMatch(diastolicString.Trim()))
-                {
-                    errorsList.Add("Diastolic must be a number");
-                }
-            }
-         
+
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
@@ -263,10 +261,10 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (date.Length > 0)
             {
-                var dateCheck = new Regex(@"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$");
-                if (!dateCheck.IsMatch(date.Trim()))
+                var dateCheck = new Regex(@"^^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$");
+                if (!dateCheck.IsMatch(date))
                 {
-                    errorsList.Add("Date must be in a YYYY-MM-DD format");
+                    errorsList.Add("Date must be in a YYYY-MM-DD format with no excess spaces");
                 }
             }
         }

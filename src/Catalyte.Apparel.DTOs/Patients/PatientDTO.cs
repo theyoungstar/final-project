@@ -25,6 +25,5 @@ namespace Catalyte.Apparel.DTOs.Patients
         public string Insurance { get; set; }
         public string Gender { get; set; }
 
-        public ICollection<EncounterDTO> Encounters { get; set; }
     }
 }
