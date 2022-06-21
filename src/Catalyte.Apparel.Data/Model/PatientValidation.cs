@@ -45,7 +45,16 @@ namespace Catalyte.Apparel.Data.Model
             if ((firstName == null) || firstName.Length < 1 || firstName == "")
             {
                 errorsList.Add("First Name is required ");
+            } else if 
+                (firstName.Length > 0)
+            {
+                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([\ A-Za-z][A-Za-z'-]+)*$");
+                if (!nameCheck.IsMatch(firstName))
+                {
+                    errorsList.Add("First name accepts letters, hyphens, apostrophes, and periods ");
+                }
             }
+
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
@@ -58,6 +67,15 @@ namespace Catalyte.Apparel.Data.Model
             if ((lastName == null) || lastName.Length < 1 || lastName == "")
             {
                 errorsList.Add("Last Name is required ");
+            }
+            else if
+               (lastName.Length > 0)
+            {
+                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$");
+                if (!nameCheck.IsMatch(lastName))
+                {
+                    errorsList.Add("Last name accepts letters, hyphens, apostrophes, and periods ");
+                }
             }
         }
         /// <summary>
@@ -75,7 +93,7 @@ namespace Catalyte.Apparel.Data.Model
             else if (ssn.Length > 0)
             {
                 var ssnCheck = new Regex(@"^\d{3}\-?\d{2}\-?\d{4}$");
-                if (!ssnCheck.IsMatch(ssn.Trim()))
+                if (!ssnCheck.IsMatch(ssn))
                 {
                     errorsList.Add("Social Security Number must be in this format: 012-34-5678 ");
                 }
@@ -96,7 +114,7 @@ namespace Catalyte.Apparel.Data.Model
             else if (email.Length > 0)
             {
                 var emailCheck = new Regex(@"^\w+@([a-z]+\.)+[a-z]+$");
-                if (!emailCheck.IsMatch(email.Trim()))
+                if (!emailCheck.IsMatch(email))
                 {
                     errorsList.Add("Email Address must be in this format: x@x.x ");
                 }
@@ -114,6 +132,15 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add("Street Address is required ");
             }
+            else if
+               (street.Length > 0)
+            {
+                var streetCheck = new Regex(@"^[a-zA-z\s\d]+\w$");
+                if (!streetCheck.IsMatch(street))
+                {
+                    errorsList.Add("Street accepts letters, numbers and spaces ");
+                }
+            }
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
@@ -126,6 +153,15 @@ namespace Catalyte.Apparel.Data.Model
             if ((city == null) || city.Length < 1 || city == "")
             {
                 errorsList.Add("A City is required for Address ");
+            }
+            else if
+             (city.Length > 0)
+            {
+                var cityCheck = new Regex(@"^[s\a-zA-z'.-]+\w$");
+                if (!cityCheck.IsMatch(city))
+                {
+                    errorsList.Add("City accepts letters, hyphen, periods, and aposthrophes ");
+                }
             }
 
         }
@@ -144,7 +180,7 @@ namespace Catalyte.Apparel.Data.Model
             else if (state.Length > 0 && state.Length < 3)
             {
                 var stateCheck = new Regex(@"^(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])$");
-                if (!stateCheck.IsMatch(state.ToUpper().Trim()))
+                if (!stateCheck.IsMatch(state))
                 {
                     errorsList.Add("Must be a valid State Abbreviation, ex. SC");
                 }
@@ -165,16 +201,16 @@ namespace Catalyte.Apparel.Data.Model
             else if (pCode.Length > 0 && pCode.Length < 3)
             {
                 var pCodeCheck = new Regex(@"^[0-9]{5}(?:-[0-9]{4})?$");
-                if (!pCodeCheck.IsMatch(pCode.ToUpper().Trim()))
+                if (!pCodeCheck.IsMatch(pCode))
                 {
-                    errorsList.Add("Postal Code must be in one of the following formats : 12345 or 12345-1234");
+                    errorsList.Add("Zip Code must be in one of the following formats : 12345 or 12345-1234");
                 }
             }
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="Age"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidAge(int age, List<string> errorsList)
@@ -185,11 +221,11 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (age > 0)
             {
-                var ageCheck = new Regex(@"^150|[1-9]?\d$");
+                var ageCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 var ageString = age.ToString();
-                if (!ageCheck.IsMatch(ageString.Trim()))
+                if (!ageCheck.IsMatch(ageString))
                 {
-                    errorsList.Add("Postal Code must be in one of the following formats : 12345 or 12345-1234");
+                    errorsList.Add("Age must be a number greater than zero");
                 }
             }
             else
@@ -200,7 +236,7 @@ namespace Catalyte.Apparel.Data.Model
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="height"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidHeight(int height, List<string> errorsList)
@@ -211,22 +247,18 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (height > 0)
             {
-                var heightCheck = new Regex(@"^99|[1-9]?\d$");
+                var heightCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 var heightString = height.ToString();
-                if (!heightCheck.IsMatch(heightString.Trim()))
+                if (!heightCheck.IsMatch(heightString))
                 {
-                    errorsList.Add("Height must be at least 21 inches");
+                    errorsList.Add("Height must be greater than zero");
                 }
-            }
-            else
-            {
-                errorsList.Add("height must be greater than 0");
             }
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="weight"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidWeight(int weight, List<string> errorsList)
@@ -237,22 +269,18 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (weight > 0)
             {
-                var weightCheck = new Regex(@"^99|[1-9]?\d$");
+                var weightCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 var weightString = weight.ToString();
-                if (!weightCheck.IsMatch(weightString.Trim()))
+                if (!weightCheck.IsMatch(weightString))
                 {
-                    errorsList.Add("Weight must be at least 21 inches");
+                    errorsList.Add("Weight must be geater than zero");
                 }
-            }
-            else
-            {
-                errorsList.Add("Weight must be greater than 0");
             }
         }
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
         /// </summary>
-        /// <param name="firstName"></param>
+        /// <param name="insurance"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidInsurance(string ins, List<string> errorsList)
@@ -260,6 +288,14 @@ namespace Catalyte.Apparel.Data.Model
             if ((ins == null) || ins.Length < 1)
             {
                 errorsList.Add("Insurance is required ");
+            }
+            else if (ins.Length > 0)
+            {
+                var insCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$");
+                if (!insCheck.IsMatch(ins))
+                {
+                    errorsList.Add("Insurance takes letters, spaces, periods, and aposthrophes");
+                }
             }
         }
         /// <summary>
@@ -274,6 +310,13 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add("Gender is required ");
             }
-        }
+            else if (gender.Length > 0)
+            {
+                var genderCheck = new Regex(@"^\A[M][a][l][e]\z|\A[F][e][m][a][l][e]\z|\A[O][t][h][e][r]\z$");
+                if (!genderCheck.IsMatch(gender))
+                {
+                    errorsList.Add("Gender accepts Male, Female, or Other");
+                }
+        }   }
     }
 }

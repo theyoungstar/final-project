@@ -13,11 +13,13 @@ namespace Catalyte.Apparel.Providers.Interfaces
 
         Task<IEnumerable<Encounter>> GetAllEncountersAsync();
 
-        Task<Encounter> UpdateEncounterAsync(int encounterID, Encounter updatedEncounter);
-
-        Task<Encounter> CreateEncounterAsync(Encounter newEncounter);
+        Task<Encounter> UpdateEncounterAsync(int patientId, int encounterID, Encounter updatedEncounter);
 
         Task<IEnumerable<Encounter>> GetEncountersByPatientIdAsync(int patientId);
+
+        Task<Encounter> CreateEncounterAsync(int patientId, Encounter newEncounter);
+
+        Task<Encounter>GetEncounterByIdByPatientIdAsync(int patientId, int encounterId);
 
     }
 }

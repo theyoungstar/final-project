@@ -130,11 +130,9 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <returns>The product.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<Patient> UpdatePatientAsync(string email, int id, Patient updatedPatient)
+        public async Task<Patient> UpdatePatientAsync(int patientId, Patient updatedPatient)
         {
-            // VALIDATE Patient TO UPDATE EXISTS
             Patient existingPatient;
-            IEnumerable<Patient> existingPatients;
             List<string> errorsList = _patientValidation.ValidationForPatient(updatedPatient);
             if (errorsList.Count > 0)
             {
@@ -145,7 +143,7 @@ namespace Catalyte.Apparel.Providers.Providers
 
             try
             {
-                existingPatient = await _patientRepository.GetPatientByIdAsync(id);
+                existingPatient = await _patientRepository.GetPatientByEmailAsync(updatedPatient.Email);
             }
             catch (Exception ex)
             {
@@ -153,40 +151,20 @@ namespace Catalyte.Apparel.Providers.Providers
                 throw new ServiceUnavailableException("There was a problem connecting getting existing patient.");
             }
 
-            if (existingPatient == default || existingPatient == null)
+            if (existingPatient == default || existingPatient == null )
             {
-                _logger.LogInformation($"Patient with id: {id} does not exist.");
-                throw new NotFoundException($"Patient with id: {id} not found.");
+                _logger.LogInformation($"Patient with id: {patientId} does not exist.");
+                throw new NotFoundException($"Patient with id: {patientId} not found.");
             }
-            try
+            if(existingPatient.Email == updatedPatient.Email && existingPatient.Id != updatedPatient.Id )
             {
-                 existingPatients = await _patientRepository.GetAllPatientsAsync();
-                
+                throw new ConflictException("Email already exists in the database");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem verifying patient email.");
-            }
-            /*foreach (var patient in existingPatients)
-                if (patient.Email == updatedPatient.Email)
-                {
-                    _logger.LogInformation($"Patient Email already exists.");
-                    throw new ConflictException($"This Email is already in use.");
-                }*/
-
-            // GIVE THE Patient ID IF NOT SPECIFIED IN BODY TO AVOID DUPLICATE PRODUCTS
-            if (updatedPatient.Id == default)
-                updatedPatient.Id = id;
-
-
-            // TIMESTAMP THE UPDATE
-            updatedPatient.DateModified = DateTime.UtcNow;
-
+           
             try
             {
                 await _patientRepository.UpdatePatientAsync(updatedPatient);
-                _logger.LogInformation("User updated.");
+                _logger.LogInformation("Patient updated.");
             }
             catch (Exception ex)
             {
@@ -278,6 +256,35 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             return existingPatient;
 
+        }
+        /// <summary>
+        /// Asynchronously retrieves the product with the provided id from the database.
+        /// </summary>
+        /// <param name="productId">The id of the product to retrieve.</param>
+        /// <returns>The product.</returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<Patient> GetPatientByEmailAsync(string patientEmail)
+        {
+            Patient patient;
+
+            try
+            {
+                patient = await _patientRepository.GetPatientByEmailAsync(patientEmail);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            if (patient == null || patient == default)
+            {
+                _logger.LogInformation($"Patient with id: {patientEmail} could not be found.");
+                throw new NotFoundException($"Patient with id: {patientEmail} could not be found.");
+            }
+
+            return patient;
         }
 
     }

@@ -8,7 +8,6 @@ namespace Catalyte.Apparel.Data.Model
     /// </summary>
     public class Encounter : BaseEntity
     {
-        
         public int PatientId { get; set; }
         public string Notes { get; set; }
         public string VisitCode { get; set; }

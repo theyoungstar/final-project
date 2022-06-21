@@ -22,6 +22,8 @@ namespace Catalyte.Apparel.Data.Interfaces
 
         Task<IEnumerable<Encounter>> GetAllEncountersByPatientIdAsync(int patientId);
 
+        Task<Encounter> CreateEncounterAsync(Encounter newEncounter);
+
 
 
     }

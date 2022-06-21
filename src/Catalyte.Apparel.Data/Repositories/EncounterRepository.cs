@@ -70,6 +70,13 @@ namespace Catalyte.Apparel.Data.Repositories
                 .WhereEncounterIdEquals(patientId)
                 .SingleOrDefaultAsync();
         }
+        public async Task<Encounter> CreateEncounterAsync(Encounter newEncounter)
+        {
+            _ctx.Encounters.Add(newEncounter);
+            await _ctx.SaveChangesAsync();
 
+            return newEncounter;
+
+        }
     }
 }

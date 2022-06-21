@@ -18,7 +18,7 @@ namespace Catalyte.Apparel.Data.Model
         public virtual List<string> ValidationForEncounter(Encounter encounter)
         {
             List<string> errorsList = new List<string>();
-            HasValidPatientId(encounter.PatientId, errorsList);
+            /*HasValidPatientId(encounter.PatientId, errorsList);*/
             HasValidVisitCode(encounter.VisitCode, errorsList);
             HasValidProvider(encounter.Provider, errorsList);
             HasValidBillingCode(encounter.BillingCode, errorsList);
@@ -41,13 +41,13 @@ namespace Catalyte.Apparel.Data.Model
         /// <param name="firstName"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
-        public void HasValidPatientId(int patientId, List<string> errorsList)
+       /* public void HasValidPatientId(int patientId, List<string> errorsList)
         {
             if ((patientId == default) || patientId.ToString().Length < 1 || patientId == 0 || patientId.ToString() == "")
             {
                 errorsList.Add("Patient Id is required ");
             }
-        }
+        }*/
         /// <summary>
         /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
         /// </summary>
@@ -196,7 +196,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if(pulse.Length > 0)
             {
-                var pulseCheck = new Regex(@"^[1-9]\d+$");
+                var pulseCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 if (!pulseCheck.IsMatch(pulse))
                 {
                     errorsList.Add("Must use numbers for patient's pulse with no excess spaces");
@@ -218,7 +218,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (systolic.Length > 0)
             {
-                var systolicCheck = new Regex(@"^[1-9]\d+$");
+                var systolicCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 if (!systolicCheck.IsMatch(systolic))
                 {
                     errorsList.Add("Must use numbers for systolic with no excess spaces");
@@ -239,7 +239,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (diastolic.Length > 0)
             {
-                var diastolicCheck = new Regex(@"^[1-9]\d+$");
+                var diastolicCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
                 if (!diastolicCheck.IsMatch(diastolic))
                 {
                     errorsList.Add("Must use numbers for diastolic with no excess spaces");
@@ -261,7 +261,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (date.Length > 0)
             {
-                var dateCheck = new Regex(@"^^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$");
+                var dateCheck = new Regex(@"^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$");
                 if (!dateCheck.IsMatch(date))
                 {
                     errorsList.Add("Date must be in a YYYY-MM-DD format with no excess spaces");
