@@ -81,15 +81,17 @@ namespace Catalyte.Apparel.Providers.Providers
             return patient;
         }
         /// <summary>
-        /// Asynchronously retrieves the product with the provided id from the database.
+        /// Asynchronously posts a new patien to the database.
         /// </summary>
-        /// <param name="productId">The id of the product to retrieve.</param>
+        /// <param name="newPatient">The id of the patient to post.</param>
         /// <returns>The product.</returns>
+        /// <exception cref="BadRequestException"></exception>
         /// <exception cref="ServiceUnavailableException"></exception>
-        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="ConflictException"></exception>
         public async Task<Patient> CreatePatientAsync(Patient newPatient)
         {
             Patient savedPatient;
+            //Validates updatedPatient data and returns a list of errors if error count is more than zero
             List<string> errorsList = _patientValidation.ValidationForPatient(newPatient);
             if (errorsList.Count > 0)
             {
@@ -124,10 +126,12 @@ namespace Catalyte.Apparel.Providers.Providers
             return savedPatient;
         }
         /// <summary>
-        /// Asynchronously retrieves the product with the provided id from the database.
+        /// Asynchronously updates patient data in the database.
         /// </summary>
-        /// <param name="productId">The id of the product to retrieve.</param>
-        /// <returns>The product.</returns>
+        /// <param name="patienttId">The id of the patient to update.</param>
+        /// <param name="updatedPatient">Patient data to update.</param>
+        /// <returns>updatedPatient.</returns>
+        /// <exception cref="BadRequestException"></exception>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
         public async Task<Patient> UpdatePatientAsync(int patientId, Patient updatedPatient)
@@ -140,6 +144,21 @@ namespace Catalyte.Apparel.Providers.Providers
                 var result = string.Join(",", errorsList);
                 throw new BadRequestException(result);
             }
+            try
+            {
+                existingPatient = await _patientRepository.GetPatientByIdAsync(patientId);
+           
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem getting patient.");
+            }
+            if (existingPatient == default || existingPatient == null)
+            {
+                _logger.LogInformation($"Patient {patientId} does not exist in the databse");
+                throw new NotFoundException($"Patient {patientId} does not exist in the databse");
+            }
 
             try
             {
@@ -150,17 +169,34 @@ namespace Catalyte.Apparel.Providers.Providers
                 _logger.LogError(ex.Message);
                 throw new ServiceUnavailableException("There was a problem connecting getting existing patient.");
             }
-
-            if (existingPatient == default || existingPatient == null )
+            if(existingPatient == null || existingPatient == default)
             {
-                _logger.LogInformation($"Patient with id: {patientId} does not exist.");
-                throw new NotFoundException($"Patient with id: {patientId} not found.");
+                try
+                {
+                    await _patientRepository.UpdatePatientAsync(updatedPatient);
+                    _logger.LogInformation("Patient updated.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw new ServiceUnavailableException("There was a problem connecting to the database.");
+                }
             }
-            if(existingPatient.Email == updatedPatient.Email && existingPatient.Id != updatedPatient.Id )
+            try
             {
+                existingPatient = await _patientRepository.GetPatientByEmailAsync(updatedPatient.Email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting getting existing patient.");
+            }
+            if (existingPatient.Email == updatedPatient.Email && existingPatient.Id != updatedPatient.Id)
+            {
+                _logger.LogInformation($"{updatedPatient.Email} already exists in the database");
                 throw new ConflictException("Email already exists in the database");
             }
-           
+
             try
             {
                 await _patientRepository.UpdatePatientAsync(updatedPatient);
@@ -174,7 +210,15 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return updatedPatient;
         }
-        public async Task<IEnumerable<Encounter>> GetPatientEncounterByIdAsync(int patientId, int encounterId)
+       /* /// <summary>
+        /// The method gets a patients enounter by encounter Id
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <param name="encounterId"></param>
+        /// <returns></returns>
+        /// <exception cref="ServiceUnavailableException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        public async Task<Encounter> GetPatientEncounterByIdAsync(int patientId, int encounterId, Encounter encounter)
         {
             Patient patient;
             IEnumerable<Encounter> encounters;
@@ -191,9 +235,13 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 throw new NotFoundException("There is currently no Patient with that ID in the database");
             }
+            if(patient.Id != patientId)
+            {
+                throw new BadRequestException("Nust use the same patinet Id to perform the search");
+            }
             try
             {
-                encounters = await _encounterRepository.GetAllEncountersAsync();
+                encounters = await _encounterRepository.GetAllEncountersByPatientIdAsync(patientId);
             }
             catch (Exception ex)
             {
@@ -204,13 +252,19 @@ namespace Catalyte.Apparel.Providers.Providers
             {
                 throw new NotFoundException("There are no Encounters");
             }
-            foreach (Encounter encounter in encounters)
+            foreach(Encounter item in encounters)
             {
-               
+                if (item.Id == encounterId)
+                {
+                    encounter = item;
+                }
             }
-            return encounters;
+            return encounter;
 
-        }
+
+
+
+        }*/
         public async Task<Patient> DeletePatientAsync(int patientId)
         {
             Patient existingPatient;

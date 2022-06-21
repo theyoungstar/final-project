@@ -141,7 +141,7 @@ namespace Catalyte.Apparel.API.Controllers
            [FromBody] EncounterDTO encounterToUpdate)
         {
             _logger.LogInformation("Request received for UpdateEncounterAsync");
-
+         
             var encounter = _mapper.Map<Encounter>(encounterToUpdate);
             var updatedEncounter = await _encounterProvider.UpdateEncounterAsync(patientId, encounterId, encounter);
             var encounterDTO = _mapper.Map<EncounterDTO>(updatedEncounter);

@@ -10,8 +10,8 @@ namespace Catalyte.Apparel.Data.Model
     public class PatientValidation
     {
         /// <summary>
-        /// This is the Credit Card validation. It validates that the card fields meet required specifications before
-        /// the purchase goes to the Database
+        /// This is the Patient validation. It validates that the Patient fields meet required specifications before
+        /// the patient goes to the Database
         /// </summary>
         /// <param name="purchase"></param>
         /// <returns>errorsList</returns>
@@ -35,7 +35,8 @@ namespace Catalyte.Apparel.Data.Model
             return errorsList;
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the last name is not blank and only accepts letters, spaces, hyphens, periods, and
+        /// apostrophes
         /// </summary>
         /// <param name="firstName"></param>
         /// <param name="errorsList"></param>
@@ -57,7 +58,8 @@ namespace Catalyte.Apparel.Data.Model
 
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the last name is not blank and only accepts letters, spaces, hyphens, periods, and
+        /// apostrophes
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="errorsList"></param>
@@ -79,9 +81,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the ssn is in a 123-45-6789 format
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="ssn"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidSsn(string ssn, List<string> errorsList)
@@ -100,7 +102,7 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the email address is not blank and is in a valid format
         /// </summary>
         /// <param name="email"></param>
         /// <param name="errorsList"></param>
@@ -121,9 +123,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the street is not blank and takes only letters and numbers 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="street"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidStreet(string street, List<string> errorsList)
@@ -143,9 +145,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the city is not blank ant it only takes letters, spaces, hyphen, periods and apostrophes
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="city"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidCity(string city, List<string> errorsList)
@@ -166,9 +168,9 @@ namespace Catalyte.Apparel.Data.Model
 
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the state is required and can only be in 2 letter abbreviation
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="state"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidState(string state, List<string> errorsList)
@@ -187,9 +189,10 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the postal code is required and must be in one of the following formats:
+        /// 12345 or 12345-6789
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="pCode"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidPostalCode(string pCode, List<string> errorsList)
@@ -208,7 +211,7 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies that age is required and takes no decimals
         /// </summary>
         /// <param name="Age"></param>
         /// <param name="errorsList"></param>
@@ -221,7 +224,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (age > 0)
             {
-                var ageCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var ageCheck = new Regex(@"^\d{1,8}$");
                 var ageString = age.ToString();
                 if (!ageCheck.IsMatch(ageString))
                 {
@@ -234,7 +237,7 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies that height is required and takes no decimals
         /// </summary>
         /// <param name="height"></param>
         /// <param name="errorsList"></param>
@@ -247,7 +250,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (height > 0)
             {
-                var heightCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var heightCheck = new Regex(@"^\d{1,8}$");
                 var heightString = height.ToString();
                 if (!heightCheck.IsMatch(heightString))
                 {
@@ -256,7 +259,7 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies that weight is required and takes no decimals
         /// </summary>
         /// <param name="weight"></param>
         /// <param name="errorsList"></param>
@@ -269,7 +272,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (weight > 0)
             {
-                var weightCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var weightCheck = new Regex(@"^\d{1,8}$");
                 var weightString = weight.ToString();
                 if (!weightCheck.IsMatch(weightString))
                 {
@@ -278,7 +281,7 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies insurance os required and takes letters spaces and one number
         /// </summary>
         /// <param name="insurance"></param>
         /// <param name="errorsList"></param>
@@ -299,9 +302,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies gender cannot be left blank and must be spell Male, Female, or Other specifically
         /// </summary>
-        /// <param name="firstName"></param>
+        /// <param name="gender"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidGender(string gender, List<string> errorsList)

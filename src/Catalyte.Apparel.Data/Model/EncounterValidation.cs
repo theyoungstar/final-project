@@ -18,7 +18,7 @@ namespace Catalyte.Apparel.Data.Model
         public virtual List<string> ValidationForEncounter(Encounter encounter)
         {
             List<string> errorsList = new List<string>();
-            /*HasValidPatientId(encounter.PatientId, errorsList);*/
+            HasValidPatientId(encounter.PatientId, errorsList);
             HasValidVisitCode(encounter.VisitCode, errorsList);
             HasValidProvider(encounter.Provider, errorsList);
             HasValidBillingCode(encounter.BillingCode, errorsList);
@@ -36,22 +36,31 @@ namespace Catalyte.Apparel.Data.Model
             return errorsList;
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the patient Id is required and only .
         /// </summary>
-        /// <param name="firstName"></param>
+        /// <param name="patientId"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
-       /* public void HasValidPatientId(int patientId, List<string> errorsList)
+        public void HasValidPatientId(int patientId, List<string> errorsList)
         {
-            if ((patientId == default) || patientId.ToString().Length < 1 || patientId == 0 || patientId.ToString() == "")
+
+            if (patientId == default || patientId.ToString().Length < 1 || patientId.ToString() == "")
             {
-                errorsList.Add("Patient Id is required ");
+                errorsList.Add("A Patient Id is required ");
             }
-        }*/
+            else if (patientId.ToString().Length > 0)
+            {
+                var patientIdCheck = new Regex(@"^([1-9][0-9]{0,3})$");
+                var patientIdString = patientId.ToString();
+                if (!patientIdCheck.IsMatch(patientIdString))
+                    errorsList.Add("Patient Id is rquired and must be a number greater than zero ");
+            }
+        }
+
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the visitCode is not left blank and is formatted like this: LDL DLD.
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="vistCode"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidVisitCode(string visitCode, List<string> errorsList)
@@ -69,9 +78,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the provider is required and takes only letters, hyphens, periods, and apostrophes
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="provider"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidProvider(string provider, List<string> errorsList)
@@ -80,12 +89,18 @@ namespace Catalyte.Apparel.Data.Model
             {
                 errorsList.Add("A Provider is required with no excess spaces ");
             }
-           
+            else if (provider.Length > 0)
+            {
+                var providerCheck = new Regex(@"^[A-Za-z][A-Za-z'-\.]+([ A-Za-z][A-Za-z'-]+)*$");
+                if (!providerCheck.IsMatch(provider))
+                    errorsList.Add("Provider takes only letters, hyphens, periods, and apostrophes ");
+            }
+
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the billingCode is required and must be in this format: 123.456.789-12
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="billingCode"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidBillingCode(string billingCode, List<string> errorsList)
@@ -105,9 +120,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the icd10 is required and must be in this format: A44
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="icd10"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidICD10(string icd10, List<string> errorsList)
@@ -126,9 +141,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the totalCost is required and must be in this format: DD.DD 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="totalCost"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidTotalCost(double totalCost, List<string> errorsList)
@@ -148,9 +163,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the copay is required and must be in this format: DD.DD 
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="copay"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidCopay(double copay, List<string> errorsList)
@@ -170,9 +185,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies the chiefComplaint is required
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="complaint"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidComplaint(string complaint, List<string> errorsList)
@@ -183,9 +198,9 @@ namespace Catalyte.Apparel.Data.Model
             }
         }
         /// <summary>
-        /// This method verifies patient's pulse is in beats per minute
+        /// This method verifies patient's pulse is a number greater than zero if not null
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="pulse"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidPulse(string pulse, List<string> errorsList)
@@ -196,16 +211,16 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if(pulse.Length > 0)
             {
-                var pulseCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var pulseCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!pulseCheck.IsMatch(pulse))
                 {
-                    errorsList.Add("Must use numbers for patient's pulse with no excess spaces");
+                    errorsList.Add("Must be a number greater than zero with no excess spaces");
                 }
             }    
         }
 
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies patient's systolic is a number greater than zero if not null
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="errorsList"></param>
@@ -218,17 +233,17 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (systolic.Length > 0)
             {
-                var systolicCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var systolicCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!systolicCheck.IsMatch(systolic))
                 {
-                    errorsList.Add("Must use numbers for systolic with no excess spaces");
+                    errorsList.Add("Systolic must be a number greater than zero with no excess spaces");
                 }
             }
         }
         /// <summary>
-        /// This method verifies the Credit card number is between 14-19 digits with no letters, special characters or spaces 
+        /// This method verifies patient's diastolic is a number greater than zero if not null
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="diastolic"></param>
         /// <param name="errorsList"></param>
         /// <returns>the boolean true</returns>
         public void HasValidDiastolic(string diastolic, List<string> errorsList)
@@ -239,7 +254,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (diastolic.Length > 0)
             {
-                var diastolicCheck = new Regex(@"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])$");
+                var diastolicCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!diastolicCheck.IsMatch(diastolic))
                 {
                     errorsList.Add("Must use numbers for diastolic with no excess spaces");
