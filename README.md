@@ -1,50 +1,42 @@
-﻿# .Net Sports Apparel API
+﻿# .Net Super Heath Inc. API
 
-## Getting Started
 
-### Start the Server
 
-- Click the drop down arrow next to the App Runner button and select `Apparel.Catalyte.API`
-- Click Build > Build Solution
-- Click the App Runner button
 
-### Connections
 
-By default, this service starts up on port 8085 and accepts cross-origin requests from `*`.
 
-### Dependencies
 
-#### .Net Runtime
+### Description
+
+Super Health Inc. is a small regional healthcare company that operates a series of clinics. The
+company has an existing application for tracking patient encounter data. This application has
+been in service for a number of years and is in need of a rewrite. Super Health has hired you to
+rewrite the application in a modern way using the technologies that you have trained in. At this
+point, Super Health Inc. is looking for a proof of concept, and will not require any authentication
+or authorization.
+The database stores patient and encounter data, and the design of the database is up to you.
+Any user will be able to review, create and update patient information and encounters.
+The client has expressed that they would like the project to be documented and easily
+maintainable.
+
+
+### Pre-requisites 
+
+## Dependencies
+
+# Postman
+
+Postman is used to send request to the API just like a browser would
+
+# .Net Runtime
 
 You must have a .Net runtime installed on your machine.
 
-#### Postgres
+# Postgres
 
 This server requires that you have Postgres installed and running on the default Postgres port of 5432. It requires that you have a database created on the server with the name of `postgres`
 - Your username should be `postgres`
 - Your password should be `root`
-
-## Other notes
-I hope this document will give you some insights as to how and why I choose this application architecture.
-
-I have needed to and chosen to, use a few tools in this application to make it easier to develop and maintain.  Some of the tools are used at runtime and a couple of them are used during development.  The tools used for development are Visual Studio extensions and can be used with any project.
-## Visual Studio Extensions
-
-#### Markdown Editor
-This extension let's you edit and preview .md files.
-https://marketplace.visualstudio.com/items?itemName=MadsKristensen.MarkdownEditor
-
-#### Add New File
-By using this extension you can quickly create new files without having to right-click or go through the menu.  You will see that by using proper naming conventions the correct type of file will be created prepopulated with great content.
-https://marketplace.visualstudio.com/items?itemName=MadsKristensen.AddNewFile
-
-## NuGet Packages
-
-This is some helpful documentation explaing the NuGet package manager.
-https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell
-
-#### Google Authenticator
-https://www.nuget.org/packages/GoogleAuthenticator/
 
 #### Entity Framework Core
 This is the heart of the Entity Framework tools.
@@ -60,4 +52,33 @@ Also known as Swagger, this tool creates an interface for the API when you run t
 https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
 
 
+### Usage
+
+###Postman Collection
+https://www.getpostman.com/collections/fb9c51000e35be16d017
+
+## Getting Started
+
+# Start the Server
+
+- Click the drop down arrow next to the App Runner button and select `Catalyte.Apparel.API`
+- Click Build > Build Solution
+- Click the App Runner button
+
+-- Connections
+
+By default, this service starts up on port 8085 and accepts cross-origin requests from `*`.
+
+Once you have started the API, you can create your CRUD requests. You can verify your requests work by using Postman. 
+
+For a website, your fetch requests URLs need to match the URLs from the API.
+
+## Linting
+
+C# has base level Linting that does a good job making sure you cover your bases as far as syntax goes. 
+You can lint documents one at atime by going to Edit/Advanced/FormatDocument or by using the keyboard shortcut, 
+ctrl+k, ctrl+d. 
+
+### Testing
+Currently, there is no testing for this project.
  

@@ -125,10 +125,6 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return newEncounter;
 
-
-
-
-
         }
         /// <summary>
         /// Asynchronously updates the patient encounter with the provided id from the database.
@@ -188,7 +184,7 @@ namespace Catalyte.Apparel.Providers.Providers
             }
             if(updatedEncounter.PatientId == default)
                 updatedEncounter.PatientId = patientId;
-            // give the encounter Id if not specified in body to avoid duplicate patients
+            // Give the encounter Id if not specified in body to avoid duplicate encounters.
             if (updatedEncounter.Id == default)
                 updatedEncounter.Id = encounterId;
             try
@@ -234,9 +230,10 @@ namespace Catalyte.Apparel.Providers.Providers
             return encounter;
         }
         /// <summary>
-        /// Asynchronously retrieves the patient with the provided id from the database.
+        /// Asynchronously retrieves a single encounter that belongs to a patient from the database using the provided ids.
         /// </summary>
         /// <param name="patientId">The id of the patient to retrieve.</param>
+        /// <param name="encounterId">The id of the encounter to retrieve.</param>
         /// <returns>The patient.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
@@ -281,8 +278,6 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return encounter;
         }
-
-
 
     }
 }
