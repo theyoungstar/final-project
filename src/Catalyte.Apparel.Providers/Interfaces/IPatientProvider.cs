@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Catalyte.Apparel.Providers.Interfaces
 {
     /// <summary>
-    /// This interface provides an abstraction layer for product related service methods.
+    /// This interface provides an abstraction layer for patient related service methods.
     /// </summary>
     public interface IPatientProvider
     {
@@ -18,8 +18,5 @@ namespace Catalyte.Apparel.Providers.Interfaces
         Task<Patient> CreatePatientAsync(Patient patient);
 
         Task<Patient> DeletePatientAsync(int patientId);
-
-        Task<Patient> GetPatientByEmailAsync(string patientEmail);
-
     }
 }

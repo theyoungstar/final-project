@@ -91,7 +91,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (provider.Length > 0)
             {
-                var providerCheck = new Regex(@"^[A-Za-z][A-Za-z'-\.]+([ A-Za-z][A-Za-z'-]+)*$");
+                var providerCheck = new Regex(@"^[A-Za-z][A-Za-z'-/.]+([ A-Za-z][A-Za-z'-/.]+)*$");
                 if (!providerCheck.IsMatch(provider))
                     errorsList.Add("Provider takes only letters, hyphens, periods, and apostrophes ");
             }
@@ -214,7 +214,7 @@ namespace Catalyte.Apparel.Data.Model
                 var pulseCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!pulseCheck.IsMatch(pulse))
                 {
-                    errorsList.Add("Must be a number greater than zero with no excess spaces");
+                    errorsList.Add("Must be a number greater than zero with no excess spaces or decimals");
                 }
             }    
         }
@@ -236,7 +236,7 @@ namespace Catalyte.Apparel.Data.Model
                 var systolicCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!systolicCheck.IsMatch(systolic))
                 {
-                    errorsList.Add("Systolic must be a number greater than zero with no excess spaces");
+                    errorsList.Add("Systolic must be a number greater than zero with no excess spaces or decimals");
                 }
             }
         }
@@ -257,7 +257,7 @@ namespace Catalyte.Apparel.Data.Model
                 var diastolicCheck = new Regex(@"^([1-9][0-9]{0,2})$");
                 if (!diastolicCheck.IsMatch(diastolic))
                 {
-                    errorsList.Add("Must use numbers for diastolic with no excess spaces");
+                    errorsList.Add("Must use numbers for diastolic with no excess spaces or decimals");
                 }
             }
 

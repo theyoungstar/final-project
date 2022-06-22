@@ -49,7 +49,7 @@ namespace Catalyte.Apparel.Data.Model
             } else if 
                 (firstName.Length > 0)
             {
-                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([\ A-Za-z][A-Za-z'-]+)*$");
+                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-/.]+([ A-Za-z][A-Za-z'-/.]+)*$");
                 if (!nameCheck.IsMatch(firstName))
                 {
                     errorsList.Add("First name accepts letters, hyphens, apostrophes, and periods ");
@@ -73,7 +73,7 @@ namespace Catalyte.Apparel.Data.Model
             else if
                (lastName.Length > 0)
             {
-                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$");
+                var nameCheck = new Regex(@"^[A-Za-z][A-Za-z'-/.]+([ A-Za-z][A-Za-z'-/.]+)*$");
                 if (!nameCheck.IsMatch(lastName))
                 {
                     errorsList.Add("Last name accepts letters, hyphens, apostrophes, and periods ");
@@ -294,7 +294,7 @@ namespace Catalyte.Apparel.Data.Model
             }
             else if (ins.Length > 0)
             {
-                var insCheck = new Regex(@"^[A-Za-z][A-Za-z'-]+([ A-Za-z][A-Za-z'-]+)*$");
+                var insCheck = new Regex(@"^[A-Za-z][A-Za-z'-/.]+([ A-Za-z][A-Za-z'-/.]+)*$");
                 if (!insCheck.IsMatch(ins))
                 {
                     errorsList.Add("Insurance takes letters, spaces, periods, and aposthrophes");

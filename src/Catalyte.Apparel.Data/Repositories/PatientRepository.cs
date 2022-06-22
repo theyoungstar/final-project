@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Catalyte.Apparel.Data.Repositories
 {
     /// <summary>
-    /// This class handles methods for making requests to the product repository.
+    /// This class handles methods for making requests to the patient repository.
     /// </summary>
 
     public class PatientRepository : IPatientRepository

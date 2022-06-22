@@ -12,7 +12,7 @@ using System.Linq;
 namespace Catalyte.Apparel.Providers.Providers
 {
     /// <summary>
-    /// This class provides the implementation of the IPurchaseProvider interface, providing service methods for purchases.
+    /// This class provides the implementation of the IPatientProvider interface, providing service methods for patients.
     /// </summary>
     public class PatientProvider : IPatientProvider
     {
@@ -31,10 +31,9 @@ namespace Catalyte.Apparel.Providers.Providers
         }
 
         /// <summary>
-        /// Persists a purchase to the database.
+        /// GETs all patients from the database .
         /// </summary>
-        /// <param name="model">PurchaseDTO used to build the purchase.</param>
-        /// <returns>The persisted purchase with IDs.</returns>
+        /// <returns>All patients .</returns>
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
         {
             IEnumerable<Patient> patients;
@@ -52,10 +51,10 @@ namespace Catalyte.Apparel.Providers.Providers
             return patients;
         }
         /// <summary>
-        /// Asynchronously retrieves the product with the provided id from the database.
+        /// Asynchronously retrieves the patient with the provided id from the database.
         /// </summary>
-        /// <param name="productId">The id of the product to retrieve.</param>
-        /// <returns>The product.</returns>
+        /// <param name="patientId">The id of the patient to retrieve.</param>
+        /// <returns>The patient.</returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
         public async Task<Patient> GetPatientByIdAsync(int patientId)
@@ -81,10 +80,10 @@ namespace Catalyte.Apparel.Providers.Providers
             return patient;
         }
         /// <summary>
-        /// Asynchronously posts a new patien to the database.
+        /// Asynchronously posts a new patient to the database.
         /// </summary>
-        /// <param name="newPatient">The id of the patient to post.</param>
-        /// <returns>The product.</returns>
+        /// <param name="newPatient">The data of the patient to post.</param>
+        /// <returns>The patient.</returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="ConflictException"></exception>
@@ -128,7 +127,7 @@ namespace Catalyte.Apparel.Providers.Providers
         /// <summary>
         /// Asynchronously updates patient data in the database.
         /// </summary>
-        /// <param name="patienttId">The id of the patient to update.</param>
+        /// <param name="patientId">The id of the patient to update.</param>
         /// <param name="updatedPatient">Patient data to update.</param>
         /// <returns>updatedPatient.</returns>
         /// <exception cref="BadRequestException"></exception>
@@ -210,61 +209,14 @@ namespace Catalyte.Apparel.Providers.Providers
 
             return updatedPatient;
         }
-       /* /// <summary>
-        /// The method gets a patients enounter by encounter Id
+        /// <summary>
+        /// DELETES Patients with out encounters
         /// </summary>
         /// <param name="patientId"></param>
-        /// <param name="encounterId"></param>
         /// <returns></returns>
         /// <exception cref="ServiceUnavailableException"></exception>
         /// <exception cref="NotFoundException"></exception>
-        public async Task<Encounter> GetPatientEncounterByIdAsync(int patientId, int encounterId, Encounter encounter)
-        {
-            Patient patient;
-            IEnumerable<Encounter> encounters;
-            try
-            {
-               patient = await _patientRepository.GetPatientByIdAsync(patientId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was aproblem connecting to the database");
-            }
-            if (patient == null)
-            {
-                throw new NotFoundException("There is currently no Patient with that ID in the database");
-            }
-            if(patient.Id != patientId)
-            {
-                throw new BadRequestException("Nust use the same patinet Id to perform the search");
-            }
-            try
-            {
-                encounters = await _encounterRepository.GetAllEncountersByPatientIdAsync(patientId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database");
-            }
-            if (encounters == null)
-            {
-                throw new NotFoundException("There are no Encounters");
-            }
-            foreach(Encounter item in encounters)
-            {
-                if (item.Id == encounterId)
-                {
-                    encounter = item;
-                }
-            }
-            return encounter;
-
-
-
-
-        }*/
+        /// <exception cref="ConflictException"></exception>
         public async Task<Patient> DeletePatientAsync(int patientId)
         {
             Patient existingPatient;
@@ -311,35 +263,7 @@ namespace Catalyte.Apparel.Providers.Providers
             return existingPatient;
 
         }
-        /// <summary>
-        /// Asynchronously retrieves the product with the provided id from the database.
-        /// </summary>
-        /// <param name="productId">The id of the product to retrieve.</param>
-        /// <returns>The product.</returns>
-        /// <exception cref="ServiceUnavailableException"></exception>
-        /// <exception cref="NotFoundException"></exception>
-        public async Task<Patient> GetPatientByEmailAsync(string patientEmail)
-        {
-            Patient patient;
 
-            try
-            {
-                patient = await _patientRepository.GetPatientByEmailAsync(patientEmail);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new ServiceUnavailableException("There was a problem connecting to the database.");
-            }
-
-            if (patient == null || patient == default)
-            {
-                _logger.LogInformation($"Patient with id: {patientEmail} could not be found.");
-                throw new NotFoundException($"Patient with id: {patientEmail} could not be found.");
-            }
-
-            return patient;
-        }
 
     }
 }
